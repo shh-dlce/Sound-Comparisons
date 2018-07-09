@@ -317,7 +317,7 @@ class DataProvider {
     static::getDummyTranscriptions to generate DummyTranscriptions,
     and fill them in where the expected key doesn't exist.
   */
-  public static function getTranscriptions($studyName){
+  public static function getTranscriptions($studyName, $soundFiles){
     $ret = array();
     $db  = Config::getConnection();
     $n   = $db->escape_string($studyName);
@@ -325,12 +325,14 @@ class DataProvider {
     $allStudyNames = static::fetchAll("SELECT Name FROM Studies WHERE StudyIx = (SELECT StudyIx FROM Studies WHERE Name = '$n')");
     foreach($allStudyNames as $sn) {
       $n = $sn['Name'];
-      $q   = "SELECT * FROM Transcriptions_$n";
+      $q = "SELECT * FROM Transcriptions_$n";
       $set = static::fetchAll($q);
       if(count($set) > 0){
         foreach($set as $t){
           $tKey = $t['LanguageIx'].$t['IxElicitation'].$t['IxMorphologicalInstance'];
-          $t['soundPaths'] = static::soundPaths($n, $t);
+          $sfKey = $tKey.$t['AlternativePhoneticRealisationIx'].$t['AlternativeLexemIx'];
+          $t['soundPaths'] = isset($soundFiles[$sfKey]) ? json_decode($soundFiles[$sfKey]) : [];
+
           //Updating RecordingMissing, iff necessary:
           // if(($t['RecordingMissing'] === 0 && count($t['soundPaths']) > 0)
           //   || ($t['RecordingMissing'] === 1 && count($t['soundPaths']) === 0)){
@@ -363,7 +365,7 @@ class DataProvider {
         }
       }
       //Handling dummy transcriptions:
-      foreach(static::getDummyTranscriptions($n) as $t){
+      foreach(static::getDummyTranscriptions($n, $soundFiles) as $t){
         $tKey = $t['LanguageIx'].$t['IxElicitation'].$t['IxMorphologicalInstance'];
         if(!array_key_exists($tKey, $ret)){
           $ret[$tKey] = $t;
@@ -688,7 +690,7 @@ class DataProvider {
     static::getTranscriptions merges the outputs of this method
     into its return.
   */
-  public static function getDummyTranscriptions($studyName){
+  public static function getDummyTranscriptions($studyName, $soundFiles){
     $db = Config::getConnection();
     //Add dummy transcriptions:
     $dummies = array();
@@ -706,8 +708,7 @@ class DataProvider {
     $qs = static::fetchAll($q);
     //Handling resulting pairs:
     foreach($qs as $entry){
-      $files = static::findSoundFiles($entry['FilePathPart'], $entry['SoundFileWordIdentifierText']);
-      $missing = (count($files) === 0) ? 1 : 0;
+      $sfKey = $entry['LanguageIx'].$entry['IxElicitation'].$entry['IxMorphologicalInstance'].'0'.'0';
 
       //Returning saving found dummies: @Bibiko - unclear code -> issue #439
       // $q = "INSERT INTO Transcriptions_$studyName "
@@ -716,14 +717,14 @@ class DataProvider {
       // $db->query($q);
 
       //Filtering
-      if($missing === 1) continue;
+      if(!isset($soundFiles[$sfKey])) continue;
       //Adding to dummy list:
       array_push($dummies, array(
         'isDummy' => true
       , 'LanguageIx' => $entry['LanguageIx']
       , 'IxElicitation' => $entry['IxElicitation']
       , 'IxMorphologicalInstance' => $entry['IxMorphologicalInstance']
-      , 'soundPaths' => $files
+      , 'soundPaths' => json_decode($soundFiles[$sfKey])
       ));
     }
     return $dummies;
@@ -792,6 +793,11 @@ class DataProvider {
   public static function getStudyChunk($studyName){
     //Provide complete data for a single study:
     $sId = DataProvider::getStudyId($studyName);
+    //Provide a lookup for sound files:
+    $soundFiles = array();
+    foreach(static::fetchAll("SELECT * FROM soundfiles") as $sf) {
+      $soundFiles[$sf['LanguageIx'].$sf['IxElicitation'].$sf['IxMorphologicalInstance'].$sf['AlternativePhoneticRealisationIx'].$sf['AlternativeLexemIx']] = $sf['urls'];
+    };
     //The representation that will be returned:
     return array(
       'study'               => DataProvider::getStudy($studyName)
@@ -801,7 +807,7 @@ class DataProvider {
     , 'languages'           => DataProvider::getLanguages($studyName)
     , 'words'               => DataProvider::getWords($studyName)
     , 'meaningGroupMembers' => DataProvider::getMeaningGroupMembers($sId)
-    , 'transcriptions'      => DataProvider::getTranscriptions($studyName)
+    , 'transcriptions'      => DataProvider::getTranscriptions($studyName, $soundFiles)
     , 'defaults'            => DataProvider::getDefaults($sId, $studyName)
     );
   }
