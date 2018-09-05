@@ -2,7 +2,7 @@
 /**
   This script aims to work as a trampoline for downloads, that shall be saved rather than opened in the browser.
   To achieve this, it's necessary to set the http headers accordingly.
-  We expect a file get parameter to be given.
+  We expect a valid CDSTAR object URL get parameter to be given.
 */
 if(!array_key_exists('file', $_GET)){
   die('You must supply a file parameter.');
@@ -10,21 +10,36 @@ if(!array_key_exists('file', $_GET)){
 chdir('..');
 require_once('config.php');
 $file = $_GET['file'];
-//Guarding against traversal:
-if(preg_match('/\\.\\./', $file)){
-  error_log(__FILE__.' prevented access to '.$file);
-  die('Sorry, I cannot serve this file.');
+switch (pathinfo($file, PATHINFO_EXTENSION)){
+    case 'mp3':
+        $mimetype = 'audio/mpeg';
+        break;
+    case 'ogg':
+        $mimetype = 'audio/ogg';
+        break;
+    case 'wav':
+        $mimetype = 'audio/wav';
+        break;
+    default:
+        $mimetype = 'application/octet-stream';
+        break;
 }
-//Checking existence:
-if(!file_exists($file)){
-  error_log("Could not serve file: $file from directory: ".`pwd`);
-  die('Sorry, the requested file does not appear to exist.');
-}
-//Setting headers:
+$ctx = stream_context_create(array('http'=>
+  array(
+    'timeout' => 10
+  )
+));
+//Setting common headers:
+header('Pragma: public');
+header('Expires: 0');
+header('Cache-Control: must-revalidate, post-check=0, pre-check=0".');
 header('Content-Disposition: attachment;filename="'.basename($file).'"');
+header('Content-Transfer-Encoding: binary');
 //Handing over the file:
 if(isset($_GET['base64'])){
-  echo base64_encode(file_get_contents($file));
+  header('Content-Type: application/base64');
+  echo base64_encode(file_get_contents($file, false, $ctx));
 }else{
-  readfile($file);
+  header('Content-Type: '.$mimetype);
+  echo file_get_contents($file, false, $ctx);
 }
