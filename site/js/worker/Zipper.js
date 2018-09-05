@@ -22,12 +22,25 @@ var fname = '';
 var missing = [];
 // Handling messages from the great beyond:
 onmessage = function(e){
+  function pad(number){
+    var r = String(number);
+    return (r.length === 1) ? ('0'+r) : r;
+  }
+  function getNow(){
+    var date = new Date();
+    return date.getFullYear()
+    + '-' + pad(date.getUTCMonth() + 1)
+    + '-' + pad(date.getUTCDate())
+    + 'T' + pad(date.getHours())
+    + '_' + pad(date.getMinutes())
+    + '_' + pad(date.getSeconds())
+    + '_' + String((date.getMilliseconds()/1000).toFixed(3)).slice(2, 5);
+  }
   var m = e.data;
   if('task' in m){
     //Generating the filename:
     if(fname === ''){
-      var date = new Date();
-      fname = 'Soundfiles.'+date.toISOString();
+      fname = 'Soundfiles_' + getNow();
       folder = zip.folder(fname);
     }
     //Investigating the task:
@@ -75,26 +88,3 @@ onmessage = function(e){
     throw 'Zipper.onmessage() with missing task field:\n'+JSON.stringify(m);
   }
 };
-/*
-  https://stackoverflow.com/questions/2573521/how-do-i-output-an-iso-8601-formatted-string-in-javascript
-  Patch Date, if necessary:
-*/
-if(!Date.prototype.toISOString){
-  (function(){
-    function pad(number){
-      var r = String(number);
-      return (r.length === 1) ? ('0'+r) : r;
-    }
-
-    Date.prototype.toISOString = function(){
-      return this.getUTCFullYear()
-      + '-' + pad(this.getUTCMonth() + 1)
-      + '-' + pad(this.getUTCDate())
-      + 'T' + pad(this.getUTCHours())
-      + ':' + pad(this.getUTCMinutes())
-      + ':' + pad(this.getUTCSeconds())
-      + '.' + String((this.getUTCMilliseconds()/1000).toFixed(3)).slice(2, 5)
-      + 'Z';
-    };
-  }());
-}
