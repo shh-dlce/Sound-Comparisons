@@ -59,13 +59,13 @@ define(['views/render/SubView'], function(SubView){
       var gc = lang.getGlottoCode();
       if(gc){
         ls.push(
-          { href: 'http://www.glottolog.org/resource/languoid/id/'+gc
+          { href: 'https://glottolog.org/resource/languoid/id/'+gc
           , img:  'img/extern/glottolog.png'
           , ttip: App.translationStorage.translateStatic('tooltip_languages_link_glottolog')}
         );
       }else if(iso){
         ls.push(
-          { href: 'http://www.glottolog.org/resource/languoid/iso/'+iso
+          { href: 'https://glottolog.org/resource/languoid/iso/'+iso
           , img:  'img/extern/glottolog.png'
           , ttip: App.translationStorage.translateStatic('tooltip_languages_link_glottolog')}
         );
@@ -73,16 +73,16 @@ define(['views/render/SubView'], function(SubView){
       if(iso){
         ls.push(
           { href: 'http://new.multitree.org/trees/code/'+iso
-          , img:  'http://new.multitree.org/static/images/MultiTree.ico'
+          , img:  'img/extern/MultiTree.ico'
           , ttip: App.translationStorage.translateStatic('tooltip_languages_link_multitree')}
         );
         //In case of missing wikipedia link but ISO code:
         if(!lang.getWikipediaLink()){
           ls.push({
             ttip:  App.translationStorage.translateStatic('tooltip_languages_link_wikipedia')
-          , img:   'http://en.wikipedia.org/favicon.ico'
+          , img:   'https://en.wikipedia.org/favicon.ico'
           , class: 'favicon favicon-bordered'
-          , href:  'http://en.wikipedia.org/wiki/ISO_639:'+iso
+          , href:  'https://en.wikipedia.org/wiki/ISO_639:'+iso
           });
         }
       }
@@ -91,7 +91,7 @@ define(['views/render/SubView'], function(SubView){
       if(href){
         ls.push({
           ttip:  App.translationStorage.translateStatic('tooltip_languages_link_wikipedia')
-        , img:   'http://en.wikipedia.org/favicon.ico'
+        , img:   'https://en.wikipedia.org/favicon.ico'
         , class: 'favicon favicon-bordered'
         , href:  href
         });
@@ -101,7 +101,7 @@ define(['views/render/SubView'], function(SubView){
       if(loc){
         ls.push({
           ttip: App.translationStorage.translateStatic('tooltip_languages_link_mapview')
-        , href: "http://www.openstreetmap.org/?mlat="+loc[0]+"&mlon="+loc[1]
+        , href: "https://www.openstreetmap.org/?mlat="+loc[0]+"&mlon="+loc[1]
         , img:  'img/langmap.png'
         });
       }
@@ -119,8 +119,8 @@ define(['views/render/SubView'], function(SubView){
       //Historical period:
       if('HistoricalPeriod' in desc){
         line = {
-          link: 'http://en.wikipedia.org/wiki/'+desc.HistoricalPeriodWikipediaString
-        , img:  'http://en.wikipedia.org/favicon.ico'
+          link: 'https://en.wikipedia.org/wiki/'+desc.HistoricalPeriodWikipediaString
+        , img:  'https://en.wikipedia.org/favicon.ico'
         };
         if(lst !== null && parseInt(lst.getField()) === 1){
           line.desc = lst.getDescription()+' '+desc.HistoricalPeriod;
@@ -173,8 +173,8 @@ define(['views/render/SubView'], function(SubView){
       if('WebsiteSubgroupName' in desc){
         lines.push({
           desc: App.translationStorage.translateStatic('language_description_subgroup')+': '
-        , link: ('WebsiteSubgroupWikipediaString' in desc) ? 'http://en.wikipedia.org/wiki/' + desc.WebsiteSubgroupWikipediaString : null
-        , img:  'http://en.wikipedia.org/favicon.ico'
+        , link: ('WebsiteSubgroupWikipediaString' in desc) ? 'https://en.wikipedia.org/wiki/' + desc.WebsiteSubgroupWikipediaString : null
+        , img:  'https://en.wikipedia.org/favicon.ico'
         , afterLink: lang.getWebsiteSubgroupName()
         });
       }
