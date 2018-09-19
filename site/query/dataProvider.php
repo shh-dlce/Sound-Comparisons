@@ -318,7 +318,7 @@ class DataProvider {
     static::getDummyTranscriptions to generate DummyTranscriptions,
     and fill them in where the expected key doesn't exist.
   */
-  public static function getTranscriptions($studyName, $soundFiles){
+  public static function getTranscriptions($studyName, $soundFiles = array()){
     $ret = array();
     $db  = Config::getConnection();
     $n   = $db->escape_string($studyName);
@@ -334,20 +334,6 @@ class DataProvider {
           $sfKey = $tKey.$t['AlternativePhoneticRealisationIx'].$t['AlternativeLexemIx'];
           $t['soundPaths'] = isset($soundFiles[$sfKey]) ? json_decode($soundFiles[$sfKey]) : [];
 
-          //Updating RecordingMissing, iff necessary:
-          // if(($t['RecordingMissing'] === 0 && count($t['soundPaths']) > 0)
-          //   || ($t['RecordingMissing'] === 1 && count($t['soundPaths']) === 0)){
-          //   //Flip RecordingMissing:
-          //   $flip = ($t['RecordingMissing'] === 0) ? 1 : 0;
-          //   $q = "UPDATE Transcriptions_$n "
-          //      . "SET RecordingMissing = $flip "
-          //      . "WHERE StudyIx = ".$t['StudyIx']
-          //      . " AND FamilyIx = ".$t['FamilyIx']
-          //      . " AND IxElicitation = ".$t['IxElicitation']
-          //      . " AND IxMorphologicalInstance = ".$t['IxMorphologicalInstance']
-          //      . " AND LanguageIx = ".$t['LanguageIx'];
-          //   $db->query($q);
-          // }
           //Merging transcriptions:
           if(array_key_exists($tKey, $ret)){
             $old = $ret[$tKey];
@@ -720,7 +706,7 @@ class DataProvider {
     static::getTranscriptions merges the outputs of this method
     into its return.
   */
-  public static function getDummyTranscriptions($studyName, $soundFiles){
+  public static function getDummyTranscriptions($studyName, $soundFiles = array()){
     $db = Config::getConnection();
     //Add dummy transcriptions:
     $dummies = array();

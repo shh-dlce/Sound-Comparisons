@@ -105,10 +105,23 @@ foreach(DataProvider::getTranscriptions($_GET['study']) as $t){
     $wIx = $t['IxElicitation'].$t['IxMorphologicalInstance'];
     if(array_key_exists($wIx, $words)){
       $tIx = $lIx.'-'.$wIx;
-      if(array_key_exists($tIx, $transcriptions)){
-        array_push($transcriptions[$tIx], $t);
+      if(is_array($t['Phonetic'])){
+        $t_org = $t;
+        foreach($t_org['Phonetic'] as $ph){
+          $t['Phonetic'] = trim($ph);
+          if(array_key_exists($tIx, $transcriptions)){
+            array_push($transcriptions[$tIx], $t);
+          }else{
+            $transcriptions[$tIx] = array($t);
+          }
+        }
       }else{
-        $transcriptions[$tIx] = array($t);
+        $t['Phonetic'] = trim($t['Phonetic']);
+        if(array_key_exists($tIx, $transcriptions)){
+          array_push($transcriptions[$tIx], $t);
+        }else{
+          $transcriptions[$tIx] = array($t);
+        }
       }
     }
   }
@@ -125,7 +138,7 @@ if(array_key_exists('tsv', $_GET)){
 }else{
   $headline = array("LanguageId", "LanguageName", "Latitude", "Longitude"
                 , "WordId", "WordModernName1", "WordModernName2", "WordProtoName1", "WordProtoName2"
-                , "Phonetic", "SpellingAltv1", "SpellingAltv2", "NotCognateWithMainWordInThisFamily2");
+                , "Phonetic", "SpellingAltv1", "SpellingAltv2", "NotCognateWithMainWordInThisFamily");
 }
 $rows = array();
 $cnt = 0;
@@ -142,7 +155,7 @@ foreach($languages as $lIx => $l){
             $l['FilePathPart'], $l['GlottoCode'],
             $l['Longtitude'], $l['Latitude'],
             $l['StudyIx'], $l['FamilyIx'],1,$t['IxMorphologicalInstance'],$w['FullRfcModernLg01'],0,
-            trim($t['Phonetic']),"",0,$t['SpellingAltv1']
+            $t['Phonetic'],"",0,$t['SpellingAltv1']
           ));
         }else{
           array_push($rows, array(
