@@ -14,6 +14,9 @@ chdir('..');
 require_once('config.php');
 //Transcription to work with:
 $ts = DataProvider::getTranscriptions($_GET['study']);
+if(!array_key_exists($_GET['language'].$_GET['word'], $ts)){
+  die('Sorry, for the passed parameter was nothing found');
+}
 $ts = $ts[$_GET['language'].$_GET['word']];
 //The Phonetic:
 $ps = $ts['Phonetic'];
@@ -26,7 +29,11 @@ if(__::isArray($ps)){
   }
 }
 //Figuring out the filename:
-$file = preg_replace('/mp3/', 'txt', basename(current($ts['soundPaths'])));
+if(is_Array($ts['path'])){
+  $file = $ts['path'][$n].".txt";
+}else{
+  $file = $ts['path'].".txt";
+}
 //Delivering the content:
 header('Content-Type: text/plain; charset=utf-8');
 header('Content-Disposition: attachment;filename="'.$file.'"');
