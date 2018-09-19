@@ -490,6 +490,9 @@ if(!session_mayEdit($dbConnection))
       }
     ?>
     </div>
+    <?php
+    if(isset($_GET['study'])){
+    ?>
     <div style="margin:30px;">
       <table class="display table table-bordered" style="width:90%">
       <?php
@@ -634,6 +637,9 @@ if(!session_mayEdit($dbConnection))
         });
       </script>
     </div>
+    <?php
+    }
+    ?>
     <iframe name="iframe_post_form" id="iframe_post_form" style="border:none;"></iframe>
   </body>
 </html>
