@@ -10,6 +10,9 @@ if(!array_key_exists('file', $_GET)){
 chdir('..');
 require_once('config.php');
 $file = $_GET['file'];
+if(strncmp($file, "http", 4) !== 0){
+  die("Deprecated request due to moving sound files to another server - make sure to use the latest version.");
+}
 switch (pathinfo($file, PATHINFO_EXTENSION)){
     case 'mp3':
         $mimetype = 'audio/mpeg';
