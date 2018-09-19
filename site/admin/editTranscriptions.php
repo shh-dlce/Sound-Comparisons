@@ -501,8 +501,8 @@ if(!session_mayEdit($dbConnection))
                 .'<th>LanguageIx - FilePathPart</th>'
              .'</tr>';
       echo "<thead>$head</thead>";
-      DataProvider::transcriptionTable($_GET['study']);
-      foreach(DataProvider::$transcriptionTable as $t){
+      $trTable = DataProvider::transcriptionTable($_GET['study']);
+      foreach($trTable as $t){
         echo "<tr data-transcrid='".$t['transcrid']."' data-study='".$_GET['study']."'>";
         echo "<td><a class='btn btn-small save' style='margin-top:-11px'><i title='Save' class='icon-hdd'></i></a><span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:150px;font-family:Charis SIL;'></td>";
         // echo "<td><span class='searchval hide'>".$t['SpellingAltv1']."</span><input data-field='SpellingAltv1' class='SpellingAltv1' type='text' value='".$t['SpellingAltv1']."' style='width:150px;'></td>";
