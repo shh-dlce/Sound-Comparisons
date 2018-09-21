@@ -27,10 +27,6 @@
         if(session_isSuperuser($dbConnection)){
           $m = $m . '<li><a href="generateSoundZips.php">Generate Sound ZIP archives</a></li>';
         }
-        if(session_mayUpload($dbConnection)){
-           $m = $m . '<li class="divider"></li>'
-           . '<li><a href="uploadSoundDir.php">Upload Sound Files for a Language</a></li>';
-        }
         if(session_isSuperuser($dbConnection)){
            $m = $m . '<li class="divider"></li>'
            . '<li><a href="export01.php">Export Study Data (Edictor TSV)</a></li>'

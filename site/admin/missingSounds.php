@@ -31,9 +31,8 @@ if(!session_mayEdit($dbConnection))
         echo "<thead>$head</thead>";
         //Making sure we're at the right location:
         chdir('..');
-        DataProvider::getTranscriptions($_GET['study']);
         //We use missingSounds to fill the table:
-        foreach(DataProvider::$missingSounds as $sound){
+        foreach(DataProvider::listMissingSounds($_GET['study']) as $sound){
           echo "<tr><td>$sound</td></tr>";
         }
         echo "<tfoot>$head</tfoot>";

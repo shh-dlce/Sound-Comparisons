@@ -35,6 +35,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+package-lock.json
 
 # Unit test / coverage reports
 htmlcov/
@@ -54,3 +55,6 @@ sndComp*export/*
 .npm
 .viminfo
 .gitconfig
+
+#macOS hidden files
+.DS_Store

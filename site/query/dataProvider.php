@@ -361,29 +361,6 @@ class DataProvider {
     }
     return $ret;
   }
-  /**
-    @param none
-    @return info array for a given FilePartPath
-  */
-  public static function getInfoForFilePartPath($path){
-
-    $db  = Config::getConnection();
-    $ret = array();
-    foreach(static::getStudies() as $n){
-      $q = "SELECT ShortName, FilePathPart FROM Languages_$n WHERE FilePathPart = '{$path}'";
-      $set = static::fetchAll($q);
-      if(count($set) > 0){
-        $ret = $set[0];
-        $ret['Study'] = $n;
-        // get all sound file directory names
-        $dir = $_SERVER['DOCUMENT_ROOT'].'/'.Config::$soundPath;
-        $allSoundPathsOnDisk = scandir($dir);
-        $ret['SoundDirExists'] = in_array($path, $allSoundPathsOnDisk);
-        return $ret;
-      }
-    }
-    return $ret;
-  }
 
   /**
     @param $studyName String
@@ -413,6 +390,66 @@ class DataProvider {
     }
     return static::$transcriptionTable;
   }
+  /**
+    @param $studyName String
+    @return array of missing sound files
+  */
+  public static function listMissingSounds($studyName){
+    function strInArray ( $str, $array ) {
+        if ( array_walk ( $array, function ( $val, $key ) use ( &$data, $str ) {
+            if ( strpos ( $val, $str ) !== false ) {
+                $data = $key;
+            }
+        }));
+        return $data;
+    }
+    $db  = Config::getConnection();
+    $n   = $db->escape_string($studyName);
+
+    $q = "SELECT DISTINCT REGEXP_REPLACE(urls, '.*/(.*?)\\\\.(mp3|ogg).*', '\\\\1') AS p FROM soundfiles";
+    $allSoundPaths = array();
+    $set = static::fetchAll($q);
+    if(count($set) > 0){
+      foreach($set as $f){
+        array_push($allSoundPaths, $f['p']);
+      }
+    }
+    $q = <<<Q1
+      SELECT 
+      concat(L.FilePathPart, W.SoundFileWordIdentifierText) as P
+      FROM Words_$n AS W, Languages_$n AS L
+      UNION
+      SELECT
+      concat(
+      L.FilePathPart,
+      W.SoundFileWordIdentifierText,
+      case
+      	when T.AlternativeLexemIx > 1 and T.AlternativePhoneticRealisationIx = 0 then concat("_lex", T.AlternativeLexemIx)
+      	when T.AlternativeLexemIx = 0 and T.AlternativePhoneticRealisationIx > 1 then concat("_pron", T.AlternativePhoneticRealisationIx)
+      	when T.AlternativeLexemIx > 1 and T.AlternativePhoneticRealisationIx > 1 then concat("_lex", T.AlternativeLexemIx,"_pron", T.AlternativePhoneticRealisationIx)
+      	else ""
+      end
+      ) as P
+      FROM Transcriptions_$n AS T, Words_$n AS W, Languages_$n AS L
+      WHERE
+      L.LanguageIx = T.LanguageIx
+      AND
+      W.IxElicitation = T.IxElicitation
+      AND
+      W.IxMorphologicalInstance = T.IxMorphologicalInstance
+      ORDER BY 1 ASC
+Q1;
+
+    $allValidPaths = array();
+    $set = static::fetchAll($q);
+    if(count($set) > 1){
+      foreach($set as $p){
+        array_push($allValidPaths, $p['P']);
+      }
+    }
+    return array_diff($allValidPaths, $allSoundPaths);
+  }
+  
   /**
     @param $studyName String
     @return array of dicts
@@ -450,8 +487,14 @@ class DataProvider {
     }
 
     // get all sound file directory names
-    $dir = $_SERVER['DOCUMENT_ROOT'].'/'.Config::$soundPath;
-    $allSoundPathsOnDisk = scandir($dir);
+    $q = "SELECT DISTINCT REGEXP_REPLACE(urls, '.*/(.*?)_\\\\d{3,}_.*?\\\\.(mp3|ogg).*', '\\\\1') AS p FROM soundfiles";
+    $allSoundPathsOnDisk = array();
+    $set = static::fetchAll($q);
+    if(count($set) > 0){
+      foreach($set as $f){
+        array_push($allSoundPathsOnDisk, $f['p']);
+      }
+    }
     $soundPathsOnDisk = array();
     // filter if possible for a specific study
     if(strlen($studyPrefix) > 0) {
@@ -594,12 +637,16 @@ class DataProvider {
 
     $filePathPart = $set[0]['FilePathPart'];
     static::$checkFilePathsForLanguageIx['FilePathPart'] = $filePathPart;
-    // get all sound file directory names
-    $dir = $_SERVER['DOCUMENT_ROOT'].'/'.Config::$soundPath.'/'.$filePathPart;
+    // get all sound files for $filePathPart
+    $q = "SELECT REGEXP_REPLACE(urls, '.*/(.*?)/(.*?)\\\\.(mp3|ogg).*', '\\\\2@\\\\1') AS p FROM soundfiles WHERE urls LIKE '%/$filePathPart%'";
     $soundPathsOnDisk = array();
-    foreach(scandir($dir) as $f){
-      if(preg_match('/\.mp3$/', $f)){
-        array_push($soundPathsOnDisk, $f);
+    $soundPathsCdstarLinks = array();
+    $set = static::fetchAll($q);
+    if(count($set) > 0){
+      foreach($set as $f){
+        $arr = explode("@", $f['p']);
+        array_push($soundPathsOnDisk, $arr[0]);
+        $soundPathsCdstarLinks[$arr[0]] = $arr[1];
       }
     }
 
@@ -637,13 +684,14 @@ class DataProvider {
             $data['SoundPath'] = $sndFileIdText.$lex_prefix.$pron_prefix;
             $data['pathok'] = 'X';
             $data['hasSound'] = '';
-            $fileName = $filePathPart.$sndFileIdText.$lex_prefix.$pron_prefix.".mp3";
+            $fileName = $filePathPart.$sndFileIdText.$lex_prefix.$pron_prefix;
+            $data['SoundPathHref'] = '';
             if(in_array($fileName, $soundPathsOnDisk)){
               $data['pathok'] = 'OK';
               $data['hasSound'] = '▶︎';
               $soundPathsOnDisk = array_diff($soundPathsOnDisk, array($fileName));
+              $data['SoundPathHref'] = "https://cdstar.shh.mpg.de/bitstreams/".$soundPathsCdstarLinks[$fileName]."/".$fileName.".mp3";
             }
-            $data['SoundPathHref'] = "http://www.soundcomparisons.com/".Config::$soundPath."/".$filePathPart."/".$fileName;
             $data['Meaning'] = $word['F'];
             $data['IxElicitation'] = $word['I'];
             $data['IxEliciSpec'] = '';
@@ -669,13 +717,14 @@ class DataProvider {
           $data['SoundPath'] = $sndFileIdText.$lex_prefix.$pron_prefix;
           $data['pathok'] = 'X';
           $data['hasSound'] = '';
-          $fileName = $filePathPart.$sndFileIdText.$lex_prefix.$pron_prefix.".mp3";
+          $fileName = $filePathPart.$sndFileIdText.$lex_prefix.$pron_prefix;
+          $data['SoundPathHref'] = '';
           if(in_array($fileName, $soundPathsOnDisk)){
             $data['pathok'] = 'OK';
             $data['hasSound'] = '▶︎';
+            $data['SoundPathHref'] = "https://cdstar.shh.mpg.de/bitstreams/".$soundPathsCdstarLinks[$fileName]."/".$fileName.".mp3";
             $soundPathsOnDisk = array_diff($soundPathsOnDisk, array($fileName));
           }
-          $data['SoundPathHref'] = "http://www.soundcomparisons.com/".Config::$soundPath."/".$filePathPart."/".$fileName;
           $data['Meaning'] = $word['F'];
           $data['IxElicitation'] = $word['I'];
           $data['IxEliciSpec'] = '';
@@ -693,7 +742,7 @@ class DataProvider {
         }
       }
     }
-    static::$checkFilePathsForLanguageIx['remainingSndFiles'] = '';
+    static::$checkFilePathsForLanguageIx['remainingSndFiles'] = array();
     if(count($soundPathsOnDisk)>0){
       static::$checkFilePathsForLanguageIx['remainingSndFiles'] = $soundPathsOnDisk;
     }

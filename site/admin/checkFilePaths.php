@@ -77,7 +77,7 @@ if(!session_mayEdit($dbConnection))
     LanguageIx: <?php echo DataProvider::$checkFilePathsForLanguageIx['LanguageIx']." – ".DataProvider::$checkFilePathsForLanguageIx['FilePathPart']?>
     <?php
 
-    echo "<a target='_blank' href='http://www.soundcomparisons.com/#/en/".$_GET['study']."/language/".DataProvider::$checkFilePathsForLanguageIx['FilePathPart']."'><img style='margin-left:2px;' width=16px src='../img/1l.png'></a></h4>";
+    echo "<a target='_blank' href='/#/en/".$_GET['study']."/language/".DataProvider::$checkFilePathsForLanguageIx['FilePathPart']."'><img style='margin-left:2px;' width=16px src='../img/1l.png'></a></h4>";
 
     if(DataProvider::$checkFilePathsForLanguageIx['ErrInfo']<>""){
       echo "<h5><span style='color:red'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".DataProvider::$checkFilePathsForLanguageIx['ErrInfo']."</span></h5>";
