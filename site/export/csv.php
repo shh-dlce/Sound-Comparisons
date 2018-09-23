@@ -107,8 +107,28 @@ foreach(DataProvider::getTranscriptions($_GET['study']) as $t){
       $tIx = $lIx.'-'.$wIx;
       if(is_array($t['Phonetic'])){
         $t_org = $t;
+        $i = 0;
         foreach($t_org['Phonetic'] as $ph){
+          if(is_array($ph) && count($ph) === 0){
+            continue;
+          }
           $t['Phonetic'] = trim($ph);
+          if(is_array($t_org['NotCognateWithMainWordInThisFamily'])){
+            $t['NotCognateWithMainWordInThisFamily'] = $t_org['NotCognateWithMainWordInThisFamily'][$i];
+          }
+          if(is_array($t_org['IxMorphologicalInstance'])){
+            $t['IxMorphologicalInstance'] = $t_org['IxMorphologicalInstance'][$i];
+          }
+          if(is_array($t_org['SpellingAltv1'])){
+            $t['SpellingAltv1'] = $t_org['SpellingAltv1'][$i];
+          }
+          if(is_array($t_org['SpellingAltv2'])){
+            $t['SpellingAltv2'] = $t_org['SpellingAltv2'][$i];
+          }
+          if(is_array($t_org['NotCognateWithMainWordInThisFamily'])){
+            $t['NotCognateWithMainWordInThisFamily'] = $t_org['NotCognateWithMainWordInThisFamily'][$i];
+          }
+          $i = $i + 1;
           if(array_key_exists($tIx, $transcriptions)){
             array_push($transcriptions[$tIx], $t);
           }else{
