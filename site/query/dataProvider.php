@@ -326,7 +326,14 @@ class DataProvider {
     $allStudyNames = static::fetchAll("SELECT Name FROM Studies WHERE StudyIx = (SELECT StudyIx FROM Studies WHERE Name = '$n')");
     foreach($allStudyNames as $sn) {
       $n = $sn['Name'];
-      $q = "SELECT t.*,concat(l.FilePathPart,w.SoundFileWordIdentifierText,case when t.AlternativeLexemIx > 1 and t.AlternativePhoneticRealisationIx = 0 then concat('_lex', t.AlternativeLexemIx) when t.AlternativeLexemIx = 0 and t.AlternativePhoneticRealisationIx > 1 then concat('_pron', t.AlternativePhoneticRealisationIx) when t.AlternativeLexemIx > 1 and t.AlternativePhoneticRealisationIx > 1 then concat('_lex', t.AlternativeLexemIx,'_pron', t.AlternativePhoneticRealisationIx) else '' end) AS path FROM Transcriptions_$n AS t, Languages_$n AS l, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation;";
+      $q = "SELECT t.*,concat(l.FilePathPart,w.SoundFileWordIdentifierText,"
+        ."case when t.AlternativeLexemIx > 1 and t.AlternativePhoneticRealisationIx = 0 "
+        ."then concat('_lex', t.AlternativeLexemIx) when t.AlternativeLexemIx = 0 "
+        ."and t.AlternativePhoneticRealisationIx > 1 then concat('_pron', t.AlternativePhoneticRealisationIx) "
+        ."when t.AlternativeLexemIx > 1 and t.AlternativePhoneticRealisationIx > 1 then "
+        ."concat('_lex', t.AlternativeLexemIx,'_pron', t.AlternativePhoneticRealisationIx) "
+        ."else '' end) AS path FROM Transcriptions_$n AS t, Languages_$n AS l, Words_$n AS w "
+        ."WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation;";
       $set = static::fetchAll($q);
       if(count($set) > 0){
         foreach($set as $t){
