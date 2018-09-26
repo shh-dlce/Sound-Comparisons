@@ -174,14 +174,10 @@ class DataProvider {
     }
     //Fixing contributor avatars:
     foreach($global['contributors'] as $k => $v){
-      $prefix = 'img/contributors/';
-      $inits  = $v['Initials'];
-      foreach(array('.jpg','.png','.gif') as $ext){
-        $file = $prefix.$inits.$ext;
-        if(file_exists($file)){
-          $global['contributors'][$k]['Avatar'] = $file;
-          break;
-        }
+      $q = "SELECT url FROM contributorimages WHERE filepathpart = '' AND tag = '".$v['Initials']."'";
+      $set = static::fetchAll($q);
+      if(count($set) > 0){
+        $global['contributors'][$k]['Avatar'] = $set[0]['url'];
       }
     }
     return $global;
@@ -271,13 +267,12 @@ class DataProvider {
   */
   public static function getLanguageContributorImages($languageData){
     if(array_key_exists('FilePathPart', $languageData)){
-      $images = array(); $i = 1; $found = true; $base = 'img/contributors/';
-      while($found){
-        $path = $base.$languageData['FilePathPart'].'_'.str_pad($i, 2, '0', STR_PAD_LEFT).'.jpg';
-        $i++;
-        $found = file_exists($path);
-        if($found){
-          array_push($images, $path);
+      $images = array();
+      $q = "SELECT url FROM contributorimages WHERE filepathpart = '".$languageData['FilePathPart']."' ORDER BY tag";
+      $set = static::fetchAll($q);
+      if(count($set) > 0){
+        foreach($set as $t){
+          array_push($images, $t['url']);
         }
       }
       $languageData['ContributorImages'] = $images;
