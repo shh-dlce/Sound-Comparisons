@@ -102,7 +102,7 @@ define(['underscore','backbone'], function(_, Backbone){
     }
     /**
       We always produce something with getPhonetics,
-      but sometimes it's something like 'play'|'soon'.
+      but sometimes it's something like 'play'|'..'.
       hasPhonetics returns true, iff this is the case.
     */
   , hasPhonetics: function(){
@@ -121,22 +121,33 @@ define(['underscore','backbone'], function(_, Backbone){
         , superScr  = this.getSuperscriptInfo()
         , ps        = [];
       //Sanitizing phonetics:
-      if(_.isEmpty(phonetics))  phonetics = '▶';
+      if(_.isEmpty(phonetics)){
+        phonetics = [];
+        var lg = this.get('language');
+        if(lg.isProto() || lg.isHistorical()){
+          phonetics.push('*');
+        }else if(sources.length > 0 && sources[0].length > 0){
+            phonetics.push('▶');
+        }else{
+          phonetics.push('..');
+        }
+      }
       if(!_.isArray(phonetics)) phonetics = [phonetics];
       //WordByWord logic:
       var wordByWord = App.pageState.get('wordByWord');
       /*
-        isLexPredicate used in loop below.
+        getLexIndex used in loop below.
         Put here to not create it in a loop.
       */
-      var isLexPredicate = function(s){
+      var getLexIndex = function(s){
         if(_.isString(s)){
-          if(s.match(/_lex/)) return true;
+          var r = s.match(/_lex(\d+)/)
+          if(r) return parseInt(r[1]);
         }else{
           console.log('Strange source: '+typeof(s));
           console.log(s);
         }
-        return false;
+        return 0;
       };
       //Iterating phonetics:
       for(var i = 0; i < phonetics.length; i++){
@@ -173,13 +184,15 @@ define(['underscore','backbone'], function(_, Backbone){
           }
         }
         //Subscript:
-        if(phonetics.length > 1){
-          var isLex = _.any(source, isLexPredicate, this);
-          if(isLex){
-            p.subscript = {
-              ttip: App.translationStorage.translateStatic('tooltip_subscript_differentVariants')
-            , subscript: i + 1
-            };
+        if(phonetics.length > 0){
+          if(source[0]){
+            var idx = getLexIndex(source[0]);
+            if(idx > 0){
+              p.subscript = {
+                ttip: App.translationStorage.translateStatic('tooltip_subscript_differentVariants')
+              , subscript: idx
+              };
+            }
           }
         }
         //Done:
