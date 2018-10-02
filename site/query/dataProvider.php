@@ -319,33 +319,47 @@ class DataProvider {
     $n   = $db->escape_string($studyName);
     // Fetch all studies involved - e.g. as for Andean where Mapudungun is a subset of Andean
     $allStudyNames = static::fetchAll("SELECT Name FROM Studies WHERE StudyIx = (SELECT StudyIx FROM Studies WHERE Name = '$n')");
+    $not_array_fields = array('LanguageIx', 'IxElicitation', 'IxMorphologicalInstance', 'FamilyIx', 'StudyIx');
     foreach($allStudyNames as $sn) {
       $n = $sn['Name'];
-      $q = "SELECT t.*,concat(l.FilePathPart,w.SoundFileWordIdentifierText,"
+      $q = "SELECT DISTINCT t.*,concat(l.FilePathPart,w.SoundFileWordIdentifierText,"
         ."case when t.AlternativeLexemIx > 1 and t.AlternativePhoneticRealisationIx = 0 "
         ."then concat('_lex', t.AlternativeLexemIx) when t.AlternativeLexemIx = 0 "
         ."and t.AlternativePhoneticRealisationIx > 1 then concat('_pron', t.AlternativePhoneticRealisationIx) "
         ."when t.AlternativeLexemIx > 1 and t.AlternativePhoneticRealisationIx > 1 then "
         ."concat('_lex', t.AlternativeLexemIx,'_pron', t.AlternativePhoneticRealisationIx) "
         ."else '' end) AS path FROM Transcriptions_$n AS t, Languages_$n AS l, Words_$n AS w "
-        ."WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation;";
+        ."WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation "
+        ."AND t.IxMorphologicalInstance = w.IxMorphologicalInstance ORDER BY t.LanguageIx, t.IxElicitation, "
+        ."t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
       $set = static::fetchAll($q);
       if(count($set) > 0){
         foreach($set as $t){
           $tKey = $t['LanguageIx'].$t['IxElicitation'].$t['IxMorphologicalInstance'];
           $sfKey = $tKey.$t['AlternativePhoneticRealisationIx'].$t['AlternativeLexemIx'];
           $t['soundPaths'] = isset($soundFiles[$sfKey]) ? json_decode($soundFiles[$sfKey]) : [];
-
           //Merging transcriptions:
           if(array_key_exists($tKey, $ret)){
             $old = $ret[$tKey];
             foreach($t as $k => $v){
               if(array_key_exists($k, $old)){
-                $o = $old[$k];
-                if(isset($o) && $o !== '' && $o !== $v){
-                  $t[$k] = array($o, $v);
-                }else if(is_array($v) && is_array($o)){
-                  $t[$k] = array_merge($o, $v);
+                if(!in_array($k, $not_array_fields)){
+                  $o = $old[$k];
+                  if($k === 'soundPaths'){
+                    if($o === $v) continue;
+                    //since the first element is an array already make an array of an array
+                    if(isset($o) && count($o) >= 0 && !is_array($o[0])){
+                      $o = array($o);
+                    }
+                    $o[] = $v;
+                    $t[$k] = $o;
+                    continue;
+                  }
+                  if(!is_array($o)){
+                    $o = array($o);
+                  }
+                  $o[] = $v;
+                  $t[$k] = $o;
                 }
               }
             }

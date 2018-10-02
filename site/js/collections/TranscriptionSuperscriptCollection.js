@@ -55,7 +55,7 @@ define(['underscore','backbone','models/TranscriptionSuperscript'], function(_, 
           return {Abbreviation: abbr, HoverText: hvt};
         }
       }
-      console.log('Trans…Super…Collection.getTranscriptionSuperscript() had undefined field: '+field);
+      // console.log('Trans…Super…Collection.getTranscriptionSuperscript() had undefined field: '+field);
       return null;
     }
   });

@@ -6,21 +6,21 @@
   {{#hasTrans}}]{{/hasTrans}}
   {{^hasTrans}}|{{/hasTrans}}
   {{#subscript}}
-  <div class="subscript" title="{{$ttip}}">{{subscript}}</div>
+  <div class="subscript" title="{{ttip}}">{{subscript}}</div>
   {{/subscript}}
   {{#notCognate}}
   <div class="superscript" title="{{ttip}}">{{sInf}}</div>
   {{/notCognate}}
   <audio data-onDemand='{{{srcs}}}' preload="auto" autobuffer=""></audio>
+  {{#_srcs}}
+  <span class="subscript wordByWord soundFile"{{^wordByWord}} style="display: none;"{{/wordByWord}}>
+    <a href="export/singleSoundFile?file={{.}}" target="_blank">↓</a>
+  </span>
+  {{/_srcs}}
+  {{#identifier}}
+  <span class="subscript wordByWord"{{^wordByWord}} style="display: none;"{{/wordByWord}}>
+    <a href="export/singleTextFile?word={{word}}&language={{language}}&study={{study}}&n={{n}}" target="_blank">↧</a>
+  </span>
 </div><br />
-{{#_srcs}}
-<div class="subscript wordByWord soundFile"{{^wordByWord}} style="display: none;"{{/wordByWord}}>
-  <a href="export/singleSoundFile?file={{.}}" target="_blank">↓</a>
-</div>
-{{/_srcs}}
-{{#identifier}}
-<div class="subscript wordByWord"{{^wordByWord}} style="display: none;"{{/wordByWord}}>
-  <a href="export/singleTextFile?word={{word}}&language={{language}}&study={{study}}&n={{n}}" target="_blank">↧</a>
-</div>
 {{/identifier}}
 {{#break}}<br>{{/break}}

@@ -8,7 +8,7 @@ define(['models/Transcription'], function(Transcription){
   */
   return Transcription.extend({
     initialize: function(){
-      this.set({Phonetic: 'soon'});
+      this.set({Phonetic: '..'});
     }
   , isDummy: function(){return true;}
   });
