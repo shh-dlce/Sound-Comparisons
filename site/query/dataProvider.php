@@ -19,6 +19,8 @@ class DataProvider {
   public static $checkFilePathsNumberOfWords = 0;
   public static $checkFilePathsForLanguageIx = array();
   public static $transcriptionTable = array();
+  public static $editTranscriptionTable = array();
+  public static $editTranscriptionMetaData = array();
   /**
     @param $q SQL String
     @return [[Field => Value]]
@@ -405,6 +407,34 @@ class DataProvider {
       }
     }
     return static::$transcriptionTable;
+  }
+  /**
+    @param $studyName String
+    @return array of dicts
+  */
+  public static function editTranscriptionTable($d){
+
+    $db  = Config::getConnection();
+    $dt  = $db->escape_string($d);
+    $dt_arr = preg_split('/\|/', $dt);
+    $q   = "SELECT t.*, l.FilePathPart, l.ShortName, w.FullRfcModernLg01 AS Word, w.SoundFileWordIdentifierText FROM Languages_$dt_arr[0] AS l, Transcriptions_$dt_arr[0] AS t, Words_$dt_arr[0] AS w WHERE t.LanguageIx = $dt_arr[1] AND t.LanguageIx = l.LanguageIx AND w.IxElicitation = ".substr($dt_arr[2], 0, -1)." AND t.IxElicitation = w.IxElicitation ORDER BY t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
+    $set = static::fetchAll($q);
+    static::$editTranscriptionMetaData = array();
+    if(count($set) > 0){
+      foreach($set as $t){
+        if(count(static::$editTranscriptionMetaData) == 0){
+          static::$editTranscriptionMetaData['Study'] = $dt_arr[0];
+          static::$editTranscriptionMetaData['ShortName'] = $t['ShortName'];
+          static::$editTranscriptionMetaData['FilePathPart'] = $t['FilePathPart'];
+          static::$editTranscriptionMetaData['Word'] = $t['Word'];
+          static::$editTranscriptionMetaData['IxElicitation'] = $t['IxElicitation'];
+          static::$editTranscriptionMetaData['SoundFileWordIdentifierText'] = $t['SoundFileWordIdentifierText'];
+        }
+        $t['transcrid'] = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+        array_push(static::$editTranscriptionTable, $t);
+      }
+    }
+    return static::$editTranscriptionTable;
   }
   /**
     @param $studyName String
