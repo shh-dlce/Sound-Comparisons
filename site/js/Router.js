@@ -151,14 +151,23 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
             delete toChange[key];
           }
         }, this);
-        //Applying toChange:
-        this.configure(toChange).always(function(){
-          App.views.renderer.render();
-        });
+        // if only the name (or and site lg) of a study was passed navigate to map directly
+        // otherwise 'home' page appears
+        var keys = _.map(toChange, function(element,index) {return index});
+        if(keys.length === 1 && 'study' in toChange){
+          this.navigate("/"+toChange.study+"/map", { trigger: true, replace: true });
+        }else if(keys.length === 2 && 'study' in toChange && 'siteLanguage' in toChange){
+          this.navigate("/"+toChange.siteLanguage+"/"+toChange.study+"/map", { trigger: true, replace: true });
+        }else{
+          //Applying toChange:
+          this.configure(toChange).always(function(){
+            App.views.renderer.render();
+          });
+        }
       }else{
         // view home page
         console.log('Router.defaultRoute(home)');
-        this.navigate('home', true);
+        this.navigate('home', { trigger: true, replace: true });
       }
     }
     /**
