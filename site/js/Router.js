@@ -115,12 +115,14 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
           var lang = App.languageCollection.getLanguageByIso(part);
           if(lang !== null){
             toChange.languages.push(lang);
+            toChange.pageView = 'language';
             return;//Stop detection for current part
           }
           //Detection for glotto codes:
           lang = App.languageCollection.getLanguageByGlotto(part);
           if(lang !== null){
             toChange.languages.push(lang);
+            toChange.pageView = 'language';
             return;//Stop detection for current part
           }
           //FIXME what about detection of language/word names?
@@ -151,6 +153,11 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
             delete toChange[key];
           }
         }, this);
+        // set map view as default if pageView isn't set
+        // mainly for URLs like .../Celtic or .../de/Germanic
+        if(!('pageView' in toChange)){
+          toChange.pageView = 'map';
+        }
         //Applying toChange:
         this.configure(toChange).always(function(){
           App.views.renderer.render();
@@ -158,7 +165,7 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
       }else{
         // view home page
         console.log('Router.defaultRoute(home)');
-        this.navigate('home', true);
+        this.navigate('home', { trigger: true, replace: true });
       }
     }
     /**
