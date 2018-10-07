@@ -115,12 +115,14 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
           var lang = App.languageCollection.getLanguageByIso(part);
           if(lang !== null){
             toChange.languages.push(lang);
+            toChange.pageView = 'language';
             return;//Stop detection for current part
           }
           //Detection for glotto codes:
           lang = App.languageCollection.getLanguageByGlotto(part);
           if(lang !== null){
             toChange.languages.push(lang);
+            toChange.pageView = 'language';
             return;//Stop detection for current part
           }
           //FIXME what about detection of language/word names?
@@ -151,19 +153,15 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
             delete toChange[key];
           }
         }, this);
-        // if only the name (or and site lg) of a study was passed navigate to map directly
-        // otherwise 'home' page appears
-        var keys = _.map(toChange, function(element,index) {return index});
-        if(keys.length === 1 && 'study' in toChange){
-          this.navigate("/"+toChange.study+"/map", { trigger: true, replace: true });
-        }else if(keys.length === 2 && 'study' in toChange && 'siteLanguage' in toChange){
-          this.navigate("/"+toChange.siteLanguage+"/"+toChange.study+"/map", { trigger: true, replace: true });
-        }else{
-          //Applying toChange:
-          this.configure(toChange).always(function(){
-            App.views.renderer.render();
-          });
+        // set map view as default if pageView isn't set
+        // mainly for URLs like .../Celtic or .../de/Germanic
+        if(!('pageView' in toChange)){
+          toChange.pageView = 'map';
         }
+        //Applying toChange:
+        this.configure(toChange).always(function(){
+          App.views.renderer.render();
+        });
       }else{
         // view home page
         console.log('Router.defaultRoute(home)');
