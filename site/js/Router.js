@@ -112,17 +112,55 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
             }
           }
           //Detection for iso code:
-          var lang = App.languageCollection.getLanguageByIso(part);
-          if(lang !== null){
-            toChange.languages.push(lang);
-            toChange.pageView = 'language';
+          var langs = App.languageCollection.getLanguageByIso(part);
+          if(langs !== null){
+            toChange.study = langs.study;
+            toChange.languages = langs.paths;
+            if((langs.paths.match(/,/g)||[]).length > 4){
+              toChange.pageView = 'languagesXwords';
+              if(toChange.siteLanguage){
+                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/languagesXwords/Wds_Sln/' + langs.paths,
+                  { trigger: true, replace: true });
+              }else{
+                App.router.navigate('#/en/' + langs.study + '/languagesXwords/Wds_Sln/' + langs.paths,
+                  { trigger: true, replace: true });
+              }
+            }else{
+              toChange.pageView = 'wordsXlanguages';
+              if(toChange.siteLanguage){
+                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/wordsXlanguages/Wds_All/' + langs.paths,
+                  { trigger: true, replace: true });
+              }else{
+                App.router.navigate('#/en/' + langs.study + '/wordsXlanguages/Wds_All/' + langs.paths,
+                  { trigger: true, replace: true });
+              }
+            }
             return;//Stop detection for current part
           }
           //Detection for glotto codes:
-          lang = App.languageCollection.getLanguageByGlotto(part);
-          if(lang !== null){
-            toChange.languages.push(lang);
-            toChange.pageView = 'language';
+          langs = App.languageCollection.getLanguageByGlotto(part);
+          if(langs !== null){
+            toChange.study = langs.study;
+            toChange.languages = langs.paths;
+            if((langs.paths.match(/,/g)||[]).length > 4){
+              toChange.pageView = 'languagesXwords';
+              if(toChange.siteLanguage){
+                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/languagesXwords/Wds_Sln/' + langs.paths,
+                  { trigger: true, replace: true });
+              }else{
+                App.router.navigate('#/en/' + langs.study + '/languagesXwords/Wds_Sln/' + langs.paths,
+                  { trigger: true, replace: true });
+              }
+            }else{
+              toChange.pageView = 'wordsXlanguages';
+              if(toChange.siteLanguage){
+                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/wordsXlanguages/Wds_All/' + langs.paths,
+                  { trigger: true, replace: true });
+              }else{
+                App.router.navigate('#/en/' + langs.study + '/wordsXlanguages/Wds_All/' + langs.paths,
+                  { trigger: true, replace: true });
+              }
+            }
             return;//Stop detection for current part
           }
           //FIXME what about detection of language/word names?
