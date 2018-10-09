@@ -51,48 +51,20 @@ define(['underscore','collections/Choice', 'models/Language', 'collections/Regio
       return this.shortNameMap[name] || 0;
     }
     /**
-      Builds the isoCodeMap that maps iso codes to their languages.
-      If multiple languages carry the same iso code,
-      than the last write will win.
-    */
-  , mapIsoCodes: function(){
-      this.isoCodeMap = {};
-      this.each(function(l){
-        var iso = l.getISO();
-        if(iso !== null){
-          this.isoCodeMap[iso] = l;
-        }
-      }, this);
-    }
-    /**
-      Builds the glottoCodeMap that maps glotto codes to their languages.
-      If multiple languages carry the same glotto code,
-      than the last write will win.
-    */
-  , mapGlottoCodes: function(){
-      this.glottoCodeMap = {};
-      this.each(function(l){
-        var gc = l.getGlottoCode();
-        if(gc !== null){
-          this.glottoCodeMap[gc] = l;
-        }
-      }, this);
-    }
-    /**
       @param iso String iso code
-      @return language Language || null
-      Tries to fetch a Language from the isoCodeMap.
+      @return FilePartPaths String (comma-separated) || null
+      Tries to fetch FilePartPaths from the isoCodeMap.
     */
   , getLanguageByIso: function(iso){
-      return this.isoCodeMap[iso] || null;
+      return App.dataStorage.attributes.global.global.isoMap[iso] || null;
     }
     /**
       @param glotto String glotto code
-      @return language Language || null
-      Tries to fetch a Language from the glottoCodeMap.
+      @return FilePartPaths String (comma-separated) || null
+      Tries to fetch FilePartPaths from the isoCodeMap.
     */
   , getLanguageByGlotto: function(glotto){
-      return this.glottoCodeMap[glotto] || null;
+      return App.dataStorage.attributes.global.global.glottoCodeMap[glotto] || null;
     }
     /**
       The update method is connected by the App,

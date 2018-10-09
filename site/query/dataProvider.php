@@ -167,8 +167,19 @@ class DataProvider {
     , 'transcrSuperscriptLenderLgs' => 'SELECT * FROM TranscrSuperscriptLenderLgs'
     , 'wikipediaLinks'              => 'SELECT * FROM WikipediaLinks'
     );
+    // Make sure that the following group_concat returns all
+    $q = "SET @@group_concat_max_len = 4096";
+    Config::getConnection()->query($q);
     foreach($queries as $k => $q){
       $global[$k] = static::fetchAll($q);
+    }
+    //Adding isoMap:
+    foreach(static::fetchAll('SELECT DISTINCT ISOCode AS code, study, group_concat(FilePathPart) AS paths FROM Languages WHERE trim(ISOCode) <> "" AND study <> "Europe" GROUP BY ISOCode') as $s){
+      $global['isoMap'][$s['code']] = array('study' => $s['study'], 'paths' => $s['paths']);
+    }
+    //Adding glottoCodeMap:
+    foreach(static::fetchAll('SELECT DISTINCT GlottoCode AS code, study, group_concat(FilePathPart) AS paths FROM Languages WHERE trim(GlottoCode) <> "" AND study <> "Europe" GROUP BY GlottoCode') as $s){
+      $global['glottoCodeMap'][$s['code']] = array('study' => $s['study'], 'paths' => $s['paths']);
     }
     //Adding shortLinks:
     foreach(static::fetchAll('SELECT Name, Target FROM Page_ShortLinks') as $s){
