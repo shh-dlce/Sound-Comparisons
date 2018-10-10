@@ -361,7 +361,7 @@ class DataProvider {
                   if($k === 'soundPaths'){
                     if($o === $v) continue;
                     //since the first element is an array already make an array of an array
-                    if(isset($o) && count($o) >= 0 && !is_array($o[0])){
+                    if(isset($o) && count($o) > 0 && !is_array($o[0])){
                       $o = array($o);
                     }
                     $o[] = $v;
