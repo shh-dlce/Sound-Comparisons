@@ -119,10 +119,10 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
             if((langs.paths.match(/,/g)||[]).length > 4){
               toChange.pageView = 'languagesXwords';
               if(toChange.siteLanguage){
-                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/languagesXwords/Wds_Sln/' + langs.paths,
+                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/languagesXwords/' + langs.paths + '/Wds_Sln',
                   { trigger: true, replace: true });
               }else{
-                App.router.navigate('#/en/' + langs.study + '/languagesXwords/Wds_Sln/' + langs.paths,
+                App.router.navigate('#/en/' + langs.study + '/languagesXwords/' + langs.paths + '/Wds_Sln',
                   { trigger: true, replace: true });
               }
             }else{
