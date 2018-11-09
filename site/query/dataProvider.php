@@ -449,6 +449,26 @@ class DataProvider {
   }
   /**
     @param $studyName String
+    @return success
+    Creates a new empty row for editing a new transcription
+  */
+  public static function addTranscriptionFor($d){
+
+    $db  = Config::getConnection();
+    $dt  = $db->escape_string($d);
+    $dt_arr = preg_split('/\|/', $dt);
+    $q = "SELECT StudyIx, FamilyIx FROM Languages_$dt_arr[0] WHERE LanguageIx = $dt_arr[1];";
+    $set = static::fetchAll($q);
+    if(count($set) == 1){
+      $studyix = $set[0]['StudyIx'];
+      $famix = $set[0]['FamilyIx'];
+      $q = "INSERT INTO Transcriptions_$dt_arr[0] (StudyIx, FamilyIx, IxElicitation, IxMorphologicalInstance, AlternativePhoneticRealisationIx, AlternativeLexemIx, LanguageIx, Phonetic, NotCognateWithMainWordInThisFamily) ";
+      $q = $q."VALUES ($studyix, $famix, ".substr($dt_arr[2], 0, -1).", ".substr($dt_arr[2], -1).",0,0, $dt_arr[1], '', 0);";
+      $r = $db->query($q);
+    }
+  }
+  /**
+    @param $studyName String
     @return array of missing sound files
   */
   public static function listMissingSounds($studyName){
