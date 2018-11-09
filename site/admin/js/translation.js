@@ -49,7 +49,10 @@ $(document).ready(function(){
     });
     //The Save All button:
     table.on('click', '.btn.saveAll', function(){
+      var s = table.page.len();
+      table.page.len( -1 ).draw();
       table.$('.btn.save.btn-warning').trigger('click');
+      table.page.len(s).draw();
     });
     //Editing descriptions:
     table.on('dblclick', 'td.description', function(){
