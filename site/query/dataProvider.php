@@ -428,7 +428,7 @@ class DataProvider {
     $db  = Config::getConnection();
     $dt  = $db->escape_string($d);
     $dt_arr = preg_split('/\|/', $dt);
-    $q   = "SELECT t.*, l.FilePathPart, l.ShortName, w.FullRfcModernLg01 AS Word, w.SoundFileWordIdentifierText FROM Languages_$dt_arr[0] AS l, Transcriptions_$dt_arr[0] AS t, Words_$dt_arr[0] AS w WHERE t.LanguageIx = $dt_arr[1] AND t.LanguageIx = l.LanguageIx AND w.IxElicitation = ".substr($dt_arr[2], 0, -1)." AND t.IxElicitation = w.IxElicitation ORDER BY t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
+    $q   = "SELECT DISTINCT t.*, l.FilePathPart, l.ShortName, w.FullRfcModernLg01 AS Word, w.SoundFileWordIdentifierText FROM Languages_$dt_arr[0] AS l, Transcriptions_$dt_arr[0] AS t, Words_$dt_arr[0] AS w WHERE t.LanguageIx = $dt_arr[1] AND t.LanguageIx = l.LanguageIx AND w.IxElicitation = ".substr($dt_arr[2], 0, -1)." AND t.IxMorphologicalInstance = ".substr($dt_arr[2], -1)." AND t.IxElicitation = w.IxElicitation AND w.IxMorphologicalInstance = t.IxMorphologicalInstance ORDER BY t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
     $set = static::fetchAll($q);
     static::$editTranscriptionMetaData = array();
     if(count($set) > 0){
