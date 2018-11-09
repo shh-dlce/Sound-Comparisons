@@ -507,9 +507,15 @@ if(!session_mayEdit($dbConnection))
       );
       $trTable = DataProvider::editTranscriptionTable($_GET['d']);
       $metaData = DataProvider::$editTranscriptionMetaData;
+      // try to add a dummpy transcription
       if(count($metaData) == 0 or count($trTable) == 0){
-        echo "&nbsp;&nbsp;&nbsp;no data for ".$_GET['d'];
-        die;
+        DataProvider::addTranscriptionFor($_GET['d']);
+        $trTable = DataProvider::editTranscriptionTable($_GET['d']);
+        $metaData = DataProvider::$editTranscriptionMetaData;
+        if(count($metaData) == 0 or count($trTable) == 0){
+          echo "&nbsp;&nbsp;&nbsp;no data for ".$_GET['d'];
+          die;
+        }
       }
       $not_edit_foreach_fields = ['SoundFileWordIdentifierText', 'StudyIx', 'FamilyIx', 'RecordingMissing', 'Phonetic', 'IxElicitation', 'LanguageIx', 'transcrid', 'Word', 'FilePathPart', 'ShortName'];
       echo "&nbsp;&nbsp;&nbsp;<b>Study:</b> " .$metaData['Study']."<br/>";
@@ -548,7 +554,7 @@ if(!session_mayEdit($dbConnection))
       ?>
       </table>
       <br/>
-      <input type="button" value="Save all" class="btn-small btn-primary saveAll" style="margin-top:-8px">
+      <a id="saveAllBtn" class="btn btn-small btn-primary saveAll" style="margin-top:-8px">Save all</a>
       <script type="application/javascript">
         function selectText(id){
             var sel, range;
@@ -645,7 +651,7 @@ if(!session_mayEdit($dbConnection))
           table.on('change', 'input.SoundProblem', function(){$(this).changeInRow();});
           table.on('change', 'input.ReconstructedOrHistQuestionable', function(){$(this).changeInRow();});
           table.on('change', 'input.ReconstructedOrHistQuestionableNote', function(){$(this).changeInRow();});
-          table.on('click', '.btn-small.saveAll', function(){
+          $("#saveAllBtn").on('click', function(){
             table.$('.btn.save.btn-warning').trigger('click');
           });
           table.on('click', '.btn.save', function(){

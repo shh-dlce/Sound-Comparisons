@@ -5,13 +5,16 @@ $(document).ready(function(){
   $('table.display').each(function(){
     var table = $(this).DataTable({
       ordering: false
-    , bPaginate: false
+    , paging: true
     , columns: [
         {searchable: false}
       , {searchable: true}
       , {searchable: true}
       ]
-    , iDisplayLength: 1000000
+    , lengthMenu: [
+        [ 10, 50, 100, 1000, -1 ],
+        [ '10 rows', '50 rows', '100 rows', '1000 rows', 'Show all' ]
+      ]
     });
     tables.push(table);
     //The copy-over buttons:
@@ -46,7 +49,10 @@ $(document).ready(function(){
     });
     //The Save All button:
     table.on('click', '.btn.saveAll', function(){
+      var s = table.page.len();
+      table.page.len( -1 ).draw();
       table.$('.btn.save.btn-warning').trigger('click');
+      table.page.len(s).draw();
     });
     //Editing descriptions:
     table.on('dblclick', 'td.description', function(){

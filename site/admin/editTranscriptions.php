@@ -497,7 +497,7 @@ if(!session_mayEdit($dbConnection))
       <table class="display table table-bordered" style="width:90%">
       <?php
       $head = '<tr>'
-                .'<th><input type="button" value="Save all" class="btn-small btn-primary saveAll" style="margin-top:-8px">&nbsp;<a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;Phonetic <small>as regex</small></th>'
+                .'<th><a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;Phonetic <small>as regex</small></th>'
                 // .'<th>SplAlt1</th>'
                 .'<th>Word</th>'
                 .'<th>Short Name</th>'
@@ -516,6 +516,7 @@ if(!session_mayEdit($dbConnection))
       }
       ?>
       </table>
+      <div class='pull-right'><input id= "saveAllBtn" type="button" value="Save all" class="btn btn-primary saveAll" style="margin-top:10px"></div>
       <script type="application/javascript">
         function selectText(id){
             var sel, range;
@@ -583,7 +584,14 @@ if(!session_mayEdit($dbConnection))
           });
           var buttons = $('.modal-footer > button').click(function(e){
                   footerButton($(e.target), buttons)});
-          var table = $('table.display').DataTable({paging: true, ordering: false});
+          var table = $('table.display').DataTable({
+            paging: true,
+            ordering: false,
+            lengthMenu: [
+                        [ 10, 50, 100, 1000, -1 ],
+                        [ '10 rows', '50 rows', '100 rows', '1000 rows', 'Show all' ]
+                    ]
+          });
           $('table.display thead th').each( function () {
             var title = $(this).text();
             $(this).html($(this).html()+'<br /><input type="text" placeholder="Search..." />' );
@@ -598,8 +606,11 @@ if(!session_mayEdit($dbConnection))
           } );
           table.on('change', 'input.Phonetic', function(){$(this).changeInRow();});
           table.on('change', 'input.SpellingAltv1', function(){$(this).changeInRow();});
-          table.on('click', '.btn-small.saveAll', function(){
+          $("#saveAllBtn").on('click', function(){
+            var s = table.page.len();
+            table.page.len( -1 ).draw();
             table.$('.btn.save.btn-warning').trigger('click');
+            table.page.len(s).draw();
           });
           table.on('click', '.btn.save', function(){
             var btn = $(this);
