@@ -583,7 +583,14 @@ if(!session_mayEdit($dbConnection))
           });
           var buttons = $('.modal-footer > button').click(function(e){
                   footerButton($(e.target), buttons)});
-          var table = $('table.display').DataTable({paging: true, ordering: false});
+          var table = $('table.display').DataTable({
+            paging: true,
+            ordering: false,
+            lengthMenu: [
+                        [ 10, 50, 100, 1000, -1 ],
+                        [ '10 rows', '50 rows', '100 rows', '1000 rows', 'Show all' ]
+                    ]
+          });
           $('table.display thead th').each( function () {
             var title = $(this).text();
             $(this).html($(this).html()+'<br /><input type="text" placeholder="Search..." />' );
