@@ -50,7 +50,7 @@ function buildTSV($filename, $headline, $rows){
   ob_start();
   $df = fopen('php://output', 'w');
   //UTF-8 BOM https://en.wikipedia.org/wiki/Byte_order_mark - should help excel a bit.
-  fputs($df, chr(239).chr(187).chr(191));
+  // fputs($df, chr(239).chr(187).chr(191));
   fwrite($df, join("\t", $headline)."\n");
   foreach($rows as $row){
     fwrite($df, join("\t", $row)."\n");
