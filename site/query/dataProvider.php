@@ -181,6 +181,10 @@ class DataProvider {
     foreach(static::fetchAll('SELECT DISTINCT GlottoCode AS code, study, group_concat(FilePathPart) AS paths FROM Languages WHERE trim(GlottoCode) <> "" AND study <> "Europe" GROUP BY GlottoCode') as $s){
       $global['glottoCodeMap'][$s['code']] = array('study' => $s['study'], 'paths' => $s['paths']);
     }
+    //Adding filePathPartMap:
+    foreach(static::fetchAll('SELECT FilePathPart AS FPP, study FROM Languages WHERE study <> "Europe"') as $s){
+      $global['filePathPartMap'][$s['FPP']] = array('study' => $s['study']);
+    }
     //Adding shortLinks:
     foreach(static::fetchAll('SELECT Name, Target FROM Page_ShortLinks') as $s){
       $global['shortLinks'][$s['Name']] = $s['Target'];
