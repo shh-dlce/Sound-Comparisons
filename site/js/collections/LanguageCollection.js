@@ -67,6 +67,13 @@ define(['underscore','collections/Choice', 'models/Language', 'collections/Regio
       return App.dataStorage.attributes.global.global.glottoCodeMap[glotto] || null;
     }
     /**
+      @param FilePathPart String
+      @return Study String || null
+    */
+  , getLanguageByFilePathPart: function(fpp){
+      return App.dataStorage.attributes.global.global.filePathPartMap[fpp] || null;
+    }
+    /**
       The update method is connected by the App,
       to listen on change:study of the window.App.dataStorage.
     */

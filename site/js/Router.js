@@ -163,6 +163,21 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
             }
             return;//Stop detection for current part
           }
+          //Detection for filepathparts:
+          langs = App.languageCollection.getLanguageByFilePathPart(part);
+          if(langs !== null){
+            toChange.study = langs.study;
+            toChange.languages = part;
+            toChange.pageView = 'language';
+            if(toChange.siteLanguage){
+              App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/language/' + part,
+                { trigger: true, replace: true });
+            }else{
+              App.router.navigate('#/en/' + langs.study + '/language/' + part,
+                { trigger: true, replace: true });
+            }
+            return;//Stop detection for current part
+          }
           //FIXME what about detection of language/word names?
           //Detection of pageViewKeys:
           var pv = App.pageState.validatePageViewKey(part);
