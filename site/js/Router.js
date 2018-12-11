@@ -126,12 +126,12 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
                   { trigger: true, replace: true });
               }
             }else{
-              toChange.pageView = 'wordsXlanguages';
+              toChange.pageView = 'language';
               if(toChange.siteLanguage){
-                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/wordsXlanguages/Wds_All/' + langs.paths,
+                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/language/Wds_All/' + langs.paths,
                   { trigger: true, replace: true });
               }else{
-                App.router.navigate('#/en/' + langs.study + '/wordsXlanguages/Wds_All/' + langs.paths,
+                App.router.navigate('#/en/' + langs.study + '/language/Wds_All/' + langs.paths,
                   { trigger: true, replace: true });
               }
             }
@@ -152,12 +152,12 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
                   { trigger: true, replace: true });
               }
             }else{
-              toChange.pageView = 'wordsXlanguages';
+              toChange.pageView = 'language';
               if(toChange.siteLanguage){
-                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/wordsXlanguages/Wds_All/' + langs.paths,
+                App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/language/Wds_All/' + langs.paths,
                   { trigger: true, replace: true });
               }else{
-                App.router.navigate('#/en/' + langs.study + '/wordsXlanguages/Wds_All/' + langs.paths,
+                App.router.navigate('#/en/' + langs.study + '/language/Wds_All/' + langs.paths,
                   { trigger: true, replace: true });
               }
             }
