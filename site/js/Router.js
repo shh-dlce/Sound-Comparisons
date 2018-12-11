@@ -116,7 +116,7 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
           if(langs !== null){
             toChange.study = langs.study;
             toChange.languages = langs.paths;
-            if((langs.paths.match(/,/g)||[]).length > 4){
+            if((langs.paths.match(/,/g)||[]).length > 1){
               toChange.pageView = 'languagesXwords';
               if(toChange.siteLanguage){
                 App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/languagesXwords/' + langs.paths + '/Wds_Sln',
@@ -142,7 +142,7 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
           if(langs !== null){
             toChange.study = langs.study;
             toChange.languages = langs.paths;
-            if((langs.paths.match(/,/g)||[]).length > 4){
+            if((langs.paths.match(/,/g)||[]).length > 1){
               toChange.pageView = 'languagesXwords';
               if(toChange.siteLanguage){
                 App.router.navigate('#/' + toChange.siteLanguage + '/' + langs.study + '/languagesXwords/Wds_Sln/' + langs.paths,
