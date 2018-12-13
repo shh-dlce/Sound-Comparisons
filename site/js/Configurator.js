@@ -118,6 +118,12 @@ define(['Sanitizer',
       if('wordByWord' in config){
         App.pageState.set({wordByWord: config.wordByWord === 'true'});
       }
+      if('pageView' in config){
+        var pv = config.pageView, ps = App.pageState;
+        if(!ps.isPageView(pv)){//Only set if it's not the current one.
+          ps.setPageView(pv);
+        }
+      }
       if('language' in config){//Choice
         App.languageCollection.setChoice(config.language);
       }
@@ -128,7 +134,7 @@ define(['Sanitizer',
           config.languages = App.languageCollection.filterKeyOrId(langs);
         }
         //languages are expected to be of [Language]
-        App.languageCollection.setSelected(config.languages);
+        App.languageCollection.setSelected(config.languages, config.pageView);
       }
       if('word' in config){//Choice
         App.wordCollection.setChoice(config.word);
@@ -140,13 +146,7 @@ define(['Sanitizer',
           config.words = App.wordCollection.filterKeyOrId(wds);
         }
         //words are expected to be of [Word]
-        App.wordCollection.setSelected(config.words);
-      }
-      if('pageView' in config){
-        var pv = config.pageView, ps = App.pageState;
-        if(!ps.isPageView(pv)){//Only set if it's not the current one.
-          ps.setPageView(pv);
-        }
+        App.wordCollection.setSelected(config.words, config.pageView);
       }
       //Promises solved automatically:
       def.resolve();
