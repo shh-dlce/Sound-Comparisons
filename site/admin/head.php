@@ -13,17 +13,6 @@
   <link rel="Stylesheet" type="text/css" href="../css/extern/bootstrap.css" media="screen" />
   <link rel="Stylesheet" type="text/css" href="css/style.css" media="screen" />
   <link rel="Stylesheet" type="text/css" href="css/extern/jquery.dataTables.css" media="screen" />
-  <style>
-    th.rotate90 {
-      height: 120px;
-      white-space: nowrap;
-    }
-    th.rotate90 > div {
-      transform:
-        rotate(270deg);
-      width: 0px;
-    }
-  </style>
   <script type='application/javascript' src='../js/bower_components/jquery/dist/jquery.min.js'></script>
   <script type='application/javascript' src='../js/extern/bootstrap.js'></script>
   <script type='application/javascript' src='../js/bower_components/underscore/underscore-min.js'></script>
