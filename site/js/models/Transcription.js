@@ -217,31 +217,43 @@ define(['underscore','backbone'], function(_, Backbone){
       return alt;
     }
     /**
-      Returns the alternative Spelling of the word, which belongs to the Transcription.
-      If an altSpelling can't be found, but the Transcriptions Language is a RfcLanguage,
-      the ModernName of the Word is returned.
-      If the Language is not a RfcLanguage, but has one,
-      getAltSpelling for the Transcription of that RfcLanguage and the same Word is returned.
-      If all these approaches fail, null is returned.
+      Returns the alternative Spelling of the word.
     */
   , getAltSpelling: function(){
-      var language = this.get('language'), word = this.get('word')
-        , alts = this.getSpellingAltv();
+      var language = this.get('language'), alts = this.getSpellingAltv();
       if(alts.length > 0){
         var proto  = language.isProto() ? '*' : ''
-          , altSp  = proto + alts[0]
-          , wTrans = word.getNameFor(App.pageState.getSpLang())
-          , fail   = _.isArray(wTrans) ? _.any(wTrans, function(w){return w === altSp;}) : (wTrans === altSp);
-        if(!fail) return altSp;
-      }
-      if(language.isRfcLanguage()) return word.getModernName();
-      var rfc = language.getRfcLanguage();
-      if(rfc){
-        var t = App.transcriptionMap.getTranscription(rfc, word);
-        return t.getAltSpelling();
+          , altSp  = proto + alts[0];
+        return altSp;
       }
       return null;
     }
+  //   /**
+  //     Returns the alternative Spelling of the word, which belongs to the Transcription.
+  //     If an altSpelling can't be found, but the Transcriptions Language is a RfcLanguage,
+  //     the ModernName of the Word is returned.
+  //     If the Language is not a RfcLanguage, but has one,
+  //     getAltSpelling for the Transcription of that RfcLanguage and the same Word is returned.
+  //     If all these approaches fail, null is returned.
+  //   */
+  // , getAltSpelling: function(){
+  //     var language = this.get('language'), word = this.get('word')
+  //       , alts = this.getSpellingAltv();
+  //     if(alts.length > 0){
+  //       var proto  = language.isProto() ? '*' : ''
+  //         , altSp  = proto + alts[0]
+  //         , wTrans = word.getNameFor(App.pageState.getSpLang())
+  //         , fail   = _.isArray(wTrans) ? _.any(wTrans, function(w){return w === altSp;}) : (wTrans === altSp);
+  //       if(!fail) return altSp;
+  //     }
+  //     if(language.isRfcLanguage()) return word.getModernName();
+  //     var rfc = language.getRfcLanguage();
+  //     if(rfc){
+  //       var t = App.transcriptionMap.getTranscription(rfc, word);
+  //       return t.getAltSpelling();
+  //     }
+  //     return null;
+  //   }
     /**
      returns cognate state
      1 := is not cognate; 0 := is cognate; -1 := undefined

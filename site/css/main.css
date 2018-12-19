@@ -78,8 +78,9 @@ i, .icon, .favicon, input[type="radio"] {
   vertical-align: sub;
   display: inline-block;
   font-variant: small-caps;
+  margin-left: 0.25em;
 }
-.subscript + .superscript {margin-left: -0.5em;}
+.subscript + .superscript {margin-left: -0.4em;}
 .inline {display: inline-block; margin: 0.5em;}
 /*Style in topMenu:*/
 #topMenu {
@@ -458,6 +459,7 @@ div.playing {color: #F00;} /*Phonetics where the sound is currently playing are 
   display:      inline-block;
   font-variant: small-caps;
   margin-left:  0.25em;
+  margin-top:  -5px !important;
 }
 .superscript {
   vertical-align: top;
