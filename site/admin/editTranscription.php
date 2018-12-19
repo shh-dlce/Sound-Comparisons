@@ -505,6 +505,27 @@ if(!session_mayEdit($dbConnection))
         'ReconstructedOrHistQuestionable' => 'Quest',
         'ReconstructedOrHistQuestionableNote' => 'QuestNote'
       );
+      $checkboxes = [
+        'NotCognateWithMainWordInThisFamily',
+        'CommonRootMorphemeStructDifferent',
+        'DifferentMeaningToUsualForCognate',
+        'RootIsLoanWordFromKnownDonor',
+        'RootSharedInAnotherFamily',
+        'OddPhonology',
+        'SoundProblem',
+        'ReconstructedOrHistQuestionable'
+      ];
+      $textFields = [
+        'SpellingAltv1',
+        'SpellingAltv2',
+        'ActualMeaningInThisLanguage',
+        'OtherLexemeInLanguageForMeaning',
+        'IsoCodeKnownDonor',
+        'DifferentMorphemeStructureNote',
+        'OddPhonologyNote',
+        'UsageNote',
+        'ReconstructedOrHistQuestionableNote'
+      ];
       $trTable = DataProvider::editTranscriptionTable($_GET['d']);
       $metaData = DataProvider::$editTranscriptionMetaData;
       // try to add a dummpy transcription
@@ -524,14 +545,14 @@ if(!session_mayEdit($dbConnection))
       echo "&nbsp;&nbsp;&nbsp;<b>Word:</b> ".$metaData['Word']." (".$metaData['IxElicitation'].")<br/><br/><br/>";
     ?>
     <div style="margin:10px;">
-      <table class="display table table-bordered" style="width:95%">
+      <table class="display table table-bordered" style="width:100%">
       <?php
       $head = '<tr><th>'
         .'<a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;<span style="margin-right:100px">Phonetic</span></th>';
       foreach($trTable as $t){
         foreach($t as $k => $v){
           if(!in_array($k, $not_edit_foreach_fields)){
-            $head = $head."<th title='$k'>$th_map[$k]</th>";
+            $head = $head."<th class='rotate90' title='$k'><div><span>$th_map[$k]</span></div></th>";
           }
         }
         break;
@@ -546,7 +567,19 @@ if(!session_mayEdit($dbConnection))
           ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:120px;font-family:Charis SIL;'></td>";
         foreach($t as $k => $v){
           if(!in_array($k, $not_edit_foreach_fields)){
-            echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:50px;'></td>";
+            if(in_array($k, $checkboxes)){
+              if($v > 0){
+                echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='checkbox' checked></td>";
+              }else{
+                echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='checkbox'></td>";
+              }
+            }else{
+              if(in_array($k, $textFields)){
+                echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:50px;'></td>";
+              }else{
+                echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:10px;'></td>";
+              }
+            }
           }
         }
         echo "</tr>";
@@ -668,7 +701,11 @@ if(!session_mayEdit($dbConnection))
             };
             var fields = {};
             tr.find('td').find('input').each(function() {
-              fields[$(this).data('field')] = this.value;
+              if ($(this).is(':checkbox')){
+                fields[$(this).data('field')] = ($(this).is(":checked") ? 1 : 0);
+              }else{
+                fields[$(this).data('field')] = this.value;
+              }
             });
             q['Fields'] = fields;
             $.get('query/updateDB.php', q, function(ret){
