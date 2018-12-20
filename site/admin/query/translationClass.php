@@ -362,26 +362,35 @@
       @return array LanguageIx => ShortName
     */
     public static function getRfcLanguages(){
-      $dbConnection = Config::getConnection();
-      $set = $dbConnection->query('SELECT Name FROM Studies');
-      $studies = array();
-      while($r = $set->fetch_row()){
-        array_push($studies, $r[0]);
-      }
       $ret = array();
-      foreach($studies as $study){
-        $q = "SELECT ShortName, LanguageIx FROM Languages_$study "
-           . "WHERE LanguageIx = ANY ("
-           . "SELECT DISTINCT RfcLanguage FROM Languages_$study "
-           . "WHERE RfcLanguage IS NOT NULL)";
-        $set = $dbConnection->query($q);
-        if($set === false){
-          //May fail if a studies entry exists but no Lanugage_$study table…
-          Config::error("Problem with query: $q", false, false);
-        }else while($r = $set->fetch_row()){
-          $ret[$r[1]] = $r[0];
-        }
+      $dbConnection = Config::getConnection();
+      $q = "SELECT DISTINCT ShortName, LanguageIx FROM Languages WHERE IsSpellingRfcLang = 1 ORDER BY LanguageIx";
+      $set = $dbConnection->query($q);
+      if($set === false){
+        //May fail if a studies entry exists but no Lanugage_$study table…
+        Config::error("Problem with query: $q", false, false);
+      }else while($r = $set->fetch_row()){
+        $ret[$r[1]] = $r[0];
       }
+      // $set = $dbConnection->query('SELECT Name FROM Studies');
+      // $studies = array();
+      // while($r = $set->fetch_row()){
+      //   array_push($studies, $r[0]);
+      // }
+      // $ret = array();
+      // foreach($studies as $study){
+      //   $q = "SELECT ShortName, LanguageIx FROM Languages_$study "
+      //      . "WHERE LanguageIx = ANY ("
+      //      . "SELECT DISTINCT RfcLanguage FROM Languages_$study "
+      //      . "WHERE RfcLanguage IS NOT NULL)";
+      //   $set = $dbConnection->query($q);
+      //   if($set === false){
+      //     //May fail if a studies entry exists but no Lanugage_$study table…
+      //     Config::error("Problem with query: $q", false, false);
+      //   }else while($r = $set->fetch_row()){
+      //     $ret[$r[1]] = $r[0];
+      //   }
+      // }
       return $ret;
     }
     /**
