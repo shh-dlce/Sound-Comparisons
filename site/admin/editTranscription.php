@@ -538,13 +538,13 @@ if(!session_mayEdit($dbConnection))
           die;
         }
       }
-      $not_edit_foreach_fields = ['SoundFileWordIdentifierText', 'StudyIx', 'FamilyIx', 'RecordingMissing', 'Phonetic', 'IxElicitation', 'LanguageIx', 'transcrid', 'Word', 'FilePathPart', 'ShortName'];
+      $not_edit_foreach_fields = ['url', 'SoundFileWordIdentifierText', 'StudyIx', 'FamilyIx', 'RecordingMissing', 'Phonetic', 'IxElicitation', 'LanguageIx', 'transcrid', 'Word', 'FilePathPart', 'ShortName'];
       echo "&nbsp;&nbsp;&nbsp;<b>Study:</b> " .$metaData['Study']."<br/>";
       echo "&nbsp;&nbsp;&nbsp;<b>Short Name:</b> ".$metaData['ShortName']."<br/>";
       echo "&nbsp;&nbsp;&nbsp;<b>FilePathPart:</b> ".$metaData['FilePathPart'].$metaData['SoundFileWordIdentifierText']."<br/>";
       echo "&nbsp;&nbsp;&nbsp;<b>Word:</b> ".$metaData['Word']." (".$metaData['IxElicitation'].")<br/><br/><br/>";
     ?>
-    <div style="margin:10px;">
+    <div style="margin:2px;">
       <table class="display table table-bordered" style="width:100%">
       <?php
       $head = '<tr><th>'
@@ -559,12 +559,14 @@ if(!session_mayEdit($dbConnection))
       }
       $head = $head.'</tr>';
       echo "<thead>$head</thead>";
+      $cnt = 0;
       foreach($trTable as $t){
         echo "<tr data-transcrid='".$t['transcrid']."' data-study='".$metaData['Study']."'>";
-        echo "<td><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
+        echo "<td style='min-width:216px !important'><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
           ."<a class='btn btn-small duplicate' style='margin-top:-11px;padding:0px;'><i title='Duplicate' class='icon-plus-sign'></i></a>"
           ." <a class='btn btn-small btn-danger delete' style='margin-top:-11px;padding:0px'><i title='Delete' class='icon-remove-sign'></i></a>"
-          ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:120px;font-family:Charis SIL;'></td>";
+          ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:120px;font-family:Charis SIL;'>"
+          ." <audio id='player".$cnt."' src='".$t['url']."'></audio><a class='btn btn-small' onclick=\"document.getElementById('player".$cnt."').play()\" style='margin-top:-11px;padding:0px'>&nbsp;▶︎&nbsp;</a></td>";
         foreach($t as $k => $v){
           if(!in_array($k, $not_edit_foreach_fields)){
             if(in_array($k, $checkboxes)){
@@ -582,6 +584,7 @@ if(!session_mayEdit($dbConnection))
             }
           }
         }
+        $cnt = $cnt + 1;
         echo "</tr>";
       }
       ?>
