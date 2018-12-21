@@ -79,6 +79,19 @@ define(['require',
       return this.rfcLanguage;
     }
     /**
+      Returns the AssociatedPhoneticsLgForThisSpellingLg for the current Language.
+    */
+  , getAssociatedPhoneticLanguage: function(){
+      var aphlg = this.get('AssociatedPhoneticsLgForThisSpellingLg');
+      if(!aphlg) return null;
+      var rs = App.languageCollection.where({LanguageIx: aphlg});
+      if(rs.length>0){
+        return rs[0];
+      }else{
+        return null;
+      }
+    }
+    /**
       Returns a Collection of all Languages that have this language as their RfcLanguage.
     */
   , getRfcLanguages: function(){
@@ -88,6 +101,12 @@ define(['require',
         this._rfcLanguages = new LanguageCollection(ls);
       }
       return this._rfcLanguages;
+    }
+    /**
+      Returns whether current language is set to IsOrthographyHasNoTranscriptions
+    */
+  , isOrthographyHasNoTranscriptions: function(){
+      return (this.get('IsOrthographyHasNoTranscriptions') == '1');
     }
     /**
       Predicate to determine, if this language is the rfcLanguage of another language.
