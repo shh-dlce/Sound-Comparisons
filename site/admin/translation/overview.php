@@ -32,7 +32,7 @@
       $sel = array_key_exists($rfcLang, $rfcLangs) ? '' : ' selected="selected"';
       $opts = "<option class='default'$sel value='null'>none</option>";
       foreach($rfcLangs as $rfc => $sn){
-        $sel = ($rfc === $rfcLang) ? ' selected="selected"' : '';
+        $sel = ($rfc == $rfcLang) ? ' selected="selected"' : '';
         $opts .= "<option$sel value='$rfc'>$sn</option>";
       }
       return "<select>$opts</select>";
