@@ -106,10 +106,25 @@ define(['backbone','views/WordlistFilter'], function(Backbone, WordlistFilter){
       var spId = spLang ? spLang.getId() : -1, entries = [];
       App.languageCollection.getSpellingLanguages().each(function(l){
         if(l.getId() === spId) return;
-        entries.push({
-          link: 'data-href="'+App.router.linkConfig({SpLang: l, PhLang: l})+'"'
-        , name: l.getSpellingName()
-        });
+        if(l.isOrthographyHasNoTranscriptions()){
+          aphlg = l.getAssociatedPhoneticLanguage();
+          if(aphlg){
+            entries.push({
+              link: 'data-href="'+App.router.linkConfig({SpLang: l, PhLang: aphlg})+'"'
+            , name: l.getSpellingName()
+            });
+          }else{
+            entries.push({
+              link: 'data-href="'+App.router.linkConfig({SpLang: l, PhLang: App.languageCollection.getChoice()})+'"'
+            , name: l.getSpellingName()
+            });
+          }
+        }else{
+          entries.push({
+            link: 'data-href="'+App.router.linkConfig({SpLang: l, PhLang: l})+'"'
+          , name: l.getSpellingName()
+          });
+        }
       }, this);
       //Sort entries, and push them into options:
       entries = _.sortBy(entries, function(e){return e.name;}, this);
