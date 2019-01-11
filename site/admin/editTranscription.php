@@ -562,11 +562,19 @@ if(!session_mayEdit($dbConnection))
       $cnt = 0;
       foreach($trTable as $t){
         echo "<tr data-transcrid='".$t['transcrid']."' data-study='".$metaData['Study']."'>";
-        echo "<td style='min-width:216px !important'><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
-          ."<a class='btn btn-small duplicate' style='margin-top:-11px;padding:0px;'><i title='Duplicate' class='icon-plus-sign'></i></a>"
-          ." <a class='btn btn-small btn-danger delete' style='margin-top:-11px;padding:0px'><i title='Delete' class='icon-remove-sign'></i></a>"
-          ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:120px;font-family:Charis SIL;'>"
-          ." <audio id='player".$cnt."' src='".$t['url']."'></audio><a class='btn btn-small' onclick=\"document.getElementById('player".$cnt."').play()\" style='margin-top:-11px;padding:0px'>&nbsp;▶︎&nbsp;</a></td>";
+        if(array_key_exists('url', $t)){
+          echo "<td style='min-width:216px !important'><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
+            ."<a class='btn btn-small duplicate' style='margin-top:-11px;padding:0px;'><i title='Duplicate' class='icon-plus-sign'></i></a>"
+            ." <a class='btn btn-small btn-danger delete' style='margin-top:-11px;padding:0px'><i title='Delete' class='icon-remove-sign'></i></a>"
+            ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:120px;font-family:Charis SIL;'>"
+            ." <audio id='player".$cnt."' src='".$t['url']."'></audio><a class='btn btn-small' onclick=\"document.getElementById('player".$cnt."').play()\" style='margin-top:-11px;padding:0px'>&nbsp;▶︎&nbsp;</a></td>";
+        }else{
+          echo "<td style='min-width:216px !important'><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
+            ."<a class='btn btn-small duplicate' style='margin-top:-11px;padding:0px;'><i title='Duplicate' class='icon-plus-sign'></i></a>"
+            ." <a class='btn btn-small btn-danger delete' style='margin-top:-11px;padding:0px'><i title='Delete' class='icon-remove-sign'></i></a>"
+            ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:120px;font-family:Charis SIL;'>"
+            ." </td>";
+        }
         foreach($t as $k => $v){
           if(!in_array($k, $not_edit_foreach_fields)){
             if(in_array($k, $checkboxes)){
