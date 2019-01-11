@@ -434,6 +434,7 @@ class DataProvider {
     $dt_arr = preg_split('/\|/', $dt);
     $q   = "SELECT DISTINCT t.*, l.FilePathPart, l.ShortName, w.FullRfcModernLg01 AS Word, w.SoundFileWordIdentifierText, REGEXP_REPLACE(s.urls, '.*/(.*?)/(.*?)\\\\.(mp3).*', 'https://cdstar.shh.mpg.de/bitstreams/\\\\1/\\\\2.\\\\3') AS url FROM Languages_$dt_arr[0] AS l, Transcriptions_$dt_arr[0] AS t, Words_$dt_arr[0] AS w, soundfiles AS s WHERE t.LanguageIx = $dt_arr[1] AND t.LanguageIx = l.LanguageIx AND w.IxElicitation = ".substr($dt_arr[2], 0, -1)." AND t.IxMorphologicalInstance = ".substr($dt_arr[2], -1)." AND t.IxElicitation = w.IxElicitation AND w.IxMorphologicalInstance = t.IxMorphologicalInstance AND s.LanguageIx = l.LanguageIx AND s.AlternativeLexemIx = t.AlternativeLexemIx AND s.AlternativePhoneticRealisationIx = t.AlternativePhoneticRealisationIx AND s.IxElicitation = t.IxElicitation AND s.IxMorphologicalInstance = t.IxMorphologicalInstance ORDER BY t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
     $set = static::fetchAll($q);
+    $seen_transcrid = array();
     static::$editTranscriptionMetaData = array();
     if(count($set) > 0){
       foreach($set as $t){
@@ -446,22 +447,24 @@ class DataProvider {
           static::$editTranscriptionMetaData['SoundFileWordIdentifierText'] = $t['SoundFileWordIdentifierText'];
         }
         $t['transcrid'] = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+        array_push($seen_transcrid, $t['transcrid']);
         array_push(static::$editTranscriptionTable, $t);
       }
-    }else{
-      # no sound file?
-      $q   = "SELECT DISTINCT t.*, l.FilePathPart, l.ShortName, w.FullRfcModernLg01 AS Word, w.SoundFileWordIdentifierText FROM Languages_$dt_arr[0] AS l, Transcriptions_$dt_arr[0] AS t, Words_$dt_arr[0] AS w WHERE t.LanguageIx = $dt_arr[1] AND t.LanguageIx = l.LanguageIx AND w.IxElicitation = ".substr($dt_arr[2], 0, -1)." AND t.IxMorphologicalInstance = ".substr($dt_arr[2], -1)." AND t.IxElicitation = w.IxElicitation AND w.IxMorphologicalInstance = t.IxMorphologicalInstance ORDER BY t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
-      $set = static::fetchAll($q);
-      static::$editTranscriptionMetaData = array();
-      if(count($set) > 0){
-        foreach($set as $t){
-          if(count(static::$editTranscriptionMetaData) == 0){
-            static::$editTranscriptionMetaData['Study'] = $dt_arr[0];
-            static::$editTranscriptionMetaData['ShortName'] = $t['ShortName'];
-            static::$editTranscriptionMetaData['Word'] = $t['Word'];
-            static::$editTranscriptionMetaData['IxElicitation'] = $t['IxElicitation'];
-          }
-          $t['transcrid'] = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+    }
+    # add items with no sound file
+    $q   = "SELECT DISTINCT t.*, l.FilePathPart, l.ShortName, w.FullRfcModernLg01 AS Word, w.SoundFileWordIdentifierText FROM Languages_$dt_arr[0] AS l, Transcriptions_$dt_arr[0] AS t, Words_$dt_arr[0] AS w WHERE t.LanguageIx = $dt_arr[1] AND t.LanguageIx = l.LanguageIx AND w.IxElicitation = ".substr($dt_arr[2], 0, -1)." AND t.IxMorphologicalInstance = ".substr($dt_arr[2], -1)." AND t.IxElicitation = w.IxElicitation AND w.IxMorphologicalInstance = t.IxMorphologicalInstance ORDER BY t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
+    $set = static::fetchAll($q);
+    if(count($set) > 0){
+      foreach($set as $t){
+        if(count(static::$editTranscriptionMetaData) == 0){
+          static::$editTranscriptionMetaData['Study'] = $dt_arr[0];
+          static::$editTranscriptionMetaData['ShortName'] = $t['ShortName'];
+          static::$editTranscriptionMetaData['Word'] = $t['Word'];
+          static::$editTranscriptionMetaData['IxElicitation'] = $t['IxElicitation'];
+        }
+        $trsc = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+        if(!in_array($trsc, $seen_transcrid)){
+          $t['transcrid'] = $trsc;
           array_push(static::$editTranscriptionTable, $t);
         }
       }
