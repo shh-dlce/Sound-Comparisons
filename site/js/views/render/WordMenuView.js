@@ -252,6 +252,12 @@ define(['backbone','views/WordlistFilter'], function(Backbone, WordlistFilter){
         , trans: word.getNameFor(spLang)
         , ttip:  word.getLongName()
         };
+        if (spLang !== null){
+          var st = word.getNameFor(null);
+          if (st !== w.trans){
+            w['sitetrans'] = st;
+          }
+        }
         //Deciding if a word is selected:
         if(isMulti){
           w.selected = App.wordCollection.isSelected(word);
