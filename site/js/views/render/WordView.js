@@ -26,7 +26,9 @@ define(['views/render/SubView'], function(SubView){
       //Sanitize name:
       if(_.isArray(headline.name))
         headline.name = headline.name.join(', ');
-      
+      if(!_.isString(longName)){
+        longName = '';
+      }
       // temporary solution to process longName
       // in the docs: longName provides additional info _OR_ the complete long form
       //    - logically this doesn't work
@@ -34,13 +36,18 @@ define(['views/render/SubView'], function(SubView){
       //    - ignore if name == longForm
       //    - if longForm begins with '(' and ends with ')'append longForm to name
       //         otherwise set name = longForm
-      if(_.isString(longName)){
-        longName = longName.trim();
-        if(longName !== '') {
-          if(longName.charAt(0) == '(' && longName.charAt(longName.length-1) == ')') {
-            headline.name = headline.name + ' ' +longName;
-          } else {
-            headline.name = longName;
+      longName = longName.trim();
+      if (longName !== '') {
+        if (spLang !== null){
+          headline['stname'] = longName;
+        }else{
+          headline.name = longName;
+        }
+      }else{
+        if (spLang !== null){
+          var st = word.getNameFor(null);
+          if (st !== headline.name){
+            headline['stname'] = st;
           }
         }
       }

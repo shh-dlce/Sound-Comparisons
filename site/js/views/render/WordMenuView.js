@@ -254,8 +254,8 @@ define(['backbone','views/WordlistFilter'], function(Backbone, WordlistFilter){
         };
         if (spLang !== null){
           var st = word.getNameFor(null);
-          if (st !== w["trans"]){
-            w["sitetrans"] = st;
+          if (st !== w.trans){
+            w['sitetrans'] = st;
           }
         }
         //Deciding if a word is selected:
