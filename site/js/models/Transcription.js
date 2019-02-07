@@ -28,6 +28,18 @@ define(['underscore','backbone'], function(_, Backbone){
       return [d.language.getId(), d.word.getId()].join('');
     }
     /**
+    */
+  , getWCogID: function(){
+    var ids = this.get('WCogID');
+    if(ids){
+      if(!_.isArray(ids)){
+        return [ids];
+      }
+      return ids;
+    }
+    return [0];
+  }
+    /**
       Returns the SuperscriptInfo for a Transcription as an object.
       A helper for getPhonetics.
     */
@@ -119,6 +131,7 @@ define(['underscore','backbone'], function(_, Backbone){
       var phonetics = this.get('Phonetic') // [String]   || String
         , sources   = this.getSoundfiles() // [[String]]
         , superScr  = this.getSuperscriptInfo()
+        , wcogids   = this.getWCogID()
         , ps        = [];
       //Sanitizing phonetics:
       if(_.isEmpty(phonetics)){
@@ -135,24 +148,10 @@ define(['underscore','backbone'], function(_, Backbone){
       if(!_.isArray(phonetics)) phonetics = [phonetics];
       //WordByWord logic:
       var wordByWord = App.pageState.get('wordByWord');
-      /*
-        getLexIndex used in loop below.
-        Put here to not create it in a loop.
-      */
-      var getLexIndex = function(s){
-        if(_.isString(s)){
-          var r = s.match(/_lex(\d+)/)
-          if(r) return parseInt(r[1]);
-        }else{
-          console.log('Strange source: '+typeof(s));
-          console.log(s);
-        }
-        return 0;
-      };
-      //Iterating phonetics:
       for(var i = 0; i < phonetics.length; i++){
         var phonetic = phonetics[i]//String
           , source   = sources.shift() || []//[String]
+          , wcogid   = wcogids.shift()
           , language = this.get('language')
           , word     = this.get('word')
           , p = { // Data gathered for phonetic:
@@ -185,16 +184,11 @@ define(['underscore','backbone'], function(_, Backbone){
           }
         }
         //Subscript:
-        if(phonetics.length > 0){
-          if(source[0]){
-            var idx = getLexIndex(source[0]);
-            if(idx > 0){
-              p.subscript = {
-                ttip: App.translationStorage.translateStatic('tooltip_subscript_differentVariants')
-              , subscript: idx
-              };
-            }
-          }
+        if(wcogid != '0') {
+          p.subscript = {
+            ttip: App.translationStorage.translateStatic('tooltip_subscript_differentVariants')
+          , subscript: wcogid
+          };
         }
         //Done:
         ps.push(p);
