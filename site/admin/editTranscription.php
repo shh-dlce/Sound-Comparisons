@@ -503,7 +503,8 @@ if(!session_mayEdit($dbConnection))
         'UsageNote' => 'Note',
         'SoundProblem' => 'SndProblem',
         'ReconstructedOrHistQuestionable' => 'Quest',
-        'ReconstructedOrHistQuestionableNote' => 'QuestNote'
+        'ReconstructedOrHistQuestionableNote' => 'QuestNote',
+        'WCogID' => 'CogID'
       );
       $checkboxes = [
         'NotCognateWithMainWordInThisFamily',
@@ -524,7 +525,8 @@ if(!session_mayEdit($dbConnection))
         'DifferentMorphemeStructureNote',
         'OddPhonologyNote',
         'UsageNote',
-        'ReconstructedOrHistQuestionableNote'
+        'ReconstructedOrHistQuestionableNote',
+        'WCogID'
       ];
       $trTable = DataProvider::editTranscriptionTable($_GET['d']);
       $metaData = DataProvider::$editTranscriptionMetaData;
