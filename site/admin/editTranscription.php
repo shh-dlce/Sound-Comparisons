@@ -697,6 +697,7 @@ if(!session_mayEdit($dbConnection))
           table.on('change', 'input.SoundProblem', function(){$(this).changeInRow();});
           table.on('change', 'input.ReconstructedOrHistQuestionable', function(){$(this).changeInRow();});
           table.on('change', 'input.ReconstructedOrHistQuestionableNote', function(){$(this).changeInRow();});
+          table.on('change', 'input.WCogID', function(){$(this).changeInRow();});
           $("#saveAllBtn").on('click', function(){
             table.$('.btn.save.btn-warning').trigger('click');
           });
