@@ -217,16 +217,22 @@ define(['views/render/SubView',
             if (window.App.storage.ColoriseDataAs === 'cognate') {
               if (tr !== null) {
                 var cognState = tr.getCognateState();
-                // 1 := is not cognate; 0 := is cognate; -1 := undefined
+                // 0 := is cognate; -1 := undefined
                 switch(cognState) {
                   case -1:
                     o.color = '#FFFFFF';
                     break;
                   case 0:
-                    o.color = '#999999';
+                    o.color = '#CCFFFF';
                     break;
-                  case 1:
-                    o.color = '#CCCCCC';
+                  case 2:
+                    o.color = '#FFFACD';
+                    break;
+                  case 3:
+                    o.color = '#FFCC99';
+                    break;
+                  case 4:
+                    o.color = '#C59595';
                     break;
                   default:
                     o.color = '#FFFFFF';

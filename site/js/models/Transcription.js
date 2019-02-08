@@ -30,7 +30,8 @@ define(['underscore','backbone'], function(_, Backbone){
     /**
     */
   , getWCogID: function(){
-    var ids = this.get('WCogID');
+    //We need to clone the WCogID so that filtering and stuff can't do any harm.
+    var ids = _.clone(this.get('WCogID'));
     if(ids){
       if(!_.isArray(ids)){
         return [ids];
@@ -250,12 +251,11 @@ define(['underscore','backbone'], function(_, Backbone){
   //   }
     /**
      returns cognate state
-     1 := is not cognate; 0 := is cognate; -1 := undefined
+     0 := is cognate; -1 := undefined; others are other cognate sets
     */
   , getCognateState: function(){
       if(this.isDummy()) return -1;
-      var p = this.get('NotCognateWithMainWordInThisFamily');
-      return parseInt(p);
+      return parseInt(this.getWCogID()[0]);
     }
     /***/
   , isDummy: function(){
