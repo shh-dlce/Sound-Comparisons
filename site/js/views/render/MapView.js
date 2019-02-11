@@ -294,6 +294,7 @@ define(['views/render/SubView',
         study = siteLanguage;
         word = s;
         siteLanguage = App.translationStorage.getBrowserMatch();
+        languages = 'Lgs_Sln';
       }
       console.log('MapView.route('+siteLanguage+', '+study+', '+word+', '+languages+')');
       var t = this;
