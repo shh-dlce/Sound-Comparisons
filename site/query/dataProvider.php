@@ -403,7 +403,7 @@ class DataProvider {
 
     $db  = Config::getConnection();
     $n   = $db->escape_string($studyName);
-    $q   = "SELECT t.SpellingAltv1, t.IxElicitation, t.IxMorphologicalInstance, t.AlternativePhoneticRealisationIx, t.AlternativeLexemIx, t.LanguageIx, l.FilePathPart, l.ShortName, t.Phonetic, t.WCogID, w.FullRfcModernLg01 AS Word FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation ORDER BY t.IxElicitation, l.LanguageIx";
+    $q   = "SELECT t.SpellingAltv1, t.IxElicitation, t.IxMorphologicalInstance, t.AlternativePhoneticRealisationIx, t.AlternativeLexemIx, t.LanguageIx, l.FilePathPart, l.ShortName, t.Phonetic, t.WCogID, t.NotCognateWithMainWordInThisFamily, w.FullRfcModernLg01 AS Word FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation ORDER BY t.IxElicitation, l.LanguageIx";
     $set = static::fetchAll($q);
     if(count($set) > 0){
       foreach($set as $t){
@@ -412,6 +412,7 @@ class DataProvider {
         $data['LgIxFPP'] = $t['LanguageIx'].'<br/>'.$t['FilePathPart'];
         $data['Phonetic'] = $t['Phonetic'];
         $data['WCogID'] = $t['WCogID'];
+        $data['NotCog'] = $t['NotCognateWithMainWordInThisFamily'];
         $data['Word'] = $t['Word'];
         $data['SpellingAltv1'] = $t['SpellingAltv1'];
         $data['IxElicitation'] = $t['IxElicitation'];
