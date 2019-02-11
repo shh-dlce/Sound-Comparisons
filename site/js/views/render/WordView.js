@@ -180,7 +180,15 @@ define(['views/render/SubView'], function(SubView){
       var parse = App.router.parseString;
       study = parse(study);
       word = parse(word);
-      console.log('WordView.route('+study+', '+word+')');
+      // if word is missing and first parameter is a valid study
+      // then user asked for /:Study/word/:Word
+      if((!word || word.length == 0) && !_.contains(App.study.getAllIds(), study)){
+        var s = study;
+        study = siteLanguage;
+        word = s;
+        siteLanguage = App.translationStorage.getBrowserMatch();
+      }
+      console.log('WordView.route('+siteLanguage+', '+study+', '+word+')');
       var t = this;
       //Setting siteLanguage and study:
       this.loadBasic(siteLanguage, study).always(function(){
