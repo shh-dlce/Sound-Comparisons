@@ -498,6 +498,8 @@ if(!session_mayEdit($dbConnection))
       <?php
       $head = '<tr>'
                 .'<th><a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;Phonetic <small>as regex</small></th>'
+                .'<th>AltLex</th>'
+                .'<th>NotCog</th>'
                 .'<th>WCogID</th>'
                 .'<th>Word</th>'
                 .'<th>Short Name</th>'
@@ -508,6 +510,12 @@ if(!session_mayEdit($dbConnection))
       foreach($trTable as $t){
         echo "<tr data-transcrid='".$t['transcrid']."' data-study='".$_GET['study']."'>";
         echo "<td><a class='btn btn-small save' style='margin-top:-11px'><i title='Save' class='icon-hdd'></i></a><span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:150px;font-family:Charis SIL;'></td>";
+        echo "<td><span class='searchval hide'>".$t['AlternativeLexemIx']."</span><input data-field='AlternativeLexemIx' class='AlternativeLexemIx' type='text' value='".$t['AlternativeLexemIx']."' style='width:50px;'></td>";
+        if($t['NotCog'] > 0){
+          echo "<td><span class='searchval hide'>".$t['NotCog']."</span><input data-field='NotCognateWithMainWordInThisFamily' class='NotCog' type='checkbox' checked style='width:50px;'></td>";
+        }else{
+          echo "<td><span class='searchval hide'>".$t['NotCog']."</span><input data-field='NotCognateWithMainWordInThisFamily' class='NotCog' type='checkbox' style='width:50px;'></td>";
+        }
         echo "<td><span class='searchval hide'>".$t['WCogID']."</span><input data-field='WCogID' class='WCogID' type='text' value='".$t['WCogID']."' style='width:50px;'></td>";
         echo "<td>".$t['Word']."</td>";
         echo "<td>".$t['ShortName']."</td>";
@@ -587,6 +595,7 @@ if(!session_mayEdit($dbConnection))
           var table = $('table.display').DataTable({
             paging: true,
             ordering: false,
+            autoWidth: false,
             lengthMenu: [
                         [ 10, 50, 100, 1000, -1 ],
                         [ '10 rows', '50 rows', '100 rows', '1000 rows', 'Show all' ]
@@ -594,7 +603,7 @@ if(!session_mayEdit($dbConnection))
           });
           $('table.display thead th').each( function () {
             var title = $(this).text();
-            $(this).html($(this).html()+'<br /><input type="text" placeholder="Search..." />' );
+            $(this).html($(this).html()+'<br /><input type="text" placeholder="Search..." style="width:'+$(this).css('width')+'"/>' );
           } );
           table.columns().every( function () {
             var that = this;
@@ -606,6 +615,8 @@ if(!session_mayEdit($dbConnection))
           } );
           table.on('change', 'input.Phonetic', function(){$(this).changeInRow();});
           table.on('change', 'input.WCogID', function(){$(this).changeInRow();});
+          table.on('change', 'input.NotCog', function(){$(this).changeInRow();});
+          table.on('change', 'input.AlternativeLexemIx', function(){$(this).changeInRow();});
           $("#saveAllBtn").on('click', function(){
             var s = table.page.len();
             table.page.len( -1 ).draw();
@@ -625,7 +636,11 @@ if(!session_mayEdit($dbConnection))
             };
             var fields = {};
             tr.find('td').find('input').each(function() {
-              fields[$(this).data('field')] = this.value;
+              if ($(this).is(':checkbox')){
+                fields[$(this).data('field')] = ($(this).is(":checked") ? 1 : 0);
+              }else{
+                fields[$(this).data('field')] = this.value;
+              }
             });
             q['Fields'] = fields;
             $.get('query/updateDB.php', q, function(ret){
