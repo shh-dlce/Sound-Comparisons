@@ -22,6 +22,7 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
     , ':siteLanguage/:study/map/:word/':                   'mapView'
     , ':siteLanguage/:study/map/':                         'mapView'
     , ':siteLanguage/:study/map':                          'mapView'
+    , ':study/map/:word':                                  'mapView'
       //wordView:
     , ':siteLanguage/:study/word/:word': 'wordView'
     , ':siteLanguage/:study/word/':      'wordView'

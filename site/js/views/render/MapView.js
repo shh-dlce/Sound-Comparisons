@@ -287,7 +287,15 @@ define(['views/render/SubView',
       var parse = App.router.parseString;
       study = parse(study);
       word = parse(word);
-      console.log('MapView.route('+study+', '+word+', '+languages+')');
+      // if word is missing and first parameter is a valid study
+      // then user asked for /:Study/map/:Word
+      if((!word || word.length == 0) && !_.contains(App.study.getAllIds(), study)){
+        var s = study;
+        study = siteLanguage;
+        word = s;
+        siteLanguage = App.translationStorage.getBrowserMatch();
+      }
+      console.log('MapView.route('+siteLanguage+', '+study+', '+word+', '+languages+')');
       var t = this;
       //Setting siteLanguage and study:
       this.loadBasic(siteLanguage, study).always(function(){
