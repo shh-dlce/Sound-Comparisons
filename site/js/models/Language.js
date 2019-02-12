@@ -51,15 +51,18 @@ define(['require',
       For fear of duplicates, the getKey method has to look at App.languageCollection.shortNameCount,
       and use the superscript with the ShortName if a duplicate exists, instead of the ShortName alone.
     */
-  , getKeyFallback: function(){
-      var sn = this.get('ShortName');
-      if(App.languageCollection.shortNameCount(sn) > 1){
-        var lst = this.getLanguageStatusType();
-        if(lst){
-          return sn+' '+lst.getStatus();
+  , getKeyFallback: function(type){
+      if(type && type === 'old'){
+        var sn = this.get('ShortName');
+        if(App.languageCollection.shortNameCount(sn) > 1){
+          var lst = this.getLanguageStatusType();
+          if(lst){
+            return sn+' '+lst.getStatus();
+          }
         }
+        return sn;
       }
-      return sn;
+      return null;
     }
     /**
       Returns the RfcLanguage for the current Language.

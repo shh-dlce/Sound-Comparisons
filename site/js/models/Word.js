@@ -32,16 +32,19 @@ define(['underscore','backbone'], function(_, Backbone){
       by deleting the elicitation number and the proto word form. #339
     */
   , getKey: function(){
-      var re = new RegExp('_' + this.get('FileNameRfcProtoLg01') + '$','');
-      return this.get('SoundFileWordIdentifierText').replace(re, '').replace(/^_\d+_/,'');
+      return this.get('FileNameRfcModernLg01');
     }
     /**
-      Returns the Key for a Word via FullRfcModernLg01 as fallback to support old URL scheme.
+      Returns the Key for a Word via FileNameRfcModernLg02 as fallback.
+      type == 'old' => fallback to support old URL scheme
       In contrast to the Id, the key is human readable, and may have duplicates.
       I will potentially add the getKey method to many models that already have a getId.
     */
-  , getKeyFallback: function(){
-      return this.get('FullRfcModernLg01');
+  , getKeyFallback: function(type){
+      if(type && type === 'old'){
+          return this.get('FullRfcModernLg01');
+      }
+      return this.get('FileNameRfcModernLg02');
     }
     /**
       Helper method to produce the category necessary to fetch the dynamic translation.
