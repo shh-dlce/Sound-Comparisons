@@ -504,7 +504,8 @@ if(!session_mayEdit($dbConnection))
         'SoundProblem' => 'SndProblem',
         'ReconstructedOrHistQuestionable' => 'Quest',
         'ReconstructedOrHistQuestionableNote' => 'QuestNote',
-        'WCogID' => 'CogID'
+        'WCogID' => 'CogID',
+        'WCogIDFine' => 'CogIDFine'
       );
       $checkboxes = [
         'NotCognateWithMainWordInThisFamily',
@@ -526,7 +527,8 @@ if(!session_mayEdit($dbConnection))
         'OddPhonologyNote',
         'UsageNote',
         'ReconstructedOrHistQuestionableNote',
-        'WCogID'
+        'WCogID',
+        'WCogIDFine'
       ];
       $trTable = DataProvider::editTranscriptionTable($_GET['d']);
       $metaData = DataProvider::$editTranscriptionMetaData;
@@ -698,6 +700,7 @@ if(!session_mayEdit($dbConnection))
           table.on('change', 'input.ReconstructedOrHistQuestionable', function(){$(this).changeInRow();});
           table.on('change', 'input.ReconstructedOrHistQuestionableNote', function(){$(this).changeInRow();});
           table.on('change', 'input.WCogID', function(){$(this).changeInRow();});
+          table.on('change', 'input.WCogIDFine', function(){$(this).changeInRow();});
           $("#saveAllBtn").on('click', function(){
             table.$('.btn.save.btn-warning').trigger('click');
           });

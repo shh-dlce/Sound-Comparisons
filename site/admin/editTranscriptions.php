@@ -501,6 +501,7 @@ if(!session_mayEdit($dbConnection))
                 .'<th>AltLex</th>'
                 .'<th>NotCog</th>'
                 .'<th>WCogID</th>'
+                .'<th>WCogIDFine</th>'
                 .'<th>Word</th>'
                 .'<th>Short Name</th>'
                 .'<th>LanguageIx - FilePathPart</th>'
@@ -517,6 +518,7 @@ if(!session_mayEdit($dbConnection))
           echo "<td><span class='searchval hide'>".$t['NotCog']."</span><input data-field='NotCognateWithMainWordInThisFamily' class='NotCog' type='checkbox' style='width:50px;'></td>";
         }
         echo "<td><span class='searchval hide'>".$t['WCogID']."</span><input data-field='WCogID' class='WCogID' type='text' value='".$t['WCogID']."' style='width:50px;'></td>";
+        echo "<td><span class='searchval hide'>".$t['WCogIDFine']."</span><input data-field='WCogIDFine' class='WCogIDFine' type='text' value='".$t['WCogIDFine']."' style='width:50px;'></td>";
         echo "<td>".$t['Word']."</td>";
         echo "<td>".$t['ShortName']."</td>";
         echo "<td>".$t['LgIxFPP']."</td>";
@@ -615,6 +617,7 @@ if(!session_mayEdit($dbConnection))
           } );
           table.on('change', 'input.Phonetic', function(){$(this).changeInRow();});
           table.on('change', 'input.WCogID', function(){$(this).changeInRow();});
+          table.on('change', 'input.WCogIDFine', function(){$(this).changeInRow();});
           table.on('change', 'input.NotCog', function(){$(this).changeInRow();});
           table.on('change', 'input.AlternativeLexemIx', function(){$(this).changeInRow();});
           $("#saveAllBtn").on('click', function(){
