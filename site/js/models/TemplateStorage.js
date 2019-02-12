@@ -7,6 +7,7 @@ define(['require',
         'models/Loader',
         // Templates to be provided by TemplateStorage:
         'extern/text!templates/body.html',
+        'extern/text!templates/ConcepticonLink.html',
         'extern/text!templates/contributor.html',
         'extern/text!templates/contributors.html',
         'extern/text!templates/head.html',
@@ -63,7 +64,7 @@ define(['require',
                     'PhoneticsProxy', 'Projects', 'RegionList', 'SearchFilter',
                     'shortlinkerror', 'ShortLinkModal', 'SortBy', 'TopMenu',
                     'WordHeadline', 'WordList', 'WordMapsLink', 'WordMenu',
-                    'WordTable'];
+                    'WordTable', 'ConcepticonLink'];
       var ps = {};
       _.each(tNames, function(name){
         var content = require("extern/text!templates/"+name+".html");
