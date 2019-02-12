@@ -211,35 +211,38 @@ define(['views/render/SubView',
         }
         //proxyColor added for #364
         var proxyColor = function(o){
-          if(App.study.getId() === 'Malakula'){
-            o.color = '#CFFF7C';
-          } else {
-            if (window.App.storage.ColoriseDataAs === 'cognate') {
-              if (tr !== null) {
-                var cognState = tr.getCognateState();
-                // 0 := is cognate; -1 := undefined
-                switch(cognState) {
-                  case -1:
-                    o.color = '#FFFFFF';
-                    break;
-                  case 0:
-                    o.color = '#CCFFFF';
-                    break;
-                  case 2:
-                    o.color = '#FFFACD';
-                    break;
-                  case 3:
-                    o.color = '#FFCC99';
-                    break;
-                  case 4:
-                    o.color = '#C59595';
-                    break;
-                  default:
-                    o.color = '#FFFFFF';
-                  }
-              } else {
-                o.color = '#FFFFFF';
-              }
+          if (window.App.storage.ColoriseDataAs === 'cognate') {
+            // if(App.study.getId() === 'Malakula'){
+            //   o.color = '#CFFF7C';
+            //   return o;
+            // }
+            if (tr !== null) {
+              var cognState = tr.getCognateState();
+              // 0 := is cognate; -1 := undefined
+              switch(cognState) {
+                case -1:
+                  o.color = '#FFFFFF';
+                  break;
+                case 0:
+                  o.color = '#CCFFFF';
+                  break;
+                case 2:
+                  o.color = '#FFFACD';
+                  break;
+                case 3:
+                  o.color = '#FFCC99';
+                  break;
+                case 4:
+                  o.color = '#C59595';
+                  break;
+                case 5:
+                  o.color = '#FFFF00';
+                  break;
+                default:
+                  o.color = '#FFFFFF';
+                }
+            } else {
+              o.color = '#FFFFFF';
             }
           }
           return o;
