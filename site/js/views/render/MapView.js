@@ -236,7 +236,10 @@ define(['views/render/SubView',
                   o.color = '#C59595';
                   break;
                 case 5:
-                  o.color = '#FFFF00';
+                  o.color = '#E6C7DD';
+                  break;
+                case 6:
+                  o.color = '#FECECE';
                   break;
                 default:
                   o.color = '#FFFFFF';
