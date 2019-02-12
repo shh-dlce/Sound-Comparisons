@@ -14,7 +14,8 @@ define(['backbone'], function(Backbone){
       , '#FFFACD'
       , '#FFCC99'
       , '#C59595'
-      , '#C0C0C0'
+      , '#E6C7DD'
+      , '#FECECE'
       , '#FFFFFF'
       ]
     }
