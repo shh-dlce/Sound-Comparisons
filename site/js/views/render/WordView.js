@@ -58,6 +58,13 @@ define(['views/render/SubView'], function(SubView){
         , ttip: App.translationStorage.translateStatic('tooltip_words_link_mapview')
         };
       }
+      //ConcepticonLink:
+      if(word.get('StudyDefaultConcepticonID') !== '0'){
+        headline.concepticonLink = {
+          link: 'href="https://concepticon.clld.org/parameters/'+word.get('StudyDefaultConcepticonID')+'" target="_new"'
+        , ttip: App.translationStorage.translateStatic('tooltip_words_link_concepticon')
+        };
+      }
       //Neighbours:
       var withN = function(w){
         return {
