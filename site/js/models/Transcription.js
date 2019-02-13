@@ -143,7 +143,7 @@ define(['underscore','backbone'], function(_, Backbone){
         }else if(sources.length > 0 && sources[0].length > 0){
             phonetics.push('▶');
         }else{
-          phonetics.push('..');
+          phonetics.push('--');
         }
       }
       if(!_.isArray(phonetics)) phonetics = [phonetics];
@@ -171,9 +171,9 @@ define(['underscore','backbone'], function(_, Backbone){
             , wordByWord:  wordByWord
           };
         //Guarding for #351:
-        if(_.some(['--','..','...','…'], function(s){return p.phonetic === s;})){
-          continue;
-        }
+        // if(_.some(['--','..','...','…'], function(s){return p.phonetic === s;})){
+        //   continue;
+        // }
         //Not cognate:
         if(i < superScr.length){
           var s = superScr[i] || [];
