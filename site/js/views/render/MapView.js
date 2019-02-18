@@ -204,7 +204,7 @@ define(['views/render/SubView',
         //Creating psf entries:
         var psf = [];
         if(tr !== null){
-          psf = _.map(tr.getPhonetics(), function(p){
+          psf = _.map(tr.getPhonetics(true), function(p){
             return { phonetic:   p.phonetic
                    , soundfiles: $.parseJSON(p.srcs) };
           }, this);

@@ -127,7 +127,7 @@ define(['underscore','backbone'], function(_, Backbone){
       Returns the Phonetics for a Transcription as an object.
       Uses getSuperscriptInfo.
     */
-  , getPhonetics: function(){
+  , getPhonetics: function(hideNoTrans){
       //Note that both phonetics and sources will be sanitized for the first case.
       var phonetics = this.get('Phonetic') // [String]   || String
         , sources   = this.getSoundfiles() // [[String]]
@@ -171,9 +171,11 @@ define(['underscore','backbone'], function(_, Backbone){
             , wordByWord:  wordByWord
           };
         //Guarding for #351:
-        // if(_.some(['--','..','...','…'], function(s){return p.phonetic === s;})){
-        //   continue;
-        // }
+        if(hideNoTrans !== 'undefined' && hideNoTrans){
+          if(_.some(['--','..','...','…'], function(s){return p.phonetic === s;})){
+            continue;
+          }
+        }
         //Not cognate:
         if(i < superScr.length){
           var s = superScr[i] || [];
