@@ -99,6 +99,14 @@
           </label>
           {{/ColoriseDataAs}}
         </li>
+        <li>
+          {{soundPlayMode}}
+          {{#SoundPlayMode}}
+          <label title="{{title}}" class="radio">
+            <input type="radio" name="SoundPlayMode" value="{{val}}">{{display}}
+          </label>
+          {{/SoundPlayMode}}
+        </li>
       </ul>
     </li>
   </ul>
@@ -113,14 +121,6 @@
         <li><a onclick="App.translationStorage.setTranslationId({{tId}});setTimeout(function(){App.views.renderer.render();},100);">{{#flag}}<img class="flag" src="{{.}}">{{/flag}}{{name}}</a></li>
         {{/otherTranslations}}
       </ul>
-    </li>
-  </ul>
-  <ul id="topmenuSoundOptions" class="nav nav-tabs">
-    <li>
-      <img value="hover" class="btn btn-mini{{#soundOptionHover}} hide{{/soundOptionHover}}"
-      title="{{soundClickTitle}}" src="img/hover.png">
-      <img value="click" class="btn btn-mini{{^soundOptionHover}} hide{{/soundOptionHover}}"
-      title="{{soundHoverTitle}}" src="img/click.png">
     </li>
   </ul>
   <ul id="topmenuMisc" class="nav nav-tabs">
