@@ -126,6 +126,10 @@ define(['backbone'], function(Backbone){
       , soundHoverTitle:    'topmenu_soundoptions_hover'
       , soundPlayMode:      'topmenu_settings_playmode'
       , soundPlayModeClick: 'topmenu_settings_playmodeclick'
+      , licenceTooltip:     'topmenu_about_licencetooltip'
+      , licenceText:        'topmenu_about_licencetext'
+      , licenceTextHref:    'topmenu_about_licencetext_href'
+      , citeTooltip:        'topmenu_about_citetooltip'
       , soundPlayModeHover: 'topmenu_settings_playmodehover'
       , createShortLink:    'topmenu_createShortLink'
       , viewContributors:   'topmenu_about_whoarewe'
@@ -139,6 +143,10 @@ define(['backbone'], function(Backbone){
       this.model.SoundPlayMode[1].display = this.model.soundPlayModeClick;
       this.model.SoundPlayMode[0].title = this.model.soundHoverTitle;
       this.model.SoundPlayMode[1].title = this.model.soundClickTitle;
+
+      this.model.citationText = 'Heggarty';
+      this.model.citationBibtex = 'Bib';
+      this.model.citationRIS = 'RIS';
     }
     /**
       Generates the study part of the TopMenu.

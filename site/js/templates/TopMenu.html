@@ -32,21 +32,26 @@
     </li>
     {{/pageViews}}
   </ul>
+
   {{#isOnline}}
   <span id="topmenuDownloads" class="nav input-append btn-group">
     <img id="createShortLink" title="{{createShortLink}}" class="btn btn-mini icon" src="img/link.png">
-    <div class="btn btn-mini disabled">
-      <i class="icon-download-alt"></i>
+    <div class="btn-group">
+      <a class="btn btn-mini btn-dropdown" data-toggle="dropdown">
+        <i class="icon-download-alt"></i>
+      </a>
+      <ul class="dropdown-menu" style="min-width:0px !important; width:92px !important; padding:10px 10px !important">
+        <a href="{{csvLink}}" target="_blank" class="btn btn-mini" title="{{csvTitle}}">
+          <img src="img/DownloadTranscriptions.png" style="height: 18px;">
+        </a>
+        <a href="{{tsvLink}}" target="_blank" class="btn btn-mini" title="{{tsvTitle}}">
+          <img src="img/edictor-small.png" style="height: 18px;">
+        </a>
+        <a target="_blank" class="btn btn-mini soundFile" title="{{sndTitle}}">
+          <i class="icon-volume-up"></i>
+        </a>
+      </ul>
     </div>
-    <a href="{{csvLink}}" target="_blank" class="btn btn-mini" title="{{csvTitle}}">
-      <img src="img/DownloadTranscriptions.png" style="height: 18px;">
-    </a>
-    <a href="{{tsvLink}}" target="_blank" class="btn btn-mini" title="{{tsvTitle}}">
-      <img src="img/edictor-small.png" style="height: 18px;">
-    </a>
-    <a target="_blank" class="btn btn-mini soundFile" title="{{sndTitle}}">
-      <i class="icon-volume-up"></i>
-    </a>
     <a class="btn btn-mini btn-dropdown" data-toggle="dropdown" title="{{cogTitle}}">
       <i class="icon-cog"></i>
     </a>
@@ -69,6 +74,68 @@
     </ul>
   </span>
   {{/isOnline}}
+
+  <div class="btn-group" style="margin-right:8px;float: right;">
+    <a class="btnbtn-dropdown" data-toggle="modal" data-target="#copyrightModal" style="cursor: pointer">
+      <img title="{{licenceTooltip}}" src="img/copyright.png" style="height: 20px;margin-top:3px;">
+    </a>
+  </div>
+  <!-- copyrightModal -->
+  <div id="copyrightModal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{licenceTooltip}}</h4>
+        </div>
+        <div class="modal-body">
+          <center>
+            <a rel="license" target="_blank" href="{{licenceTextHref}}">
+              <img src="img/cc-by-nc-nd.png" style="height: 46px" />
+            </a>
+            <br />
+            <a rel="license"  target="_blank" href="{{licenceTextHref}}" style="margin-top: 15px">
+              <span>{{{licenceText}}}.</span>
+            </a>
+          </center>
+        </div>
+  </div>
+
+  <!-- <div class="btn-group" style="margin-right:5px;float: right;">
+    <a class="btnbtn-dropdown" data-toggle="modal" data-target="#citeModal" style="cursor: pointer">
+      <img title="{{citeTooltip}}" src="img/cite.png" style="height: 20px;margin-top:3px;">
+    </a>
+  </div>
+  <!-- citeModal -->
+  <div id="citeModal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{citeTooltip}}</h4>
+        </div>
+        <div class="modal-body">
+            <ul id="citeTabs" class="nav nav-tabs" style="float:none !important">
+              <li class="active"><a data-toggle="tab" href="#citeText">Text</a></li>
+              <li><a data-toggle="tab" href="#citeBibtex">BibTeX</a></li>
+              <li><a data-toggle="tab" href="#citeRIS">RIS</a></li>
+            </ul>
+            <div id="citeTabsContent" class="tab-content">
+              <div id="citeText" class="tab-pane fade in active">
+                <p style="padding:10px 10px; border-top: 1px solid #ccc">
+                  {{citationText}}
+                </p>
+              </div>
+              <div id="citeBibtex" class="tab-pane fade">
+                <p style="padding:10px 10px; border-top: 1px solid #ccc">
+                  {{citationBibtex}}
+                </p>
+              </div>
+              <div id="citeRIS" class="tab-pane fade">
+                <p style="padding:10px 10px; border-top: 1px solid #ccc">
+                  {{citationRIS}}
+                </p>
+              </div>
+            </div>
+        </div>
+  </div> -->
+
 </div>
 <div class="navbar-inner span2">
   <ul id="topmenuSettings" class="nav nav-tabs" style="margin-left:5px !important">
