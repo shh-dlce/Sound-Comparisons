@@ -18,6 +18,10 @@ define(['backbone'], function(Backbone){
           { val:'region',  display:'region' },
           { val:'cognate', display:'cognate'}
         ],
+        SoundPlayMode: [
+          { val:'hover', display:'hover', title:'' },
+          { val:'click', display:'click', title:'' }
+        ],
         isOnline: (window.location.protocol !== 'file:'),
         isOffline: (window.location.protocol === 'file:')
       };
@@ -66,6 +70,22 @@ define(['backbone'], function(Backbone){
           }
       }
       App.storage.ColoriseDataAs = coloriseDataAs;
+      // init SoundPlayMode from stored cookies if given
+      var namePlayMode = "SoundPlayMode=";
+      var ca = document.cookie.split(';');
+      var soundPlayMode = 'hover';
+      for(var i = 0; i <ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(namePlayMode) == 0) {
+              soundPlayMode = c.substring(namePlayMode.length, c.length);
+              break;
+          }
+      }
+      App.storage.SoundPlayMode = soundPlayMode;
+      App.soundPlayOption.set({playMode: soundPlayMode});
     }
     /**
       Function to call non /^update.+/ methods that are necessary for the model, and to setup their callbacks.
@@ -104,6 +124,13 @@ define(['backbone'], function(Backbone){
       , coloriseDataAsCognate:    'topmenu_settings_coloriseDataAsCognate'
       , soundClickTitle:    'topmenu_soundoptions_tooltip'
       , soundHoverTitle:    'topmenu_soundoptions_hover'
+      , soundPlayMode:      'topmenu_settings_playmode'
+      , soundPlayModeClick: 'topmenu_settings_playmodeclick'
+      , licenceTooltip:     'topmenu_about_licencetooltip'
+      , licenceText:        'topmenu_about_licencetext'
+      , licenceTextHref:    'topmenu_about_licencetext_href'
+      , citeTooltip:        'topmenu_about_citetooltip'
+      , soundPlayModeHover: 'topmenu_settings_playmodehover'
       , createShortLink:    'topmenu_createShortLink'
       , viewContributors:   'topmenu_about_whoarewe'
       });
@@ -112,6 +139,14 @@ define(['backbone'], function(Backbone){
       this.model.ShowDataAs[1].display = this.model.showDataAsLabels;
       this.model.ColoriseDataAs[0].display = this.model.coloriseDataAsRegion;
       this.model.ColoriseDataAs[1].display = this.model.coloriseDataAsCognate;
+      this.model.SoundPlayMode[0].display = this.model.soundPlayModeHover;
+      this.model.SoundPlayMode[1].display = this.model.soundPlayModeClick;
+      this.model.SoundPlayMode[0].title = this.model.soundHoverTitle;
+      this.model.SoundPlayMode[1].title = this.model.soundClickTitle;
+
+      this.model.citationText = 'Heggarty';
+      this.model.citationBibtex = 'Bib';
+      this.model.citationRIS = 'RIS';
     }
     /**
       Generates the study part of the TopMenu.
@@ -331,12 +366,23 @@ define(['backbone'], function(Backbone){
           t.prop('checked', true);
         }
       });
-      //The SoundPlayOption:
-      var options = this.$('#topmenuSoundOptions img').click(function(){
-        App.soundPlayOption.set({playMode: this.attributes.value.value});
-        options.each(function(){
-          $(this).toggleClass('hide');
-        });
+      //The SoundPlayMode selection:
+      var radios = this.$('input[name="SoundPlayMode"]').click(function(){
+        var val = $(this).val();
+        if(val !== App.storage.SoundPlayMode){
+          App.soundPlayOption.set({playMode: val});
+          App.storage.SoundPlayMode = val;
+          var d = new Date();
+          d.setTime(d.getTime() + (365*24*60*60*1000));
+          var expires = "expires="+ d.toUTCString();
+          document.cookie = 'SoundPlayMode='+ val + ";" + expires + ";path=/";
+          App.views.renderer.render();
+        }
+      }).each(function(){
+        var t = $(this), val = t.val();
+        if(val === App.storage.SoundPlayMode){
+          t.prop('checked', true);
+        }
       });
       //The shortLink button:
       var shortLink = this.$('#createShortLink').click(function(){

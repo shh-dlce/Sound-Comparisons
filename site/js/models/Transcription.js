@@ -64,12 +64,50 @@ define(['underscore','backbone'], function(_, Backbone){
         }else if('HoverText' in x){
           x = [x.Abbreviation, x.HoverText];
         }else {x = [];}
-        ret.push(x);
+        var r = [];
+        r.push(x)
+        ret.push(r);
       }, isOne = function(key){
+        var fk = fields[key], r = [];
+        if(_.isArray(fk)){
+          for(var i = 0; i < fk.length; i++){
+            if(parseInt(fk[i]) === 1){
+              var x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(key) || {};
+              if('FullNameForHoverText' in x){
+                x = [x.Abbreviation, x.FullNameForHoverText];
+              }else if('HoverText' in x){
+                x = [x.Abbreviation, x.HoverText];
+              }else {x = [];}
+              r.push(x);
+            }else{
+              r.push([]);
+            }
+          }
+          ret.push(r)
+          return false;
+        }
         return parseInt(fields[key]) === 1;
       }, runOne = function(key){
         if(isOne(key)){addKey(key);}
       }, notEmpty = function(key){
+        var fk = fields[key], r = [];
+        if(_.isArray(fk)){
+          for(var i = 0; i < fk.length; i++){
+            if(!(_.isEmpty(fk[i]))){
+              var x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(key) || {};
+              if('FullNameForHoverText' in x){
+                x = [x.Abbreviation, x.FullNameForHoverText];
+              }else if('HoverText' in x){
+                x = [x.Abbreviation, x.HoverText];
+              }else {x = [];}
+              r.push(x);
+            }else{
+              r.push([]);
+            }
+          }
+          ret.push(r)
+          return false;
+        }
         return !(_.isEmpty(fields[key]));
       }, runEmpty = function(key){
         if(notEmpty(key)){addKey(key);}
@@ -176,14 +214,14 @@ define(['underscore','backbone'], function(_, Backbone){
             continue;
           }
         }
-        //Not cognate:
-        if(i < superScr.length){
-          var s = superScr[i] || [];
-          if(s.length >= 2){
+        //get first info of transcription due to getSuperscriptInfo()::fields
+        for(var j = 0; j < superScr.length; j++){
+          if(superScr[j][i].length >= 2 && _.isString(superScr[j][i][0])){
             p.notCognate = {
-              sInf: s[0]
-            , ttip: s[1]
+              sInf: superScr[j][i][0]
+            , ttip: superScr[j][i][1]
             };
+            break;
           }
         }
         //Subscript:
