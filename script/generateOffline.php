@@ -77,7 +77,7 @@ if(preg_match('/^$|map|all/', getenv('EXPORT_TASK'))){
   }
   // Add bounds for high resolution areas:
   $addBounds = array( // [{1 :: {lat :: Double, lon :: Double}, 2 :: {lat :: Double, lon :: Double}}]
-    //Bounds for Malakula:
+    //Bounds for Vanuatu:
     array(array('lat' => -15.844522, 'lon' => 167.106752),
           array('lat' => -16.612215, 'lon' => 167.869164))
   );
