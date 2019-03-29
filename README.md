@@ -9,7 +9,7 @@ Welcome to Sound Comparisons, a website structure for exploring diversity in pho
 We already cover hundreds of regional languages, dialects and accents across various language families:
 
 * in Europe:  the [Romance](https://soundcomparisons.com/#/en/Romance/map//Lgs_Sln), [Germanic](https://soundcomparisons.com/#/en/Germanic/map//Lgs_Sln), [Balto-Slavic](https://soundcomparisons.com/#/en/Slavic/map//Lgs_Sln) and [Celtic](https://soundcomparisons.com/#/en/Celtic/map//Lgs_Sln) families, and [accents of English](https://soundcomparisons.com/#/en/Englishes/map//Lgs_Sln)
-* in the Andes:  the [Quechua, Aymara, Uru](https://soundcomparisons.com/#/en/Andean/map//Lgs_Sln) and [Mapudungun](https://soundcomparisons.com/#/en/Mapudungun/map//Lgs_Sln) families
+* in the Andes:  the [Quechua, Aymara, Uru](https://soundcomparisons.com/#/en/Andes/map//Lgs_Sln) and [Mapudungun](https://soundcomparisons.com/#/en/Mapudungun/map//Lgs_Sln) families
 * in Vanuatu:  the Austronesian languages of [Vanuatu](https://soundcomparisons.com/#/en/Vanuatu/map//Lgs_Sln), the ‘Galapagos of language evolution’ 
 
 Just hover the mouse over any map or table view to hear instantaneously the different pronunciations of the same 100-250 words [‘cognate’] across that family, recorded in our fieldwork campaigns.
