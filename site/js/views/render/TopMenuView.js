@@ -129,6 +129,8 @@ define(['backbone'], function(Backbone){
       , licenceTooltip:     'topmenu_about_licencetooltip'
       , licenceText:        'topmenu_about_licencetext'
       , licenceTextHref:    'topmenu_about_licencetext_href'
+      , fundingText:        'topmenu_about_fundingtext'
+      , fundingTextHref:    'topmenu_about_fundingtext_href'
       , citeTooltip:        'topmenu_about_citetooltip'
       , soundPlayModeHover: 'topmenu_settings_playmodehover'
       , createShortLink:    'topmenu_createShortLink'
@@ -241,6 +243,8 @@ define(['backbone'], function(Backbone){
         , about: 'topmenu_about_research'}
       , { link:  'topmenu_about_contact_href'
         , about: 'topmenu_about_contact'}
+      , { link:  'topmenu_about_funding_href'
+        , about: 'topmenu_about_funding'}
       , { link:  'topmenu_about_imprint_href'
         , about: 'topmenu_about_imprint'}
       , { link:  'topmenu_about_privacypolicy_href'
