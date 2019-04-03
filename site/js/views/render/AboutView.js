@@ -20,6 +20,11 @@ define(['views/render/SubView', 'models/Loader', 'markdown-it'],
       @param page string
     */
   , route: function(page){
+      // add shortcut "funding"
+      if (page.toLowerCase() == "funding"){
+        var l = App.translationStorage.translateStatic('topmenu_about_funding_href');
+        page = l.split('/').pop()
+      }
       //Log what we're doing:
       console.log('AboutView.route('+page+')');
       //Set currentPage and do some stuff:
