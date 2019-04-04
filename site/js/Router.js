@@ -112,6 +112,10 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
               toChange.study = part;
               return;//Stop detection for current part
             }
+            if(part === 'Malakula'){
+              toChange.study = 'Vanuatu';
+              return;//Stop detection for current part
+            }
           }
           //Detection for iso code:
           var langs = App.languageCollection.getLanguageByIso(part);
