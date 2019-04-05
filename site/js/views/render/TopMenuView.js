@@ -103,6 +103,166 @@ define(['backbone'], function(Backbone){
       this.model = $.extend(true, this.model, m);
     }
     /**
+      Update the citation info based on current study.
+    */
+  , updateCitations: function(){
+      var d = new Date();
+      var curDate = d.toISOString().split("T").shift();
+      var currentStudy = App.study.getId();
+      this.model.citationStudy = currentStudy;
+      if (currentStudy == "Slavic") {
+        this.model.citationStudy += "-&-Baltic";
+      }
+      this.model.citationText = "";
+      this.model.citationBibtex = "";
+
+      if (currentStudy == "Englishes"){
+        this.model.citationText = '\
+Maguire, Warren & Paul Heggarty. 2019. Sound Comparisons: Englishes. Accents of English from around the World.\
+ (Available online at https://soundcomparisons.com/Englishes, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{maguire_sound_2019,\n\
+	title = {Sound {Comparisons}:  {Englishes}},\n\
+	url = {https://soundcomparisons.com/Englishes},\n\
+	journal = {Sound Comparisons:  Englishes.  Accents of English from around the World},\n\
+	author = {Maguire, Warren and Heggarty, Paul},\n\
+	year = {2019},\n\
+	keywords = {Dialects, English Language, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
+}';
+      }
+      else if (currentStudy == "Germanic"){
+        this.model.citationText = '\
+Paschen, Ludger, Paul Heggarty, Warren Maguire, Jan Michalsky, Darja Dërmaku-Appelganz & Matthew Boutilier. 2019. Sound Comparisons: Germanic.\
+ (Available online at https://soundcomparisons.com/Germanic, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{paschen_sound_2019,\n\
+	title = {Sound {Comparisons}:  {Germanic}},\n\
+	url = {https://soundcomparisons.com/Germanic},\n\
+	journal = {Sound Comparisons:  A New Resource for Exploring Phonetic Diversity across Language Families of the World},\n\
+	author = {Paschen, Ludger and Heggarty, Paul and Maguire, Warren and Michalsky, Jan and Dërmaku-Appelganz, Darja and Boutilier, Matthew},\n\
+	year = {2019},\n\
+	keywords = {Dialects, Germanic Languages, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
+}';
+      }
+      else if (currentStudy == "Celtic"){
+        this.model.citationText = '\
+Anderson, Cormac & Paul Heggarty. 2019. Sound Comparisons: Celtic.\
+ (Available online at https://soundcomparisons.com/Celtic, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{anderson_sound_2019,\n\
+	title = {Sound {Comparisons}:  {Celtic}},\n\
+	url = {https://soundcomparisons.com/Celtic},\n\
+	author = {Anderson, Cormac and Heggarty, Paul},\n\
+	year = {2019},\n\
+	keywords = {Celtic languages, Dialects, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
+}';
+      }
+      else if (currentStudy == "Andes"){
+        this.model.citationText = '\
+Heggarty, Paul & Lewis C. Lawyer. 2019. Sound Comparisons: Andes.\
+ (Available online at https://soundcomparisons.com/Andes, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{heggarty_sound_2019,\n\
+	title = {Sound {Comparisons}:  {Andes}},\n\
+	url = {https://soundcomparisons.com/Andes},\n\
+	journal = {Sound Comparisons:  A New Resource for Exploring Phonetic Diversity across Language Families of the World},\n\
+	author = {Heggarty, Paul and Lawyer, Lewis C.},\n\
+	year = {2019},\n\
+	keywords = {Aymara, Chipaya, Dialects, Indigenous languages of the Andes, Kichwa, Mapudungun, Phonetics, Quechua, Quichua, Recordings, Sound Comparisons, Transcriptions, Uro, Uru}\n\
+}';
+      }
+      else if (currentStudy == "Vanuatu"){
+        this.model.citationText = '\
+Shimelman, Aviva, Paul Heggarty, Giovanni Abete, Laura Wägerle, Darja Dërmaku-Appelganz & Mary Walworth. 2019. Sound Comparisons: Malakula.\
+ (Available online at https://soundcomparisons.com/Vanuatu, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{shimelman_sound_2019,\n\
+	title = {Sound {Comparisons}:  {Vanuatu}},\n\
+	url = {https://soundcomparisons.com/Vanuatu},\n\
+	author = {Shimelman, Aviva and Heggarty, Paul and Abete, Giovanni and Wägerle, Laura and Dërmaku-Appelganz, Darja and Walworth, Mary},\n\
+	year = {2019},\n\
+	keywords = {Dialects, Malakula, Oceanic languages, Phonetics, Recordings, Sound Comparisons, Transcriptions, Vanuatu}\n\
+}';
+      }
+      else if (currentStudy == "Romance"){
+        this.model.citationText = '\
+Heggarty, Paul & Giovanni Abete. 2019. Sound Comparisons: Romance.\
+ (Available online at https://soundcomparisons.com/Vanuatu, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{heggarty_sound_2019-1,\n\
+	title = {Sound {Comparisons}:  {Romance}},\n\
+	url = {htpps://soundcomparisons.com/Romance},\n\
+	author = {Heggarty, Paul and Abete, Giovanni},\n\
+	year = {2019},\n\
+	keywords = {Dialects, Phonetics, Recordings, Romance languages, Sound Comparisons, Transcriptions}\n\
+}';
+      }
+      else if (currentStudy == "Slavic"){
+        this.model.citationText = '\
+Jocz, Lechoslaw & Paul Heggarty. 2019. Sound Comparisons: Slavic & Baltic.\
+ (Available online at https://soundcomparisons.com/Slavic, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{jocz_sound_2019,\n\
+	title = {Sound {Comparisons}:  {Slavic} \\& {Baltic}},\n\
+	url = {https://soundcomparisons.com/Slavic},\n\
+	journal = {Sound Comparisons:  Slavic \\& Baltic},\n\
+	author = {Jocz, Lechosław and Heggarty, Paul},\n\
+	year = {2019},\n\
+	keywords = {Baltic languages, Dialects, Phonetics, Recordings, Slavic languages, Sound Comparisons, Transcriptions}\n\
+}';
+      }
+      else if (currentStudy == "Mapudungun"){
+        this.model.citationText = '\
+Sadowsky, Scott, María José Aninao & Paul Heggarty. 2019. Sound Comparisons: Mapudungun.\
+ (Available online at https://soundcomparisons.com/Mapudungun, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{aninao_sound_2019,\n\
+	title = {Sound {Comparisons}:  {Mapudungun}},\n\
+	url = {https://soundcomparisons.com/Mapudungun},\n\
+	author = {Aninao, María José and Sadowsky, Scott and Heggarty, Paul},\n\
+	year = {2019},\n\
+	keywords = {Araucanian, Dialects, Mapuche, Mapudungun, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
+}';
+      }
+      else if (currentStudy == "Europe"){
+        this.model.citationText = '\
+Heggarty, Paul, Giovanni Abete, Cormac Anderson, Ludger Paschen, Lechosław Jocz, Warren Maguire & Hans-Jörg Bibiko. (2019).\
+ Sound Comparisons: Europe.\
+ (Available online at https://soundcomparisons.com/Europe, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{heggarty_sound_2019-2,\n\
+	title = {Sound {Comparisons}:  {Europe}},\n\
+	url = {https://soundcomparisons.com/Europe},\n\
+	author = {Heggarty, Paul and Abete, Giovanni and Anderson, Cormac and Paschen, Ludger and Jocz, Lechosław and Maguire, Warren and Bibiko, Hans-Jörg},\n\
+	year = {2019},\n\
+	keywords = {Dialects, European languages, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
+}';
+      }
+      else if (currentStudy == "Brazil"){
+        this.model.citationText = '\
+Silva, Ariel P.C., Laura Wägerle, Paul Heggarty & Ana Suelly Arruda Câmara Cabral. 2019. Sound Comparisons: Brazil.\
+ (Available online at https://soundcomparisons.com/Brazil, Accessed on \
+' + curDate + ".)";
+        this.model.citationBibtex = '\
+@misc{silva_sound_2019,\n\
+	title = {Sound {Comparisons}:  {Brazil}},\n\
+	url = {https://soundcomparisons.com/Brazil},\n\
+	author = {Silva, Ariel Pheula do Couto e and Wägerle, Laura and Heggarty, Paul and Cabral, Ana Suelly Arruda Câmara},\n\
+	year = {2019},\n\
+	keywords = {Brazil, Dialects, Indigenous languages of Brazil, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
+}';
+      }
+  }
+    /**
       Builds the static translations for the model.
     */
   , buildStatic: function(){
@@ -146,9 +306,22 @@ define(['backbone'], function(Backbone){
       this.model.SoundPlayMode[0].title = this.model.soundHoverTitle;
       this.model.SoundPlayMode[1].title = this.model.soundClickTitle;
 
-      this.model.citationText = 'Heggarty';
-      this.model.citationBibtex = 'Bib';
-      this.model.citationRIS = 'RIS';
+      var d = new Date();
+      var curDate = d.toISOString().split("T").shift();
+
+      this.model.citationTextHome = '\
+Heggarty, Paul, Aviva Shimelman, Giovanni Abete, Cormac Anderson, Scott Sadowsky, Ludger Paschen, Warren Maguire, Lechoslaw Jocz, María José Aninao, Laura Wägerle, Darja Dërmaku-Appelganz, Ariel Pheula do Couto e Silva, Lewis C. Lawyer, Jan Michalsky, Ana Suelly Arruda Câmara Cabral, Mary Walworth, Ezequiel Koile, Jakob Runge & Hans-Jörg Bibiko. 2002. Sound Comparisons: Exploring Diversity in Phonetics across Language Families.\
+ (Available online at https://soundcomparisons.com, Accessed on \
+' + curDate + ".)";
+      this.model.citationBibtexHome = '\
+@misc{heggarty_sound_2002,\n\
+	title = {Sound {Comparisons}:  {Exploring} {Diversity} in {Phonetics} across {Language} {Families}},\n\
+	url = {https://soundcomparisons.com},\n\
+	journal = {Sound Comparisons:  Exploring Diversity in Phonetics across Language Families},\n\
+	author = {Heggarty, Paul and Shimelman, Aviva and Abete, Giovanni and Anderson, Cormac and Sadowsky, Scott and Paschen, Ludger and Maguire, Warren and Jocz, Lechoslaw and Aninao, María José and Wägerle, Laura and Dërmaku-Appelganz, Darja and Silva, Ariel Pheula do Couto e and Lawyer, Lewis C. and Michalsky, Jan and Cabral, Ana Suelly Arruda Câmara and Walworth, Mary and Koile, Ezequiel and Runge, Jakob and Bibiko, Hans-Jörg},\n\
+	year = {2002},\n\
+	keywords = {Dialects, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
+}';
     }
     /**
       Generates the study part of the TopMenu.
@@ -169,6 +342,7 @@ define(['backbone'], function(Backbone){
         };
       }, this);
       this.setModel(data);
+      this.updateCitations();
     }
     /**
       Generates the PageViews part of the TopMenu.

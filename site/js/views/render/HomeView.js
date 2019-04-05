@@ -39,6 +39,7 @@ define(['views/render/SubView', 'models/Loader', 'jquery'],
           title: 'website_title_prefix'
         , subtitle: 'website_title_suffix'
         , funding: 'website_logo_hover'
+        , citeTooltip: 'topmenu_about_citetooltip'
         , imprint: 'topmenu_about_imprint'
         , imprintHref: 'topmenu_about_imprint_href'
         , privacypolicy: 'topmenu_about_privacypolicy'
