@@ -99,12 +99,12 @@
         </div>
   </div>
 
-  <!-- <div class="btn-group" style="margin-right:5px;float: right;">
+  <div class="btn-group" style="margin-right:5px;float: right;">
     <a class="btnbtn-dropdown" data-toggle="modal" data-target="#citeModal" style="cursor: pointer">
       <img title="{{citeTooltip}}" src="img/cite.png" style="height: 20px;margin-top:3px;">
     </a>
   </div>
-  <!-- 
+
   <div id="citeModal" class="modal hide fade" tabindex="-1">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -114,27 +114,47 @@
             <ul id="citeTabs" class="nav nav-tabs" style="float:none !important">
               <li class="active"><a data-toggle="tab" href="#citeText">Text</a></li>
               <li><a data-toggle="tab" href="#citeBibtex">BibTeX</a></li>
-              <li><a data-toggle="tab" href="#citeRIS">RIS</a></li>
             </ul>
             <div id="citeTabsContent" class="tab-content">
               <div id="citeText" class="tab-pane fade in active">
                 <p style="padding:10px 10px; border-top: 1px solid #ccc">
-                  {{citationText}}
+                  <blockquote>{{citationText}}</blockquote>
                 </p>
               </div>
               <div id="citeBibtex" class="tab-pane fade">
-                <p style="padding:10px 10px; border-top: 1px solid #ccc">
-                  {{citationBibtex}}
-                </p>
-              </div>
-              <div id="citeRIS" class="tab-pane fade">
-                <p style="padding:10px 10px; border-top: 1px solid #ccc">
-                  {{citationRIS}}
+                <p style="padding:10px 10px; border-top: 1px solid #ccc; font-size:80%">
+                  <pre>{{citationBibtex}}</pre>
                 </p>
               </div>
             </div>
+            <div><a href="#/about/How-to-Cite:--{{citationStudy}}"><img onclick="$('#citeModal').modal('hide');" style="height:24px" src="img/info.png"></a></div>
         </div>
-  </div> -->
+  </div>
+  <div id="citeModalHome" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{citeTooltip}}</h4>
+        </div>
+        <div class="modal-body">
+            <ul id="citeTabs" class="nav nav-tabs" style="float:none !important">
+              <li class="active"><a data-toggle="tab" href="#citeTextHome">Text</a></li>
+              <li><a data-toggle="tab" href="#citeBibtexHome">BibTeX</a></li>
+            </ul>
+            <div id="citeTabsContent" class="tab-content">
+              <div id="citeTextHome" class="tab-pane fade in active">
+                <p style="padding:10px 10px; border-top: 1px solid #ccc">
+                  <blockquote>{{citationTextHome}}</blockquote>
+                </p>
+              </div>
+              <div id="citeBibtexHome" class="tab-pane fade">
+                <p style="padding:10px 10px; border-top: 1px solid #ccc; font-size:80%">
+                  <pre>{{citationBibtexHome}}</pre>
+                </p>
+              </div>
+            </div>
+            <div><a href="#/about/How-to-Cite:--All-Sound-Comparisons"><img onclick="$('#citeModalHome').modal('hide');" style="height:24px" src="img/info.png"></a></div>
+        </div>
+  </div>
 
 </div>
 <div class="navbar-inner span2">
