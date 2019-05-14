@@ -403,6 +403,8 @@ class Importer{
       , 'Citation 2:  Pages' => 'Citation2Pages'
       , 'Speaker Surnames' => 'SpeakerSurnames'
       , 'Speaker First Names' => 'SpeakerFirstNames'
+      , 'ABVD Language Name' => 'ABVDLanguageName'
+      , 'ABVD Language ID Number' => 'ABVDLanguageID'
       )
 )
   , '/^LanguageStatusTypes\.txt$/' => array(
