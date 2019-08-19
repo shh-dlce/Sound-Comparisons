@@ -310,16 +310,16 @@ Silva, Ariel P.C., Laura Wägerle, Paul Heggarty & Ana Suelly Arruda Câmara Cab
       var curDate = d.toISOString().split("T").shift();
 
       this.model.citationTextHome = '\
-Heggarty, Paul, Aviva Shimelman, Giovanni Abete, Cormac Anderson, Scott Sadowsky, Ludger Paschen, Warren Maguire, Lechoslaw Jocz, María José Aninao, Laura Wägerle, Darja Dërmaku-Appelganz, Ariel Pheula do Couto e Silva, Lewis C. Lawyer, Jan Michalsky, Ana Suelly Arruda Câmara Cabral, Mary Walworth, Ezequiel Koile, Jakob Runge & Hans-Jörg Bibiko. 2002. Sound Comparisons: Exploring Diversity in Phonetics across Language Families.\
+Heggarty, Paul, Aviva Shimelman, Giovanni Abete, Cormac Anderson, Scott Sadowsky, Ludger Paschen, Warren Maguire, Lechoslaw Jocz, María José Aninao, Laura Wägerle, Darja Dërmaku-Appelganz, Ariel Pheula do Couto e Silva, Lewis C. Lawyer, Jan Michalsky, Ana Suelly Arruda Câmara Cabral, Mary Walworth, Ezequiel Koile, Jakob Runge & Hans-Jörg Bibiko. 2019. Sound Comparisons: Exploring Diversity in Phonetics across Language Families.\
  (Available online at https://soundcomparisons.com, Accessed on \
 ' + curDate + ".)";
       this.model.citationBibtexHome = '\
-@misc{heggarty_sound_2002,\n\
+@misc{heggarty_sound_2019,\n\
 	title = {Sound {Comparisons}:  {Exploring} {Diversity} in {Phonetics} across {Language} {Families}},\n\
 	url = {https://soundcomparisons.com},\n\
 	journal = {Sound Comparisons:  Exploring Diversity in Phonetics across Language Families},\n\
 	author = {Heggarty, Paul and Shimelman, Aviva and Abete, Giovanni and Anderson, Cormac and Sadowsky, Scott and Paschen, Ludger and Maguire, Warren and Jocz, Lechoslaw and Aninao, María José and Wägerle, Laura and Dërmaku-Appelganz, Darja and Silva, Ariel Pheula do Couto e and Lawyer, Lewis C. and Michalsky, Jan and Cabral, Ana Suelly Arruda Câmara and Walworth, Mary and Koile, Ezequiel and Runge, Jakob and Bibiko, Hans-Jörg},\n\
-	year = {2002},\n\
+	year = {2019},\n\
 	keywords = {Dialects, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
 }';
     }
