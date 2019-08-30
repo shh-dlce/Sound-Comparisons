@@ -3,7 +3,7 @@
                 ? $loginMessage.'<br>Userlogin:'
                 : 'Userlogin:';
 ?><div class="container">
-  <form class="form-signin" method="post" action="index.php?action=login">
+  <form class="form-signin" method="post" action="index.php?action=login<?php echo $editDataPass; ?>">
     <h2 class="form-signin-heading"><?php echo $loginMessage; ?></h2>
     <input name="username" type="text" class="input-block-level" placeholder="Username" autofocus>
     <input name="password" type="password" class="input-block-level" placeholder="Password">

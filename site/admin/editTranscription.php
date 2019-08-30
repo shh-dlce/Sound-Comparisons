@@ -1,9 +1,10 @@
 <?php
 require_once('common.php');
 if(!session_validate($dbConnection))
-  header('LOCATION: index.php');
+  header('LOCATION: index.php?et=1&d=' . $_GET['d']);
 if(!session_mayEdit($dbConnection))
-  header('LOCATION: index.php');
+  header('LOCATION: index.php?et=1&d=' . $_GET['d']);
+if(session_mayEdit($dbConnection)){
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -817,6 +818,7 @@ if(!session_mayEdit($dbConnection))
     </div>
     <?php
     }
+}
     ?>
     <iframe name="iframe_post_form" id="iframe_post_form" style="border:none;"></iframe>
   </body>

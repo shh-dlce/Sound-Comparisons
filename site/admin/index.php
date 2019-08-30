@@ -4,6 +4,10 @@
   if(!isset($_GET['action'])){
     $_GET['action'] = '';
   }
+  $editData = '';
+  if(isset($_GET['d'])){
+    $editData = $_GET['d'];
+  }
   switch($_GET['action']){
     case 'logout':
       session_destroy();
@@ -34,7 +38,11 @@
       if($valid === true){
         $_SESSION['UserId'] = $row['UserId'];
         session_mkValid($user, $hash);
-        header('LOCATION: index.php');
+        if(isset($_GET['et'])){
+          header('LOCATION: editTranscription.php?d=' . $editData);
+        }else{
+          header('LOCATION: index.php');
+        }
       }else{?>
         <!DOCTYPE HTML>
         <html><?php
@@ -81,6 +89,9 @@
           require_once('head.php');
         ?><body><?php
           unset($loginMessage);
+          if(strlen($editData)){
+            $editDataPass = '&et=1&d=' . $editData;
+          }
           require_once('loginForm.php');
         ?></body>
         </html>
