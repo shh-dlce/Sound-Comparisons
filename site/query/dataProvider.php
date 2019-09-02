@@ -336,7 +336,8 @@ class DataProvider {
     $n   = $db->escape_string($studyName);
     // Fetch all studies involved - e.g. as for Andean where Mapudungun is a subset of Andean
     $allStudyNames = static::fetchAll("SELECT Name FROM Studies WHERE StudyIx = (SELECT StudyIx FROM Studies WHERE Name = '$n')");
-    $not_array_fields = array('LanguageIx', 'IxElicitation', 'IxMorphologicalInstance', 'FamilyIx', 'StudyIx');
+    $not_array_fields = array('LanguageIx', 'IxElicitation', 'IxMorphologicalInstance', 'FamilyIx', 'StudyIx', 'transStudy');
+    $transStudy = NULL;
     foreach($allStudyNames as $sn) {
       $n = $sn['Name'];
       $q = "SELECT DISTINCT t.*,concat(l.FilePathPart,w.SoundFileWordIdentifierText,"
@@ -355,6 +356,8 @@ class DataProvider {
           $tKey = $t['LanguageIx'].$t['IxElicitation'].$t['IxMorphologicalInstance'];
           $sfKey = $tKey.$t['AlternativePhoneticRealisationIx'].$t['AlternativeLexemIx'];
           $t['soundPaths'] = isset($soundFiles[$sfKey]) ? json_decode($soundFiles[$sfKey]) : [];
+          $transStudy = $n;
+          $t['transStudy'] = $transStudy;
           //Merging transcriptions:
           if(array_key_exists($tKey, $ret)){
             $old = $ret[$tKey];
@@ -385,7 +388,7 @@ class DataProvider {
         }
       }
       //Handling dummy transcriptions:
-      foreach(static::getDummyTranscriptions($n, $soundFiles) as $t){
+      foreach(static::getDummyTranscriptions($n, $soundFiles, $transStudy) as $t){
         $tKey = $t['LanguageIx'].$t['IxElicitation'].$t['IxMorphologicalInstance'];
         if(!array_key_exists($tKey, $ret)){
           $ret[$tKey] = $t;
@@ -859,7 +862,7 @@ Q1;
     static::getTranscriptions merges the outputs of this method
     into its return.
   */
-  public static function getDummyTranscriptions($studyName, $soundFiles = array()){
+  public static function getDummyTranscriptions($studyName, $soundFiles = array(), $transStudy1){
     $db = Config::getConnection();
     //Add dummy transcriptions:
     $dummies = array();
@@ -884,7 +887,40 @@ Q1;
       //    . "(StudyIx, FamilyIx, IxElicitation, IxMorphologicalInstance, LanguageIx, RecordingMissing) "
       //    . "VALUES ({$study['StudyIx']},{$study['FamilyIx']},{$study['IxElicitation']},{$study['IxMorphologicalInstance']},{$study['LanguageIx']},$missing)";
       // $db->query($q);
-
+      $transStudy = '';
+      if(is_null($transStudy1)){
+        $lgIx = (string)$entry['LanguageIx'];
+        if(strlen($lgIx) > 4){
+          $transStudy = 'A';
+          if($lgIx[0] == '1'){
+            if($lgIx[1] == '1'){
+              if($lgIx[3] == '1'){
+                $transStudy = 'Englishes';
+              }else{
+                $transStudy = 'Germanic';
+              }
+            }elseif($lgIx[1] == '2'){
+              $transStudy = 'Romance';
+            }elseif($lgIx[1] == '3'){
+              $transStudy = 'Slavic';
+            }elseif($lgIx[1] == '4'){
+              $transStudy = 'Celtic';
+            }
+          }elseif($lgIx[0] == '2'){
+            if($lgIx[1] == '8'){
+              $transStudy = 'Mapudungun';
+            }else{
+              $transStudy = 'Andes';
+            }
+          }elseif($lgIx[0] == '3'){
+            $transStudy = 'Brazil';
+          }elseif($lgIx[0] == '4'){
+            $transStudy = 'Vanuatu';
+          }
+        }
+      }else{
+        $transStudy = $transStudy1;
+      }
       //Filtering
       if(!isset($soundFiles[$sfKey])) continue;
       //Adding to dummy list:
@@ -894,6 +930,7 @@ Q1;
       , 'IxElicitation' => $entry['IxElicitation']
       , 'IxMorphologicalInstance' => $entry['IxMorphologicalInstance']
       , 'soundPaths' => json_decode($soundFiles[$sfKey])
+      , 'transStudy' => $transStudy
       ));
     }
     return $dummies;

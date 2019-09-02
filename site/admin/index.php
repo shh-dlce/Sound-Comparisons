@@ -89,6 +89,7 @@
           require_once('head.php');
         ?><body><?php
           unset($loginMessage);
+          $editDataPass = '';
           if(strlen($editData)){
             $editDataPass = '&et=1&d=' . $editData;
           }
