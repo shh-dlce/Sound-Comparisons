@@ -244,7 +244,7 @@ class DataProvider {
   public static function getRegions($studyName){
     $db = Config::getConnection();
     $n  = $db->escape_string($studyName);
-    $q  = "SELECT * FROM Regions_$n";
+    $q  = "SELECT * FROM Regions_$n ORDER BY RegionGpSortIx";
     return static::fetchAll($q);
   }
   /**
