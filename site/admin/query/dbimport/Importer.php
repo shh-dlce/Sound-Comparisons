@@ -464,6 +464,7 @@ class Importer{
       , 'Family Ix' => 'FamilyIx'
       , 'Sub-Family Ix' => 'SubFamilyIx'
       , 'Region Gp Ix' => 'RegionGpIx'
+      , 'Region Gp Sort Ix' => 'RegionGpSortIx'
       , 'Region Gp Type Ix' => 'RegionGpTypeIx'
       , 'Region Gp Nm Long' => 'RegionGpNameLong'
       , 'Region Gp Nm Short' => 'RegionGpNameShort'
