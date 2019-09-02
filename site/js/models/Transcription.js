@@ -198,7 +198,7 @@ define(['underscore','backbone'], function(_, Backbone){
             , fileMissing: source.length === 0
             , smallCaps:   phonetic === 'play'
             , phonetic:    phonetic
-            , pk: App.study.getId()+"|"+language.getId()+"|"+word.getId()
+            , pk: this.get('transStudy')+"|"+language.getId()+"|"+word.getId()
             , srcs:        JSON.stringify(source)
             , _srcs:       this.filterSoundfiles(source)
             , hasTrans:    language.hasTranscriptions()
