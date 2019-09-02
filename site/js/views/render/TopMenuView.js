@@ -310,9 +310,17 @@ Silva, Ariel P.C., Laura Wägerle, Paul Heggarty & Ana Suelly Arruda Câmara Cab
       var curDate = d.toISOString().split("T").shift();
 
       this.model.citationTextHome = '\
-Heggarty, Paul, Aviva Shimelman, Giovanni Abete, Cormac Anderson, Scott Sadowsky, Ludger Paschen, Warren Maguire, Lechoslaw Jocz, María José Aninao, Laura Wägerle, Darja Dërmaku-Appelganz, Ariel Pheula do Couto e Silva, Lewis C. Lawyer, Jan Michalsky, Ana Suelly Arruda Câmara Cabral, Mary Walworth, Ezequiel Koile, Jakob Runge & Hans-Jörg Bibiko. 2019. Sound Comparisons: Exploring Diversity in Phonetics across Language Families.\
+<h5><i>The Sound Comparisons Website</i></h5>\
+Heggarty, Paul, Aviva Shimelman, Giovanni Abete, Cormac Anderson, Scott Sadowsky, Ludger Paschen, Warren Maguire, Lechoslaw Jocz, María José Aninao, Laura Wägerle, Darja Dërmaku-Appelganz, Ariel Pheula do Couto e Silva, Lewis C. Lawyer, Jan Michalsky, Ana Suelly Arruda Câmara Cabral, Mary Walworth, Ezequiel Koile, Jakob Runge & Hans-Jörg Bibiko.<br />2019. Sound Comparisons: Exploring Diversity in Phonetics across Language Families.<br />\
  (Available online at https://soundcomparisons.com, Accessed on \
-' + curDate + ".)";
+' + curDate + ".)<br /><br />" + '\
+<h5><i>The Sound Comparisons Launch Paper</i></h5>\
+Heggarty, Paul, Aviva Shimelman, Giovanni Abete, Cormac Anderson, Scott Sadowsky, Ludger Paschen, Warren Maguire, Lechoslaw Jocz, María José Aninao, Laura Wägerle, Darja Dërmaku-Appelganz, Ariel Pheula do Couto e Silva, Lewis C. Lawyer, Ana Suelly Arruda Câmara Cabral, Mary Walworth, Jan Michalsky, Ezequiel Koile, Jakob Runge & Hans-Jörg Bibiko.<br />\
+2019.  Sound Comparisons:  A new resource for exploring phonetic diversity across language families of the world.<br />\
+In: Calhoun, S., P. Escudero, M. Tabain, & P. Warren (eds)<br />\
+Proceedings of the International Congress of Phonetic Sciences 2019. Canberra, Australia: Australasian Speech Science and Technology Association Inc.<br />\
+https://icphs2019.org/icphs2019-fullpapers/pdf/full-paper_490.pdf\
+';
       this.model.citationBibtexHome = '\
 @misc{heggarty_sound_2019,\n\
 	title = {Sound {Comparisons}:  {Exploring} {Diversity} in {Phonetics} across {Language} {Families}},\n\
@@ -321,7 +329,22 @@ Heggarty, Paul, Aviva Shimelman, Giovanni Abete, Cormac Anderson, Scott Sadowsky
 	author = {Heggarty, Paul and Shimelman, Aviva and Abete, Giovanni and Anderson, Cormac and Sadowsky, Scott and Paschen, Ludger and Maguire, Warren and Jocz, Lechoslaw and Aninao, María José and Wägerle, Laura and Dërmaku-Appelganz, Darja and Silva, Ariel Pheula do Couto e and Lawyer, Lewis C. and Michalsky, Jan and Cabral, Ana Suelly Arruda Câmara and Walworth, Mary and Koile, Ezequiel and Runge, Jakob and Bibiko, Hans-Jörg},\n\
 	year = {2019},\n\
 	keywords = {Dialects, Phonetics, Recordings, Sound Comparisons, Transcriptions}\n\
-}';
+}\
+\n\n\
+@inproceedings{heggarty_sound_2019,\n\
+	address = {Canberra, Australia},\n\
+	title = {Sound {Comparisons}: {A} new online database and resource for researching phonetic diversity},\n\
+	isbn = {978-0-646-80069-1},\n\
+	url = {https://icphs2019.org/icphs2019-fullpapers/pdf/full-paper_490.pdf},\n\
+	booktitle = {Proceedings of the 19th {International} {Congress} of {Phonetic} {Sciences}},\n\
+	publisher = {Australasian Speech Science and Technology Association},\n\
+	author = {Heggarty, Paul and Shimelman, Aviva and Abete, Giovanni and Anderson, Cormac and Sadowsky, Scott and Paschen, Ludger and Maguire, Warren and Jocz, Lechoslaw and Aninao, María José and Wägerle, Laura and Dërmaku-Appelganz, Darja and Silva, Ariel Pheula do Couto e and Lawyer, Lewis C. and Michalsky, Jan and Cabral, Ana Suelly Arruda Câmara and Walworth, Mary and Koile, Ezequiel and Runge, Jakob and Bibiko, Hans-Jörg},\n\
+	month = aug,\n\
+	year = {2019},\n\
+	keywords = {Dialects, Phonetics, Recordings, Sound Comparisons, Transcriptions},\n\
+	pages = {280--284}\n\
+}\
+';
     }
     /**
       Generates the study part of the TopMenu.
