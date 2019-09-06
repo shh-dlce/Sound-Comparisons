@@ -3,6 +3,7 @@ define(['views/render/SubView'], function(SubView){
   return SubView.extend({
     initialize: function(){
       this.model = {};
+      this.currentFocus = -1;
       //Connecting to the router
       App.router.on('route:wordView', this.route, this);
     }
@@ -10,6 +11,166 @@ define(['views/render/SubView'], function(SubView){
       Method to make it possible to check what kind of PageView this Backbone.View is.
     */
   , getKey: function(){return 'word';}
+    /**
+      autocompletion for words
+    */
+  , autocompleteWord: function(inp, type){
+      var pressedKey = event.which || event.keyCode;
+      var a, b, i, val = inp.value;
+      var arr = [];
+      var spLang;
+      if (type == 'w'){
+        spLang = App.pageState.getSpLang();
+        App.wordCollection.each(function(w){
+          var text = w.getNameFor(spLang);
+          if(_.isArray(text)){
+            _.each(text, function(t){ arr.push({n:t, w:w}); }, this);
+          }else{
+            arr.push({n:text, w:w});
+          }
+        });
+      }else if (type == 'l') {
+        spLang = App.languageCollection.getChoice();
+        App.languageCollection.each(function(l){
+          var text = l.getSuperscript(l.getLongName());
+          if(_.isArray(text)){
+            _.each(text, function(t){ arr.push({n:t, l:l}); }, this);
+          }else{
+            arr.push({n:text, l:l});
+          }
+        });
+      }else{
+        return false;
+      }
+      var x = document.getElementById(inp.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (pressedKey == 40) { //down
+        this.currentFocus++;
+        this.addActive(x);
+        event.preventDefault();
+        return true;
+      } else if (pressedKey == 38) { //up
+        this.currentFocus--;
+        this.addActive(x);
+        event.preventDefault();
+        return true;
+      } else if (pressedKey == 27) { //esc
+        this.currentFocus = -1;
+        this.closeAllLists();
+        if (type == 'w'){
+          inp.value = document.getElementById("word_choice_default").value;
+        }else if (type == 'l'){
+          inp.value = document.getElementById("lang_choice_default").value;
+        }
+        inp.blur();
+        event.preventDefault();
+        return true;
+      } else if (pressedKey == 13) { //enter
+        event.preventDefault();
+        if (this.currentFocus > -1) {
+          if (x) x[this.currentFocus].click();
+          this.currentFocus = -1;
+        }else{
+          for (i = 0; i < arr.length; i++) {
+            if (arr[i].n.toUpperCase() == val.toUpperCase()) {
+              var url;
+              if (type == 'w'){
+                url = App.router.linkCurrent({word: arr[i].w});
+              }else if (type == 'l'){
+                url = App.router.linkLanguageView({language: arr[i].l});
+              }else{
+                return false;
+              }
+              App.views.renderer.model.wordView.closeAllLists();
+              App.router.navigate(url, { trigger: true, replace: true });
+              App.views.renderer.model.wordView.currentFocus = -1;
+            }
+          }
+        }
+        return true;
+      }
+      if (!val) { 
+        this.closeAllLists();;
+        return false;
+      }
+      this.closeAllLists();
+      arr.sort(function compare(a, b){
+        if (a.n > b.n) return 1;
+        if (b.n > a.n) return -1;
+        return 0;
+      });
+      a = document.createElement("DIV");
+      a.setAttribute("id", inp.id + "autocomplete-list");
+      if (type == 'w'){
+        a.setAttribute("class", "autocomplete-items color-word");
+      }else if (type == 'l'){
+        a.setAttribute("class", "autocomplete-items color-language");
+      }
+      inp.parentNode.appendChild(a);
+      var chars = this.removeDiacritics(val.toUpperCase()).split("");
+      var re = new RegExp('.*?' + this.escapeRegExp(chars).join('.*?'));
+      var found = 0;
+      for (i = 0; i < arr.length; i++) {
+        if (re.test(this.removeDiacritics(arr[i].n.toUpperCase()))) {
+          found++;
+          b = document.createElement("DIV");
+          b.innerHTML = arr[i].n;
+          b.innerHTML += "<input type='hidden' value='" + i + "'>";
+          b.addEventListener("click", function(e) {
+            var ix = parseInt(this.getElementsByTagName("input")[0].value);
+            var url;
+            if (type == 'w'){
+              url = App.router.linkCurrent({word: arr[ix].w});
+            }else if (type == 'l'){
+              url = App.router.linkLanguageView({language: arr[ix].l});
+            }else{
+              return false;
+            }
+            App.views.renderer.model.wordView.closeAllLists();
+            App.router.navigate(url, { trigger: true, replace: true });
+            App.views.renderer.model.wordView.currentFocus = -1;
+          });
+          a.appendChild(b);
+        }
+      }
+      if (found == 1){
+        var x = document.getElementById(inp.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        this.currentFocus++;
+        this.addActive(x);
+      }
+      return true;
+    }
+  , removeDiacritics: function(s) {
+    return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  }
+  , escapeRegExp: function(arr) {
+      var r = [];
+      var re = /([.*+?^${}()|\[\]\/\\])/g;
+      for (var i = 0; i < arr.length; i++){
+        r.push(String(arr[i]).replace(re, "\\$1"));
+      }
+      return r;
+  }
+  , addActive: function(x) {
+      if (!x) return false;
+      this.removeActive(x);
+      if (this.currentFocus >= x.length) this.currentFocus = 0;
+      if (this.currentFocus < 0) this.currentFocus = (x.length - 1);
+      x[this.currentFocus].classList.add("autocomplete-active");
+    }
+  , removeActive: function(x) {
+      for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+      }
+    }
+  , closeAllLists: function() {
+      var x = document.getElementsByClassName("autocomplete-items");
+      for (var i = 0; i < x.length; i++) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+      this.currentFocus = -1;
+    }
     /**
       Generates the WordHeadline for WordView,
       but might also be used to build the WordHeadline for MapView aswell.
