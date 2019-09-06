@@ -102,7 +102,7 @@ define(['views/render/SubView'], function(SubView){
       a = document.createElement("DIV");
       a.setAttribute("id", inp.id + "autocomplete-list");
       if (type == 'w'){
-        a.setAttribute("class", "autocomplete-items color-word");
+        a.setAttribute("class", "autocomplete-items color-word word-margin");
       }else if (type == 'l'){
         a.setAttribute("class", "autocomplete-items color-language");
       }
