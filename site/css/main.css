@@ -8,8 +8,8 @@ a.anchor {display: none;}
 .selected{font-weight: bold;}
 .color-family, .color-meaninggroup,
 .color-region {color: #000000; font-weight: bold;}
-.color-language, #topMenu .colorWord {color: #4380C1;}
-.color-word, #topMenu .colorWord {color: #006400;}
+.color-language, #topMenu .colorWord {color: #4380C1 !important;}
+.color-word, #topMenu .colorWord {color: #006400 !important;}
 .fontsize200pc {font-size:200%;}
 .color-language {white-space: nowrap;}
 .container-fluid {padding: 0px 5px 0px 5px;}
@@ -508,7 +508,6 @@ td.tableClearCol {width: 0.5em; padding: 0px; border-left: 2px solid black; bord
     left: 45%;
     position: absolute;
 }
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -656,4 +655,55 @@ td.tableClearCol {width: 0.5em; padding: 0px; border-left: 2px solid black; bord
 }
 .tile:hover .tile_subinfo {
 	opacity: 1;
+}
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+.autocomplete_input {
+  border: 0px solid transparent !important;
+  background-color: #fff;
+  padding: 0px !important;
+  margin: 0px !important;
+  height: 40px !important;
+  width: 600px;
+  box-shadow: none !important;
+  font-weight: bold;
+}
+.autocomplete_input[type=text] {
+  background-color: #ffffff00;
+  border: 0px solid transparent !important;
+  box-shadow: none !important;
+  font-size: 200%;
+  line-height: 40px;
+  font-weight: bold;
+  text-align: center;
+  font-family: "Arial Narrow", "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", "Arial", sans-serif;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  z-index: 999;
+  top: 40px;
+  left: 0;
+  right: 0;
+  font-size: 150%;
+}
+.autocomplete-items div {
+  padding: 6px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+.autocomplete-items div:hover {
+  background-color: #e9e9e9;
+}
+.autocomplete-active {
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+.smallname {
+  color: #aaa;
+  margin-bottom: -6px;
 }

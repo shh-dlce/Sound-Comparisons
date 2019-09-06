@@ -7,16 +7,19 @@
   </div>
   {{/prev}}
   <div class="span6 centertext" id="tableHeader">
-    <h1 class="color-word fontsize200pc">
-      {{name}}
-      {{#stname}} <small>{{stname}}</small>{{/stname}}
-      {{#mapsLink}}
-      {{> WordMapsLink}}
-      {{/mapsLink}}
-      {{#concepticonLink}}
-      {{> ConcepticonLink}}
-      {{/concepticonLink}}
-    </h1>
+    <div class="autocomplete" style="margin-left: -14%;">
+      <input id="word_choice_default" class="hidden" value="{{name}}"/>
+      <input class="autocomplete_input color-word" id="word_choice" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="{{name}}" onkeyup="App.views.renderer.model.wordView.autocompleteWord(this,'w');" onclick="App.views.renderer.model.wordView.closeAllLists();"/>
+      {{#stname}}<span class="smallname">{{stname}}</span>{{/stname}}
+      <span>
+        {{#mapsLink}}
+        {{> WordMapsLink}}
+        {{/mapsLink}}
+        {{#concepticonLink}}
+        {{> ConcepticonLink}}
+        {{/concepticonLink}}
+      </span>
+    </div>
   </div>
   {{#next}}
   <div class="span3 prev-next">
