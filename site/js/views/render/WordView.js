@@ -107,8 +107,8 @@ define(['views/render/SubView'], function(SubView){
         a.setAttribute("class", "autocomplete-items color-language");
       }
       inp.parentNode.appendChild(a);
-      var chars = this.removeDiacritics(val.toUpperCase()).split("");
-      var re = new RegExp('.*?' + this.escapeRegExp(chars).join('.*?'));
+      var lookup = this.removeDiacritics(val.toUpperCase());
+      var re = new RegExp(this.escapeRegExp(lookup));
       var found = 0;
       for (i = 0; i < arr.length; i++) {
         if (re.test(this.removeDiacritics(arr[i].n.toUpperCase()))) {
@@ -131,6 +131,12 @@ define(['views/render/SubView'], function(SubView){
             App.views.renderer.model.wordView.currentFocus = -1;
           });
           a.appendChild(b);
+          if (found > 14) {
+            var e = document.createElement("DIV");
+            e.innerHTML = '...';
+            a.appendChild(e);
+            break;
+          }
         }
       }
       if (found == 1){
@@ -144,13 +150,9 @@ define(['views/render/SubView'], function(SubView){
   , removeDiacritics: function(s) {
     return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
   }
-  , escapeRegExp: function(arr) {
-      var r = [];
-      var re = /([.*+?^${}()|\[\]\/\\])/g;
-      for (var i = 0; i < arr.length; i++){
-        r.push(String(arr[i]).replace(re, "\\$1"));
-      }
-      return r;
+  , escapeRegExp: function(s) {
+      var re = /([*+?^${}()|\[\]\/\\])/g;
+      return String(s).replace(re, "\\$1");
   }
   , addActive: function(x) {
       if (!x) return false;

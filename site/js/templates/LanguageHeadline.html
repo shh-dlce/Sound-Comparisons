@@ -16,7 +16,7 @@
   <div class="centertext">
     <div class="autocomplete">
       <input id="lang_choice_default" class="hidden" value="{{#longName}}{{> LanguageSuperscript}}{{/longName}}"/>
-      <input class="autocomplete_input color-language" id="word_choice" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="{{#longName}}{{> LanguageSuperscript}}{{/longName}}" onkeyup="App.views.renderer.model.wordView.autocompleteWord(this,'l');" onclick="App.views.renderer.model.wordView.closeAllLists();" style="font-size: 180% !important; margin-top:-15px !important; width: 800px !important"/>
+      <input class="autocomplete_input color-language" id="word_choice" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="{{#longName}}{{> LanguageSuperscript}}{{/longName}}" onkeyup="App.views.renderer.model.wordView.autocompleteWord(this,'l');" onfocus="App.views.renderer.model.wordView.closeAllLists();this.focus();this.select()" ondblclick="this.select()" style="font-size: 180% !important; margin-top:-15px !important; width: 800px !important"/>
     </div>
   </div>
 </div>
