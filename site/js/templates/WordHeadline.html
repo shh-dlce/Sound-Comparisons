@@ -9,7 +9,7 @@
   <div class="span6 centertext" id="tableHeader">
     <div class="autocomplete" style="margin-left: -14%;">
       <input id="word_choice_default" class="hidden" value="{{name}}"/>
-      <input class="autocomplete_input color-word" id="word_choice" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="{{name}}" onkeyup="App.views.renderer.model.wordView.autocompleteWord(this,'w');" onclick="App.views.renderer.model.wordView.closeAllLists();"/>
+      <input class="autocomplete_input color-word" id="word_choice" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="{{name}}" onkeyup="App.views.renderer.model.wordView.autocompleteWord(this,'w');" onfocus="App.views.renderer.model.wordView.closeAllLists();this.select()"  ondblclick="this.select()"/>
       {{#stname}}<span class="smallname">{{stname}}</span>{{/stname}}
       <span>
         {{#mapsLink}}
