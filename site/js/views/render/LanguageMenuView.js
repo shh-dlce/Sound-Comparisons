@@ -96,7 +96,9 @@ define(['underscore','backbone','views/ContributorImageView'], function(_, Backb
         isDl: !App.study.getColorByFamily()
       , regions: []
       }, lCol = App.languageCollection;
+      var id_cnt = 0;
       regions.each(function(r){
+        id_cnt++;
         var languages = r.getLanguages();
         if(languages.length === 0){
           console.log('Found region with no languages: '+r.getShortName());
@@ -138,7 +140,8 @@ define(['underscore','backbone','views/ContributorImageView'], function(_, Backb
         var rCol = App.regionCollection
           , rgs  = region.selected ? rCol.getDifference(rCol.getSelected(), [r])
                                    : rCol.getUnion(rCol.getSelected(), [r]);
-        region.link = 'href="'+App.router.linkConfig({Regions: rgs})+'"';
+        region.clickID = "lm-r-" + id_cnt.toString();
+        region.link = 'href="'+App.router.linkConfig({Regions: rgs})+'&clickedItem='+region.clickID+'"';
         //The triangle:
         region.triangle = region.selected ? 'icon-chevron-down'
                                           : 'icon-chevron-up rotate90';
@@ -223,6 +226,13 @@ define(['underscore','backbone','views/ContributorImageView'], function(_, Backb
           t.zoomRegion($(e.target));
         });
         ContributorImageView(this.$el);
+        // scroll to clicked item in leftMenu
+        if(App.pageState.get("clickedItem")){
+          var ci = '#'+App.pageState.get("clickedItem");
+          if(ci.length > 1){
+            $('#leftMenu .nano').nanoScroller({ scrollTo: $(ci) });
+          }
+        }
       }
     }
     /**

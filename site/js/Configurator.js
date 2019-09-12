@@ -104,6 +104,11 @@ define(['Sanitizer',
       if('regions' in config){
         var rs = App.regionCollection.filterKeyOrId(config.regions);
         App.regionCollection.setSelected(rs);
+        if('clickedItem' in config){
+          App.pageState.set({clickedItem: config.clickedItem});
+        }else{
+          App.pageState.set({clickedItem: ''});
+        }
       }
       if('families' in config){
         var fs = App.familyCollection.filterKeyOrId(config.families);

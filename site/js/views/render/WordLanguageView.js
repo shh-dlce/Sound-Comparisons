@@ -182,6 +182,13 @@ define(['views/render/SubView'], function(SubView){
       }else{
         this.$el.addClass('hide');
       }
+      // scroll to clicked item in leftMenu
+      if(App.pageState.get("clickedItem")){
+        var ci = '#'+App.pageState.get("clickedItem");
+        if(ci.length > 1){
+          $('#leftMenu .nano').nanoScroller({ scrollTo: $(ci) });
+        }
+      }
     }
   , checkAlert: function(){
       var t = Math.ceil(this.$('table').width())
