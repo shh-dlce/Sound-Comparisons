@@ -11,7 +11,7 @@ a.anchor {display: none;}
 .color-language, #topMenu .colorWord {color: #4380C1 !important;}
 .color-word, #topMenu .colorWord {color: #006400 !important;}
 .fontsize200pc {font-size:200%;}
-.color-language {white-space: nowrap;}
+.color-language {white-space: break-word;}
 .container-fluid {padding: 0px 5px 0px 5px;}
 .noborders {border: none;}
 .centertext {text-align: center;}
