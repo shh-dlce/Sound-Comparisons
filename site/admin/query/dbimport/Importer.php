@@ -582,9 +582,10 @@ class Importer{
       , 'Full Written Form:  Rfc Proto-Lg:  02' => 'FullRfcProtoLg02'
       , 'Full Written Form:  Rfc Proto-Lg:  01  Altv Root' => 'FullRfcProtoLg01AltvRoot'
       , 'Full Written Form:  Rfc Proto-Lg:  02  Altv Root' => 'FullRfcProtoLg02AltvRoot'
-      , 'Default Concepticon ID' => 'StudyDefaultConcepticonID')
+      , 'Default Concepticon ID' => 'StudyDefaultConcepticonID'
       , 'ABVD Word Name' => 'ABVDWordName'
       , 'ABVD Word ID Number' => 'ABVDWordID'
+      )
     )
   , '/^Book1.csv$/' => array(//Added for #240, given by Paul.
       'study' => false
