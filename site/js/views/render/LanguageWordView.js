@@ -96,6 +96,7 @@ define(['views/render/SubView'], function(SubView){
         table.regions = _.map(rMap, function(r, rId){
           var rgn = {
             isFake: false
+          , showRegionsTitle: App.translationStorage.translateStatic('show_regions_column_title')
           , rspan:  lMap[rId].length
           , rColor: r.getColor()
           , name:   r.getShortName()

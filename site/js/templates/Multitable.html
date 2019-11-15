@@ -3,7 +3,7 @@
 <table id="multitable" class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th></th>
+      <th class="showRegions"></th>
       <th>{{deleteAll}}
         <a {{{clearWordsLink}}} class="color-word"> {{clearWordsText}}<i class="icon-arrow-right"></i></a>
       </th>
@@ -21,7 +21,7 @@
       {{/words}}
     </tr>
     <tr>
-      <th></th>
+      <th class="showRegions"></th>
       <th>{{deleteAll}}
         <a {{{clearLanguagesLink}}} class="color-language"> {{clearLanguagesText}}<i class="icon-arrow-down"></i></a>
       </th>
@@ -43,18 +43,25 @@
   <tbody>
     {{#regions}}
     {{#clearRow}}
-    <tr><td colspan="{{colspan}}" class="spaceRow"></td></tr>
+    <tr>
+      <td colspan="{{colspan}}" class="spaceRow">
+        <a class="btn-small pull-left" style="padding: 0px 0px"
+           onclick="if($('.showRegions').css('display')==='none') {$('.showRegions').css('display','')} else {$('.showRegions').css('display','none')};"
+           title="{{showRegionsTitle}}" style="right: 6px;">
+          <i class="icon-th-list"></i>
+        </a>
+      </td></tr>
     {{/clearRow}}
     <tr>
       {{^isFake}}
-      <td class="regionCell color-region" rowspan="{{rspan}}" style="background-color: {{{rColor}}};">{{name}}</td>
+      <td class="regionCell color-region showRegions" rowspan="{{rspan}}" style="background-color: {{{rColor}}};">{{name}}</td>
       {{/isFake}}
       {{#languages}}
         {{^first}}
         </tr><tr>
         {{/first}}
         {{#isFake}}
-        <td class="languageCell color-language" colspan="3">{{shortName}}</td>
+        <td class="languageCell color-language showRegions" colspan="3">{{shortName}}</td>
         {{/isFake}}
         {{^isFake}}
         <td class="languageCell">
