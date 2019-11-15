@@ -454,6 +454,7 @@ class Importer{
       , 'Region Gp Member Lg Name Short In This Sub-Family WebSite' => 'RegionGpMemberLgNameShortInThisSubFamilyWebsite'
       , 'Region Gp Member Lg Name Long In This Sub-Family WebSite' => 'RegionGpMemberLgNameLongInThisSubFamilyWebsite'
       , 'Bn - Include?' => 'Include'
+      , 'Colour Index For Quiz' => 'ColourIndexForQuiz'
       )
     )
   , '/^RegionGroups_(.*)\.txt$/' => array(
