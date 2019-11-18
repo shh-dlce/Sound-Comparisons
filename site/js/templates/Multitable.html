@@ -65,8 +65,13 @@
         {{/isFake}}
         {{^isFake}}
         <td class="languageCell">
+          {{#isQuiz}}
+          <span class="btn btn-small" onclick="$(this).removeClass('btn');$(this).removeClass('btn-small');$(this).text('{{quizShortName}}');$(this).parent().css('background-color', '{{{quizColor}}}')">?</span>
+          {{/isQuiz}}
+          {{^isQuiz}}
           <a class="tableLink color-language" {{{link}}} title="{{languageTtip}}">{{#shortName}}{{> LanguageSuperscript}}{{/shortName}}</a>
           <a {{{deleteLink}}} title="{{deleteTtip}}" class="remove"><i class="icon-remove-custom"></i></a>
+          {{/isQuiz}}
         </td>
         <td>
           <i class="icon-eject rotate90 multitablePlayWe" title="{{playTtip}}"></i>

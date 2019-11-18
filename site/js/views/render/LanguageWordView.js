@@ -28,6 +28,9 @@ define(['views/render/SubView'], function(SubView){
     /***/
   , updateTable: function(){
       //Setup:
+      if (Backbone.history.fragment.indexOf('QuizMode') > -1){
+        App.isQuiz = true;
+      }
       var words = App.wordCollection.getSelected()
         , rBkts = App.regionCollection.getRegionBuckets(App.languageCollection.getSelected())
         , rMap  = rBkts.rMap
@@ -96,6 +99,7 @@ define(['views/render/SubView'], function(SubView){
         table.regions = _.map(rMap, function(r, rId){
           var rgn = {
             isFake: false
+          , isQuiz: App.hasOwnProperty('isQuiz')
           , showRegionsTitle: App.translationStorage.translateStatic('show_regions_column_title')
           , rspan:  lMap[rId].length
           , rColor: r.getColor()
@@ -117,6 +121,8 @@ define(['views/render/SubView'], function(SubView){
               link:         'href="'+App.router.linkLanguageView({language: l})+'"'
             , languageTtip: l.getLongName(false)
             , shortName:    l.getSuperscript(l.getShortName())
+            , quizShortName:    l.getSuperscript(l.getShortName()).replace(/'/g, "\\'")
+            , quizColor:    App.colors.getColor(parseInt(l.attributes.FamilyIx))
             , deleteLink:   'href="'+App.router.linkLanguageWordView({languages: remaining})+'"'
             , first:        i === 0
             });
@@ -135,6 +141,19 @@ define(['views/render/SubView'], function(SubView){
                   , spelling = tr.getAltSpelling();
                 if(spelling)
                   tsc.spelling = spelling;
+                if (App.hasOwnProperty('isQuiz')){
+                  for(var j = 0; j < tsc.phonetic.length; j++){
+                    if (tsc.phonetic[j]['historical']){
+                      tsc.phonetic[j]['historical'] = false;
+                      tsc.phonetic[j]['phonetic'] = '--';
+                    }else{
+                      tsc.phonetic[j]['phonetic'] = '▶';
+                    }
+                    tsc.phonetic[j]['smallCaps'] = false;
+                    delete tsc.phonetic[j]["notCognate"];
+                  }
+                  tsc.spelling = '';
+                }
                 return tsc;
               }, this);
             }
