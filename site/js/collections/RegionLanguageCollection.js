@@ -10,10 +10,16 @@ define(['require','underscore','backbone','models/RegionLanguage'], function(req
       var as = a.sortValues()
         , bs = b.sortValues();
       while(!_.isEmpty(as) && !_.isEmpty(bs)){
-        a = parseInt(as.shift(), 10);
-        b = parseInt(bs.shift(), 10);
-        if(a > b) return  1;
-        if(a < b) return -1;
+        var ai = parseInt(as.shift(), 10);
+        var bi = parseInt(bs.shift(), 10);
+        if(as.length ==1 && ai==99 && bi != 99){
+          return 0;
+        }
+        if(as.length ==1 && bi==99 && ai != 99){
+          return 0;
+        }
+        if(ai > bi) return 1;
+        if(ai < bi) return -1;
       }
       return 0;
     }
