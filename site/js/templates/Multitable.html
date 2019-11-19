@@ -66,7 +66,7 @@
         {{^isFake}}
         <td class="languageCell">
           {{#isQuiz}}
-          <span class="btn btn-small" onclick="$(this).removeClass('btn');$(this).removeClass('btn-small');$(this).text('{{quizShortName}}');$(this).parent().css('background-color', '{{{quizColor}}}')">?</span>
+          <span class="btn btn-small" onclick="if($(this).attr('class')===''){$(this).text('?');$(this).addClass('btn btn-small');$(this).parent().css('background-color', '#FFFFFF')}else{$(this).removeClass('btn');$(this).removeClass('btn-small');$(this).text('{{quizShortName}}');$(this).parent().css('background-color', '{{{quizColor}}}')}">?</span>
           {{/isQuiz}}
           {{^isQuiz}}
           <a class="tableLink color-language" {{{link}}} title="{{languageTtip}}">{{#shortName}}{{> LanguageSuperscript}}{{/shortName}}</a>

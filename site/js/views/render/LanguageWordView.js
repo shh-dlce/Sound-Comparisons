@@ -96,7 +96,14 @@ define(['views/render/SubView'], function(SubView){
       }else{//Deal with the regions as expected:
         var clearRow = {colspan: (words.length === 0) ? 6 : words.length + 3}
           , lastFamily = -1;
-        table.regions = _.map(rMap, function(r, rId){
+        var rrMap = {};
+        _.each(rMap, function(r, rId){
+          if (App.hasOwnProperty('isQuiz') && !rId.endsWith('99')){
+            return true;
+          }
+          rrMap[rId] = r;
+        });
+        table.regions = _.map(rrMap, function(r, rId){
           var rgn = {
             isFake: false
           , isQuiz: App.hasOwnProperty('isQuiz')
@@ -115,6 +122,17 @@ define(['views/render/SubView'], function(SubView){
             deleteTtip: 'tabulator_multi_tooltip_removeLanguage'
           , playTtip:   'tabulator_multi_playlang'
           });
+          if (App.hasOwnProperty('isQuiz')){
+            var qLgs = [];
+            App.regionLanguageCollection.models.filter(function(r){
+              if (r.getRegionId() == '10099') {
+                qLgs.push(r._language);
+              }
+            });
+            console.log(lMap[rId]);
+            console.log(qLgs);
+            lMap[rId] = qLgs;
+          }
           rgn.languages = _.map(lMap[rId], function(l, i){
             var remaining = App.languageCollection.getDifference(_.flatten(_.values(lMap)), [l])
               , lng = _.extend({}, lBase, {
