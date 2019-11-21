@@ -31,6 +31,7 @@ define(['views/render/SubView'], function(SubView){
       if (Backbone.history.fragment.indexOf('QuizMode') > -1){
         App.isQuiz = true;
       }
+      var quizRegions = ['10090', '10091', '10092', '10093', '10094'];
       var words = App.wordCollection.getSelected()
         , rBkts = App.regionCollection.getRegionBuckets(App.languageCollection.getSelected())
         , rMap  = rBkts.rMap
@@ -98,8 +99,14 @@ define(['views/render/SubView'], function(SubView){
           , lastFamily = -1;
         var rrMap = {};
         _.each(rMap, function(r, rId){
-          if (App.hasOwnProperty('isQuiz') && !rId.endsWith('99')){
-            return true;
+          if (App.hasOwnProperty('isQuiz')){
+            if (!quizRegions.includes(rId)){
+              return true;
+            }
+          } else {
+            if (quizRegions.includes(rId)){
+              return true;
+            }
           }
           rrMap[rId] = r;
         });
@@ -122,17 +129,6 @@ define(['views/render/SubView'], function(SubView){
             deleteTtip: 'tabulator_multi_tooltip_removeLanguage'
           , playTtip:   'tabulator_multi_playlang'
           });
-          if (App.hasOwnProperty('isQuiz')){
-            var qLgs = [];
-            App.regionLanguageCollection.models.filter(function(r){
-              if (r.getRegionId() == '10099') {
-                qLgs.push(r._language);
-              }
-            });
-            console.log(lMap[rId]);
-            console.log(qLgs);
-            lMap[rId] = qLgs;
-          }
           rgn.languages = _.map(lMap[rId], function(l, i){
             var remaining = App.languageCollection.getDifference(_.flatten(_.values(lMap)), [l])
               , lng = _.extend({}, lBase, {
