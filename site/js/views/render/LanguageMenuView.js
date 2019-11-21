@@ -42,6 +42,15 @@ define(['underscore','backbone','views/ContributorImageView'], function(_, Backb
       if(App.study.getColorByFamily()){
         var families = [], fCol = App.familyCollection;
         fCol.each(function(f){
+          if (App.hasOwnProperty('isQuiz')){
+            if (f.get('FamilyNm') != 'Europe'){
+              return false;
+            }
+          } else {
+            if (f.get('FamilyNm') == 'Europe'){
+              return true;
+            }
+          }
           //Checking if we got regions:
           var regions = f.getRegions();
           if(regions.length === 0) return;
@@ -92,12 +101,16 @@ define(['underscore','backbone','views/ContributorImageView'], function(_, Backb
       Helperfunction for updateTree that builds a RegionList for a given collection of regions.
     */
   , buildRegionTree: function(regions){
+      var quizRegions = ['10090', '10091', '10092', '10093', '10094'];
       var regionList = {
         isDl: !App.study.getColorByFamily()
       , regions: []
       }, lCol = App.languageCollection;
       var id_cnt = 0;
       regions.each(function(r){
+        if (App.hasOwnProperty('isQuiz') && !quizRegions.includes(r.getId())) {
+          return true;
+        }
         id_cnt++;
         var languages = r.getLanguages();
         if(languages.length === 0){
