@@ -101,7 +101,7 @@ define(['underscore','backbone','views/ContributorImageView'], function(_, Backb
       Helperfunction for updateTree that builds a RegionList for a given collection of regions.
     */
   , buildRegionTree: function(regions){
-      var quizRegions = ['10090', '10091', '10092', '10093', '10094'];
+      var quizRegions = ['10090', '10091', '10092', '10093', '10094', '11090', '11091', '11092', '11093', '11094'];
       var regionList = {
         isDl: !App.study.getColorByFamily()
       , regions: []
