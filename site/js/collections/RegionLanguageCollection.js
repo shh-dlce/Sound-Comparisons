@@ -18,6 +18,36 @@ define(['require','underscore','backbone','models/RegionLanguage'], function(req
         if(as.length ==1 && bi==99 && ai != 99){
           return 0;
         }
+        if(as.length ==1 && ai==90 && bi != 90){
+          return 0;
+        }
+        if(as.length ==1 && bi==90 && ai != 90){
+          return 0;
+        }
+        if(as.length ==1 && ai==91 && bi != 91){
+          return 0;
+        }
+        if(as.length ==1 && bi==91 && ai != 91){
+          return 0;
+        }
+        if(as.length ==1 && ai==92 && bi != 92){
+          return 0;
+        }
+        if(as.length ==1 && bi==92 && ai != 92){
+          return 0;
+        }
+        if(as.length ==1 && ai==93 && bi != 93){
+          return 0;
+        }
+        if(as.length ==1 && bi==93 && ai != 93){
+          return 0;
+        }
+        if(as.length ==1 && ai==94 && bi != 94){
+          return 0;
+        }
+        if(as.length ==1 && bi==94 && ai != 94){
+          return 0;
+        }
         if(ai > bi) return 1;
         if(ai < bi) return -1;
       }

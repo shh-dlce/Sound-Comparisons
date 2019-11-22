@@ -31,7 +31,7 @@ define(['views/render/SubView'], function(SubView){
       if (Backbone.history.fragment.indexOf('QuizMode') > -1){
         App.isQuiz = true;
       }
-      var quizRegions = ['10090', '10091', '10092', '10093', '10094'];
+      var quizRegions = ['10090', '10091', '10092', '10093', '10094', '11090', '11091', '11092', '11093', '11094'];
       var words = App.wordCollection.getSelected()
         , rBkts = App.regionCollection.getRegionBuckets(App.languageCollection.getSelected())
         , rMap  = rBkts.rMap
