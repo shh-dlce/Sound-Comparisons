@@ -405,6 +405,8 @@ class Importer{
       , 'Speaker First Names' => 'SpeakerFirstNames'
       , 'ABVD Language Name' => 'ABVDLanguageName'
       , 'ABVD Language ID Number' => 'ABVDLanguageID'
+      , 'Is This A Proto-Language' => 'isProtoLanguage'
+      , 'Bn: Transcriptions Assumed Only' => 'isTransAssumed'
       )
 )
   , '/^LanguageStatusTypes\.txt$/' => array(
