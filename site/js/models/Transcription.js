@@ -192,7 +192,7 @@ define(['underscore','backbone'], function(_, Backbone){
           , word     = this.get('word')
           , p = { // Data gathered for phonetic:
               isProtoLg:        (language.isProtoLg() && phonetic !== '--')
-            , isTransAssumed:   language.isHistorical() && !language.isProtoLg()
+            , isTransAssumed:   language.isHistorical() && !language.isProtoLg() && phonetic !== '--'
             , fileMissing: source.length === 0
             , smallCaps:   phonetic === 'play'
             , phonetic:    phonetic
