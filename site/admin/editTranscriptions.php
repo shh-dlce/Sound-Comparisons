@@ -498,6 +498,7 @@ if(!session_mayEdit($dbConnection))
       <?php
       $head = '<tr>'
                 .'<th><a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;Phonetic <small>as regex</small></th>'
+                .'<th>AltPron</th>'
                 .'<th>AltLex</th>'
                 .'<th>NotCog</th>'
                 .'<th>WCogID</th>'
@@ -508,9 +509,15 @@ if(!session_mayEdit($dbConnection))
              .'</tr>';
       echo "<thead>$head</thead>";
       $trTable = DataProvider::transcriptionTable($_GET['study']);
+      $cnt = 0;
       foreach($trTable as $t){
         echo "<tr data-transcrid='".$t['transcrid']."' data-study='".$_GET['study']."'>";
-        echo "<td><a class='btn btn-small save' style='margin-top:-11px'><i title='Save' class='icon-hdd'></i></a><span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:150px;font-family:Charis SIL;'></td>";
+        if(strlen($t['url'])>0){
+          echo "<td><a class='btn btn-small save' style='margin-top:-11px'><i title='Save' class='icon-hdd'></i></a><span class='hide'>".$t['Phonetic']."</span><audio id='player".$cnt."' preload='none' src='".$t['url']."'></audio><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:150px;font-family:Charis SIL;'><a class='btn btn-small' onclick=\"document.getElementById('player".$cnt."').play()\" style='margin-top:-11px;padding:0px'>&nbsp;▶︎&nbsp;</a></td>";
+        }else{
+          echo "<td><a class='btn btn-small save' style='margin-top:-11px'><i title='Save' class='icon-hdd'></i></a><span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:150px;font-family:Charis SIL;'></td>";
+        }
+        echo "<td><span class='searchval hide'>".$t['AlternativePhoneticRealisationIx']."</span><input data-field='AlternativePhoneticRealisationIx' class='AlternativePhoneticRealisationIx' type='text' value='".$t['AlternativePhoneticRealisationIx']."' style='width:50px;'></td>";
         echo "<td><span class='searchval hide'>".$t['AlternativeLexemIx']."</span><input data-field='AlternativeLexemIx' class='AlternativeLexemIx' type='text' value='".$t['AlternativeLexemIx']."' style='width:50px;'></td>";
         if($t['NotCog'] > 0){
           echo "<td><span class='searchval hide'>".$t['NotCog']."</span><input data-field='NotCognateWithMainWordInThisFamily' class='NotCog' type='checkbox' checked style='width:50px;'></td>";
@@ -521,8 +528,9 @@ if(!session_mayEdit($dbConnection))
         echo "<td><span class='searchval hide'>".$t['WCogIDFine']."</span><input data-field='WCogIDFine' class='WCogIDFine' type='text' value='".$t['WCogIDFine']."' style='width:50px;'></td>";
         echo "<td>".$t['Word']."</td>";
         echo "<td>".$t['ShortName']."</td>";
-        echo "<td>".$t['LgIxFPP']."</td>";
+        echo "<td><span style='font-size:70%'>".$t['LgIxFPP']."</span></td>";
         echo "</tr>";
+        $cnt = $cnt + 1;
       }
       ?>
       </table>
@@ -620,6 +628,7 @@ if(!session_mayEdit($dbConnection))
           table.on('change', 'input.WCogIDFine', function(){$(this).changeInRow();});
           table.on('change', 'input.NotCog', function(){$(this).changeInRow();});
           table.on('change', 'input.AlternativeLexemIx', function(){$(this).changeInRow();});
+          table.on('change', 'input.AlternativePhoneticRealisationIx', function(){$(this).changeInRow();});
           $("#saveAllBtn").on('click', function(){
             var s = table.page.len();
             table.page.len( -1 ).draw();

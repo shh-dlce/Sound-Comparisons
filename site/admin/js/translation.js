@@ -22,7 +22,12 @@ $(document).ready(function(){
       var btn = $(this).changeInRow()
         , txt = btn.closest('td').find('span').text()
         , tgt = btn.closest('tr').find('input.translation');
-      tgt.val(txt);
+      var a = txt.split(' | ');
+      if((a.length==2)){
+        tgt.val(a[1]);
+      }else{
+        tgt.val(a[0]);
+      }
     });
     //Inputs:
     table.on('change', 'input.translation', function(){$(this).changeInRow();});
