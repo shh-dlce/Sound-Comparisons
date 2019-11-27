@@ -39,11 +39,44 @@
           $totalNumber = 0;
           $missing = 0;
           foreach($theKeys as $k){
-            foreach($tdata[$k] as $r){
-              if(strlen(trim($r["Original"])) > 0){
+            foreach($tdata[$k] as $r => $v){
+              if(strlen(trim($v["Original"])) > 0){
                 $totalNumber += 1;
-                if(strlen(trim($r["Translation"]["Translation"])) === 0){
+                if(strlen(trim($v["Translation"]["Translation"])) === 0){
                   $missing += 1;
+                  if($translationId != 1){
+                    $org = $v["Original"];
+                    $trn = '';
+                    $q = "SELECT DISTINCT trans FROM Page_DynamicTranslation WHERE field IN (SELECT field FROM Page_DynamicTranslation WHERE trans = '$org') AND TranslationId = $translationId LIMIT 1";
+                    $set = $dbConnection->query($q);
+                    if(count($set)==1){
+                      while($qq = $set->fetch_assoc()){
+                        $trn = $qq["trans"];
+                        break;
+                      }
+                    }
+                    if(strlen($trn) == 0){
+                      $q = "SELECT DISTINCT concat(IxElicitation, IxMorphologicalInstance) AS i FROM Words WHERE FullRfcModernLg01 = '$org' LIMIT 1;";
+                      $set = $dbConnection->query($q);
+                      if(count($set)==1){
+                        $ix = '';
+                        while($qq = $set->fetch_assoc()){
+                          $ix = $qq["i"];
+                          break;
+                        }
+                        $q = "SELECT DISTINCT trans FROM Page_DynamicTranslation WHERE field LIKE '%-".$ix."' AND TranslationId = $translationId LIMIT 1;";
+                        $set = $dbConnection->query($q);
+                        while($qq = $set->fetch_assoc()){
+                          $trn = $qq["trans"];
+                          break;
+                        }
+                      }
+                    }
+                    if(strlen($trn)>0){
+                      $tdata[$k][$r]["Original"] = "$org | $trn";
+                    }
+                    
+                  }
                 }
               }
             }
