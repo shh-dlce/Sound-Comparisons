@@ -366,17 +366,11 @@ define(['require',
     }
     /***/
   , isHistorical: function(){
-      var rs = this.getRegions();
-      for(var i = 0; i < rs.models.length; i++){
-        if(rs.models[i].isHistorical())
-          return true;
-      }
-      return false;
+      return parseInt(this.get('isTransAssumed')) === 1;
     }
     /***/
-  , isProto: function(){
-      var names = [this.getShortName(), this.get('ShortName')];
-      return _.any(names, function(n){return _.isArray(n.match(/^Proto-/));});
+  , isProtoLg: function(){
+      return parseInt(this.get('isProtoLanguage')) === 1;
     }
     /**
       @return iso String || null

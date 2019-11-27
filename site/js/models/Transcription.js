@@ -175,10 +175,7 @@ define(['underscore','backbone'], function(_, Backbone){
       //Sanitizing phonetics:
       if(_.isEmpty(phonetics)){
         phonetics = [];
-        var lg = this.get('language');
-        if(lg.isProto() || lg.isHistorical()){
-          phonetics.push('*');
-        }else if(sources.length > 0 && sources[0].length > 0){
+        if(sources.length > 0 && sources[0].length > 0){
             phonetics.push('▶');
         }else{
           phonetics.push('--');
@@ -194,7 +191,8 @@ define(['underscore','backbone'], function(_, Backbone){
           , language = this.get('language')
           , word     = this.get('word')
           , p = { // Data gathered for phonetic:
-              historical:  language.isHistorical()
+              isProtoLg:        (language.isProtoLg() && phonetic !== '--')
+            , isTransAssumed:   language.isHistorical() && !language.isProtoLg()
             , fileMissing: source.length === 0
             , smallCaps:   phonetic === 'play'
             , phonetic:    phonetic
@@ -257,7 +255,7 @@ define(['underscore','backbone'], function(_, Backbone){
   , getAltSpelling: function(){
       var language = this.get('language'), alts = this.getSpellingAltv();
       if(alts.length > 0){
-        var proto  = language.isProto() ? '*' : ''
+        var proto  = (language.isProtoLg() && alts !== '--') ? '*' : ''
           , altSp  = proto + alts[0];
         return altSp;
       }
