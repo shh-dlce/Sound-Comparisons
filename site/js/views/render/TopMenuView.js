@@ -440,8 +440,8 @@ https://icphs2019.org/icphs2019-fullpapers/pdf/full-paper_490.pdf\
         , about: 'topmenu_about_research'}
       , { link:  'topmenu_about_contact_href'
         , about: 'topmenu_about_contact'}
-      , { link:  'topmenu_about_funding_href'
-        , about: 'topmenu_about_funding'}
+      , { link:  'topmenu_about_fundingtext_href'
+        , about: 'topmenu_about_fundingtext'}
       , { link:  'topmenu_about_imprint_href'
         , about: 'topmenu_about_imprint'}
       , { link:  'topmenu_about_privacypolicy_href'
