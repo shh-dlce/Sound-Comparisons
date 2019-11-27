@@ -212,14 +212,13 @@ define(['views/render/SubView',
         //proxyColor added for #364
         var proxyColor = function(o){
           if (window.App.storage.ColoriseDataAs === 'cognate') {
-            // if(App.study.getId() === 'Malakula'){
-            //   o.color = '#CFFF7C';
-            //   return o;
-            // }
             if (tr !== null) {
               var cognState = tr.getCognateState();
-              // 0 := is cognate; -1 := undefined
+              // 0 := is cognate; -1 := undefined; -2 := ref lg
               switch(cognState) {
+                case -2:
+                  o.color = '#AAAAAA';
+                  break;
                 case -1:
                   o.color = '#FFFFFF';
                   break;
@@ -241,8 +240,23 @@ define(['views/render/SubView',
                 case 6:
                   o.color = '#FECECE';
                   break;
+                case 7:
+                  o.color = '#FFD8B1';
+                  break;
+                case 8:
+                  o.color = '#AAFFC3';
+                  break;
+                case 9:
+                  o.color = '#E6BEFF';
+                  break;
+                case 10:
+                  o.color = '#BFEF45';
+                  break;
+                case 11:
+                  o.color = '#F58231';
+                  break;
                 default:
-                  o.color = '#FFFFFF';
+                  o.color = '#00AA11';
                 }
             } else {
               o.color = '#FFFFFF';
@@ -256,6 +270,7 @@ define(['views/render/SubView',
         , translation:        word.getNameFor(l)
         , latlng:             latlng
         , historical:         l.isHistorical() ? 1 : 0
+        , isProtoLg:          l.isProtoLg() ? 1 : 0
         , phoneticSoundfiles: psf
         , langName:           l.getShortName()
         , languageLink:       'href="'+App.router.linkLanguageView({language: l})+'"'

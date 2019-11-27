@@ -1,11 +1,10 @@
 <a class="editTrans" style="color:black;" target="_edit" href="admin/editTranscription.php?d={{pk}}">&nbsp;</a>
 <div class="audio">
-  {{#historical}}*{{/historical}}
+  {{#isProtoLg}}*{{/isProtoLg}}
+  {{#isTransAssumed}}<sup>?</sup>{{/isTransAssumed}}
   {{#hasTrans}}[{{/hasTrans}}
-  {{^hasTrans}}|{{/hasTrans}}
   <div class="transcription{{#fileMissing}} fileMissing{{/fileMissing}}"{{#smallCaps}} style="font-variant: small-caps;"{{/smallCaps}}>{{{phonetic}}}</div>
   {{#hasTrans}}]{{/hasTrans}}
-  {{^hasTrans}}|{{/hasTrans}}
   {{#subscript}}
   <div class="subscript" title="{{ttip}}">{{subscript}}</div>
   {{/subscript}}

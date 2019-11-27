@@ -65,8 +65,10 @@ define(['underscore',
         }
         var smallCaps = (sf.phonetic === 'play')
                       ? ' style="font-variant: small-caps;"' : '';
-        if(data.historical === 1){
+        if(data.isProtoLg === 1){
           sf.phonetic = "*" + sf.phonetic;
+        }else if(data.historical === 1){
+          sf.phonetic = "<sup>?</sup>" + sf.phonetic;
         }
         return '<div style="display: inline;">'
              + '<div class="transcription' + fileMissing + '"'+smallCaps+'>'
