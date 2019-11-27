@@ -406,6 +406,15 @@ class DataProvider {
 
     $db  = Config::getConnection();
     $n   = $db->escape_string($studyName);
+    $urls = array();
+    $q   = "SELECT t.SpellingAltv1, t.IxElicitation, t.IxMorphologicalInstance, t.AlternativePhoneticRealisationIx, t.AlternativeLexemIx, t.LanguageIx, l.FilePathPart, l.ShortName, t.Phonetic, t.WCogID,t.WCogIDFine, t.NotCognateWithMainWordInThisFamily, w.FullRfcModernLg01 AS Word, REGEXP_REPLACE(s.urls, '.*/(.*?)/(.*?)\\\\.(mp3).*', 'https://cdstar.shh.mpg.de/bitstreams/\\\\1/\\\\2.\\\\3') AS url FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w, soundfiles AS s WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation AND s.LanguageIx = l.LanguageIx AND s.AlternativeLexemIx = t.AlternativeLexemIx AND s.AlternativePhoneticRealisationIx = t.AlternativePhoneticRealisationIx AND s.IxElicitation = t.IxElicitation AND s.IxMorphologicalInstance = t.IxMorphologicalInstance ORDER BY t.IxElicitation, l.LanguageIx";
+    $set = static::fetchAll($q);
+    if(count($set) > 0){
+      foreach($set as $t){
+        $tid = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+        $urls[$tid] = $t['url'];
+      }
+    }
     $q   = "SELECT t.SpellingAltv1, t.IxElicitation, t.IxMorphologicalInstance, t.AlternativePhoneticRealisationIx, t.AlternativeLexemIx, t.LanguageIx, l.FilePathPart, l.ShortName, t.Phonetic, t.WCogID,t.WCogIDFine, t.NotCognateWithMainWordInThisFamily, w.FullRfcModernLg01 AS Word FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation ORDER BY t.IxElicitation, l.LanguageIx";
     $set = static::fetchAll($q);
     if(count($set) > 0){
@@ -423,7 +432,13 @@ class DataProvider {
         $data['IxMorphologicalInstance'] = $t['IxMorphologicalInstance'];
         $data['AlternativePhoneticRealisationIx'] = $t['AlternativePhoneticRealisationIx'];
         $data['AlternativeLexemIx'] = $t['AlternativeLexemIx'];
-        $data['transcrid'] = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+        $transcrid = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+        if(array_key_exists($transcrid, $urls)){
+          $data['url'] = $urls[$transcrid];
+        }else{
+          $data['url'] = '';
+        }
+        $data['transcrid'] = $transcrid;
         array_push(static::$transcriptionTable, $data);
       }
     }
