@@ -206,6 +206,10 @@ define(['underscore','backbone'], function(_, Backbone){
                            , n:        i }
             , wordByWord:  wordByWord
           };
+        if(p.phonetic === ''){
+          p.phonetic = '--';
+          continue;
+        }
         //Guarding for #351:
         if(hideNoTrans !== 'undefined' && hideNoTrans){
           if(_.some(['--','..','...','…'], function(s){return p.phonetic === s;})){
@@ -255,9 +259,14 @@ define(['underscore','backbone'], function(_, Backbone){
   , getAltSpelling: function(){
       var language = this.get('language'), alts = this.getSpellingAltv();
       if(alts.length > 0){
-        var proto  = (language.isProtoLg() && alts !== '--') ? '*' : ''
-          , altSp  = proto + alts[0];
-        return altSp;
+        var proto  = (language.isProtoLg() && alts !== '--') ? '*' : '';
+        var altSps = [];
+        _.each(alts, function(a){
+          if(!altSps.includes(proto + a)){
+            altSps.push(proto + a);
+          }
+        });
+        return altSps.join(', ');
       }
       return null;
     }
