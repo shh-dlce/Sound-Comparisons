@@ -195,7 +195,7 @@ define(['underscore','backbone'], function(_, Backbone){
             , isTransAssumed:   language.isHistorical() && !language.isProtoLg() && phonetic !== '--'
             , fileMissing: source.length === 0
             , smallCaps:   phonetic === 'play'
-            , phonetic:    (this.get('transStudy') === 'Mixe') ? '▶' : phonetic
+            , phonetic:    (this.get('transStudy') === 'Mixe' && !language.isProtoLg()) ? '▶' : phonetic
             , pk: this.get('transStudy')+"|"+language.getId()+"|"+word.getId()
             , srcs:        JSON.stringify(source)
             , _srcs:       this.filterSoundfiles(source)
