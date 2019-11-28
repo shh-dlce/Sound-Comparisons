@@ -12,8 +12,8 @@ $(document).ready(function(){
       , {searchable: true}
       ]
     , lengthMenu: [
-        [ 10, 50, 100, 1000, -1 ],
-        [ '10 rows', '50 rows', '100 rows', '1000 rows', 'Show all' ]
+        [ 50, 100, 1000, -1 ],
+        [ '50 rows', '100 rows', '1000 rows', 'Show all' ]
       ]
     });
     tables.push(table);
