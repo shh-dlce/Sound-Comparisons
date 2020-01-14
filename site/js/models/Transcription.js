@@ -186,14 +186,14 @@ define(['underscore','backbone'], function(_, Backbone){
       var wordByWord = App.pageState.get('wordByWord');
       for(var i = 0; i < phonetics.length; i++){
         var phonetic = phonetics[i]//String
-          , source   = sources.shift() || []//[String]
+          , source   = sources[i]
           , wcogid   = wcogids.shift()
           , language = this.get('language')
           , word     = this.get('word')
           , p = { // Data gathered for phonetic:
               isProtoLg:        (language.isProtoLg() && phonetic !== '--')
             , isTransAssumed:   language.isHistorical() && !language.isProtoLg() && phonetic !== '--'
-            , fileMissing: source.length === 0
+            , fileMissing: source.length == 0 || source[0].length == 0
             , smallCaps:   phonetic === 'play'
             , phonetic:    (this.get('transStudy') === 'Mixe' && !language.isProtoLg()) ? '▶' : phonetic
             , pk: this.get('transStudy')+"|"+language.getId()+"|"+word.getId()

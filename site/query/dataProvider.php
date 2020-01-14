@@ -355,7 +355,7 @@ class DataProvider {
         foreach($set as $t){
           $tKey = $t['LanguageIx'].$t['IxElicitation'].$t['IxMorphologicalInstance'];
           $sfKey = $tKey.$t['AlternativePhoneticRealisationIx'].$t['AlternativeLexemIx'];
-          $t['soundPaths'] = isset($soundFiles[$sfKey]) ? json_decode($soundFiles[$sfKey]) : [];
+          $t['soundPaths'] = isset($soundFiles[$sfKey]) ? json_decode($soundFiles[$sfKey]) : [''];
           $transStudy = $n;
           $t['transStudy'] = $transStudy;
           //Merging transcriptions:
