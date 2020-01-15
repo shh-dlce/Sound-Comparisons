@@ -186,7 +186,7 @@ define(['underscore','backbone'], function(_, Backbone){
       var wordByWord = App.pageState.get('wordByWord');
       for(var i = 0; i < phonetics.length; i++){
         var phonetic = phonetics[i]//String
-          , source   = sources[i]
+          , source   = sources.shift() || ''
           , wcogid   = wcogids.shift()
           , language = this.get('language')
           , word     = this.get('word')
