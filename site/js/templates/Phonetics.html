@@ -3,8 +3,10 @@
   {{#isProtoLg}}*{{/isProtoLg}}
   {{#isTransAssumed}}<sup>?</sup>{{/isTransAssumed}}
   {{#hasTrans}}[{{/hasTrans}}
+  {{^hasTrans}}/{{/hasTrans}}
   <div class="transcription{{#fileMissing}} fileMissing{{/fileMissing}}"{{#smallCaps}} style="font-variant: small-caps;"{{/smallCaps}}>{{{phonetic}}}</div>
   {{#hasTrans}}]{{/hasTrans}}
+  {{^hasTrans}}/{{/hasTrans}}
   {{#subscript}}
   <div class="subscript" title="{{ttip}}">{{subscript}}</div>
   {{/subscript}}
