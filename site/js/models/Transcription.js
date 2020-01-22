@@ -175,7 +175,7 @@ define(['underscore','backbone'], function(_, Backbone){
       //Sanitizing phonetics:
       if(_.isEmpty(phonetics)){
         phonetics = [];
-        if(sources.length > 0 && sources[0].length > 0){
+        if(sources.length > 0 && sources[0].length > 0 && sources[0][0].length > 0){
             phonetics.push('▶');
         }else{
           phonetics.push('--');

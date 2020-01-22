@@ -309,7 +309,7 @@ define(['views/render/SubView'], function(SubView){
             cellCount--;
           }, this);
           //Handling empty languageCells:
-          for(;cellCount > 0; cellCount--){ls.push({isLanguageCell: true});}
+          for(;cellCount > 0; cellCount--){ls.push({isLanguageCell: false});}
           lss.push(ls);
           //Filling regions from lss:
           _.each(lss, function(ls, i){
