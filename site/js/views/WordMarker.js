@@ -54,7 +54,7 @@ define(['underscore',
       var content = _.map(data.phoneticSoundfiles, function(sf){
         //Building audioelements:
         var audio = '';
-        if(sf.soundfiles.length > 0){
+        if(sf.soundfiles.length > 0 && sf.soundfiles[0].length > 0){
           audio = '<audio '
                 + 'data-onDemand=\'' + JSON.stringify(sf.soundfiles) + '\' '
                 + 'autobuffer="" preload="auto"></audio>';
