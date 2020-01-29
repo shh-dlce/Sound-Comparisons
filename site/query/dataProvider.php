@@ -333,9 +333,29 @@ class DataProvider {
   public static function getTranscriptions($studyName, $soundFiles = array()){
     $ret = array();
     $db  = Config::getConnection();
-    $n   = $db->escape_string($studyName);
+    $nquery   = $db->escape_string($studyName);
     // Fetch all studies involved - e.g. as for Andean where Mapudungun is a subset of Andean
-    $allStudyNames = static::fetchAll("SELECT Name FROM Studies WHERE StudyIx = (SELECT StudyIx FROM Studies WHERE Name = '$n')");
+    $allStudyNames = static::fetchAll("SELECT StudyIx, FamilyIx, SubFamilyIx, Name "
+      ."FROM Studies WHERE Name = '$nquery' "
+      ."UNION "
+      ."SELECT StudyIx, FamilyIx, SubFamilyIx, Name "
+      ."FROM Studies "
+      ."WHERE "
+      ."StudyIx = (SELECT StudyIx FROM Studies WHERE Name = '$nquery') "
+      ."AND "
+      ."(CASE "
+      ."WHEN (SELECT FamilyIx FROM Studies WHERE Name = '$nquery') = 0 "
+      ."AND "
+      ."(SELECT SubFamilyIx FROM Studies WHERE Name = '$nquery') = 0 "
+      ."THEN FamilyIx > 0 OR SubFamilyIx > 0 "
+      ."END "
+      ."OR "
+      ."CASE "
+      ."WHEN (SELECT FamilyIx FROM Studies WHERE Name = '$nquery') > 0 "
+      ."AND "
+      ."(SELECT SubFamilyIx FROM Studies WHERE Name = '$nquery') = 0 "
+      ."THEN FamilyIx = (SELECT FamilyIx FROM Studies WHERE Name = '$nquery') AND SubFamilyIx > 0 "
+      ."END)");
     $not_array_fields = array('LanguageIx', 'IxElicitation', 'IxMorphologicalInstance', 'FamilyIx', 'StudyIx', 'transStudy');
     $transStudy = NULL;
     foreach($allStudyNames as $sn) {
@@ -346,7 +366,7 @@ class DataProvider {
         ."and t.AlternativePhoneticRealisationIx > 1 then concat('_pron', t.AlternativePhoneticRealisationIx) "
         ."when t.AlternativeLexemIx > 1 and t.AlternativePhoneticRealisationIx > 1 then "
         ."concat('_lex', t.AlternativeLexemIx,'_pron', t.AlternativePhoneticRealisationIx) "
-        ."else '' end) AS path FROM Transcriptions_$n AS t, Languages_$n AS l, Words_$n AS w "
+        ."else '' end) AS path FROM Transcriptions_$n AS t, Languages_$nquery AS l, Words_$nquery AS w "
         ."WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation "
         ."AND t.IxMorphologicalInstance = w.IxMorphologicalInstance ORDER BY t.LanguageIx, t.IxElicitation, "
         ."t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
