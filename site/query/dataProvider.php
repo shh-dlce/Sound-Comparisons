@@ -427,7 +427,7 @@ class DataProvider {
     $db  = Config::getConnection();
     $n   = $db->escape_string($studyName);
     $urls = array();
-    $q   = "SELECT t.SpellingAltv1, t.IxElicitation, t.IxMorphologicalInstance, t.AlternativePhoneticRealisationIx, t.AlternativeLexemIx, t.LanguageIx, l.FilePathPart, l.ShortName, t.Phonetic, t.WCogID,t.WCogIDFine, t.NotCognateWithMainWordInThisFamily, w.FullRfcModernLg01 AS Word, REGEXP_REPLACE(s.urls, '.*/(.*?)/(.*?)\\\\.(mp3).*', 'https://cdstar.shh.mpg.de/bitstreams/\\\\1/\\\\2.\\\\3') AS url FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w, soundfiles AS s WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation AND s.LanguageIx = l.LanguageIx AND s.AlternativeLexemIx = t.AlternativeLexemIx AND s.AlternativePhoneticRealisationIx = t.AlternativePhoneticRealisationIx AND s.IxElicitation = t.IxElicitation AND s.IxMorphologicalInstance = t.IxMorphologicalInstance ORDER BY t.IxElicitation, l.LanguageIx";
+    $q   = "SELECT s.IxElicitation, s.IxMorphologicalInstance, s.AlternativePhoneticRealisationIx, s.AlternativeLexemIx, s.LanguageIx,  REGEXP_REPLACE(s.urls, '.*/(.*?)/(.*?)\\\\.(mp3).*', 'https://cdstar.shh.mpg.de/bitstreams/\\\\1/\\\\2.\\\\3') AS url FROM Languages_$n AS l, Words_$n AS w, soundfiles AS s WHERE s.LanguageIx = l.LanguageIx AND s.IxElicitation = w.IxElicitation AND s.IxMorphologicalInstance = w.IxMorphologicalInstance";
     $set = static::fetchAll($q);
     if(count($set) > 0){
       foreach($set as $t){
@@ -435,7 +435,7 @@ class DataProvider {
         $urls[$tid] = $t['url'];
       }
     }
-    $q   = "SELECT t.SpellingAltv1, t.IxElicitation, t.IxMorphologicalInstance, t.AlternativePhoneticRealisationIx, t.AlternativeLexemIx, t.LanguageIx, l.FilePathPart, l.ShortName, t.Phonetic, t.WCogID,t.WCogIDFine, t.NotCognateWithMainWordInThisFamily, w.FullRfcModernLg01 AS Word FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation ORDER BY t.IxElicitation, l.LanguageIx";
+    $q   = "SELECT t.SpellingAltv1, t.IxElicitation, t.IxMorphologicalInstance, t.AlternativePhoneticRealisationIx, t.AlternativeLexemIx, t.LanguageIx, l.FilePathPart, l.ShortName, t.Phonetic, t.WCogID,t.WCogIDFine, t.NotCognateWithMainWordInThisFamily, w.FullRfcModernLg01 AS Word FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation AND t.IxMorphologicalInstance = w.IxMorphologicalInstance ORDER BY t.IxElicitation, l.LanguageIx";
     $set = static::fetchAll($q);
     if(count($set) > 0){
       foreach($set as $t){
