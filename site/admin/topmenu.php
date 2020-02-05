@@ -31,7 +31,7 @@
            $m = $m . '<li class="divider"></li>'
            . '<li><a href="export01.php">Export Study Data (Edictor TSV)</a></li>'
            . '<li><a href="exportSQLDump.php">Export Database Data (SQL format)</a></li>'
-           . '<li><a href="editTranscriptions.php">Edit Transcriptions</a></li>';
+           . '<li><a href="editTranscriptions2.php">Edit Transcriptions</a></li>';
         }
         $m = $m . '</ul></li>';
         echo $m;

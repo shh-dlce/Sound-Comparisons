@@ -47,4 +47,6 @@ th.rotate90 > div {
     rotate(270deg);
   width: 0px;
 }
-
+.dataTables_length{
+  padding-left:20px !important;
+}

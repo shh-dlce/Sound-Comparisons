@@ -19,6 +19,7 @@ class DataProvider {
   public static $checkFilePathsNumberOfWords = 0;
   public static $checkFilePathsForLanguageIx = array();
   public static $transcriptionTable = array();
+  public static $transcriptionTable2 = array();
   public static $editTranscriptionTable = array();
   public static $editTranscriptionMetaData = array();
   /**
@@ -468,6 +469,38 @@ class DataProvider {
     @param $studyName String
     @return array of dicts
   */
+  public static function transcriptionTable2($studyName){
+
+    $db  = Config::getConnection();
+    $n   = $db->escape_string($studyName);
+    $urls = array();
+    $q   = "SELECT s.IxElicitation, s.IxMorphologicalInstance, s.AlternativePhoneticRealisationIx, s.AlternativeLexemIx, s.LanguageIx,  REGEXP_REPLACE(s.urls, '.*/(.*?)/(.*?)\\\\.(mp3).*', 'https://cdstar.shh.mpg.de/bitstreams/\\\\1/\\\\2.\\\\3') AS url FROM Languages_$n AS l, Words_$n AS w, soundfiles AS s WHERE s.LanguageIx = l.LanguageIx AND s.IxElicitation = w.IxElicitation AND s.IxMorphologicalInstance = w.IxMorphologicalInstance";
+    $set = static::fetchAll($q);
+    if(count($set) > 0){
+      foreach($set as $t){
+        $tid = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+        $urls[$tid] = $t['url'];
+      }
+    }
+    $q   = "SELECT l.ShortName, w.FullRfcModernLg01 AS Word, t.StudyIx,t.FamilyIx,t.IxElicitation,t.IxMorphologicalInstance,t.AlternativePhoneticRealisationIx,t.AlternativeLexemIx,t.LanguageIx,t.Phonetic,t.SpellingAltv1,t.SpellingAltv2,t.NotCognateWithMainWordInThisFamily,t.WCogID,t.WCogIDFine,t.CommonRootMorphemeStructDifferent,t.DifferentMeaningToUsualForCognate,t.ActualMeaningInThisLanguage,t.OtherLexemeInLanguageForMeaning,t.RootIsLoanWordFromKnownDonor,t.RootSharedInAnotherFamily,t.IsoCodeKnownDonor,t.DifferentMorphemeStructureNote,t.OddPhonology,t.OddPhonologyNote,t.UsageNote,t.SoundProblem,t.ReconstructedOrHistQuestionable,t.ReconstructedOrHistQuestionableNote,t.RecordingMissing, l.FilePathPart FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation AND t.IxMorphologicalInstance = w.IxMorphologicalInstance ORDER BY t.IxElicitation, l.LanguageIx";
+    $set = static::fetchAll($q);
+    if(count($set) > 0){
+      foreach($set as $t){
+        $t['LgIxFPP'] = $t['LanguageIx'].'<br/>'.$t['FilePathPart'];
+        $trsc = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
+        if(array_key_exists($trsc, $urls)){
+          $t['url'] = $urls[$trsc];
+        }
+        $t['transcrid'] = $trsc;
+        array_push(static::$transcriptionTable2, $t);
+      }
+    }
+    return static::$transcriptionTable2;
+  }
+  /**
+    @param $studyName String
+    @return array of dicts
+  */
   public static function editTranscriptionTable($d){
 
     $db  = Config::getConnection();
@@ -493,7 +526,7 @@ class DataProvider {
       }
     }
     # add items with no sound file
-    $q   = "SELECT DISTINCT t.StudyIx,t.FamilyIx,t.IxElicitation,t.IxMorphologicalInstance,t.AlternativePhoneticRealisationIx,t.AlternativeLexemIx,t.LanguageIx,t.Phonetic,t.SpellingAltv1,t.SpellingAltv2,t.NotCognateWithMainWordInThisFamily,t.WCogID,t.WCogIDFine,t.CommonRootMorphemeStructDifferent,t.DifferentMeaningToUsualForCognate,t.ActualMeaningInThisLanguage,t.OtherLexemeInLanguageForMeaning,t.RootIsLoanWordFromKnownDonor,t.RootSharedInAnotherFamily,t.IsoCodeKnownDonor,t.DifferentMorphemeStructureNote,t.OddPhonology,t.OddPhonologyNote,t.UsageNote,t.SoundProblem,t.ReconstructedOrHistQuestionable,t.ReconstructedOrHistQuestionableNote,t.RecordingMissing, l.FilePathPart, l.ShortName, w.FullRfcModernLg01 AS Word, w.SoundFileWordIdentifierText FROM Languages_$dt_arr[0] AS l, Transcriptions_$dt_arr[0] AS t, Words_$dt_arr[0] AS w WHERE t.LanguageIx = $dt_arr[1] AND t.LanguageIx = l.LanguageIx AND w.IxElicitation = ".substr($dt_arr[2], 0, -1)." AND t.IxMorphologicalInstance = ".substr($dt_arr[2], -1)." AND t.IxElicitation = w.IxElicitation AND w.IxMorphologicalInstance = t.IxMorphologicalInstance ORDER BY t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
+    $q   = "SELECT DISTINCT t.StudyIx,t.FamilyIx,t.IxElicitation,t.IxMorphologicalInstance,t.AlternativePhoneticRealisationIx,t.AlternativeLexemIx,t.LanguageIx,t.Phonetic,t.SpellingAltv1,t.SpellingAltv2,t.NotCognateWithMainWordInThisFamily,t.WCogID,t.WCogIDFine,t.CommonRootMorphemeStructDifferent,t.DifferentMeaningToUsualForCognate,t.ActualMeaningInThisLanguage,t.OtherLexemeInLanguageForMeaning,t.RootIsLoanWordFromKnownDonor,t.RootSharedInAnotherFamily,t.IsoCodeKnownDonor,t.DifferentMorphemeStructureNote,t.OddPhonology,t.OddPhonologyNote,t.UsageNote,t.SoundProblem,t.ReconstructedOrHistQuestionable,t.ReconstructedOrHistQuestionableNote,t.RecordingMissing, l.FilePathPart, l.ShortName,  w.SoundFileWordIdentifierText FROM Languages_$dt_arr[0] AS l, Transcriptions_$dt_arr[0] AS t, Words_$dt_arr[0] AS w WHERE t.LanguageIx = $dt_arr[1] AND t.LanguageIx = l.LanguageIx AND w.IxElicitation = ".substr($dt_arr[2], 0, -1)." AND t.IxMorphologicalInstance = ".substr($dt_arr[2], -1)." AND t.IxElicitation = w.IxElicitation AND w.IxMorphologicalInstance = t.IxMorphologicalInstance ORDER BY t.IxMorphologicalInstance, t.AlternativeLexemIx, t.AlternativePhoneticRealisationIx";
     $set = static::fetchAll($q);
     if(count($set) > 0){
       foreach($set as $t){
@@ -504,10 +537,8 @@ class DataProvider {
           static::$editTranscriptionMetaData['IxElicitation'] = $t['IxElicitation'];
         }
         $trsc = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
-        if(!in_array($trsc, $seen_transcrid)){
-          $t['transcrid'] = $trsc;
-          array_push(static::$editTranscriptionTable, $t);
-        }
+        $t['transcrid'] = $trsc;
+        array_push(static::$editTranscriptionTable, $t);
       }
     }
     return static::$editTranscriptionTable;
