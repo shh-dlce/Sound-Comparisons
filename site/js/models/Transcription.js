@@ -218,11 +218,15 @@ define(['underscore','backbone'], function(_, Backbone){
         }
         //get first info of transcription due to getSuperscriptInfo()::fields
         for(var j = 0; j < superScr.length; j++){
-          if(superScr[j][i].length >= 2 && _.isString(superScr[j][i][0])){
-            p.notCognate = {
-              sInf: superScr[j][i][0]
-            , ttip: superScr[j][i][1]
-            };
+          try{
+            if(superScr[j][i].length >= 2 && _.isString(superScr[j][i][0])){
+              p.notCognate = {
+                sInf: superScr[j][i][0]
+              , ttip: superScr[j][i][1]
+              };
+              break;
+            }
+          }catch(err){
             break;
           }
         }
