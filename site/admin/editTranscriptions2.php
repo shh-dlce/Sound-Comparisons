@@ -523,6 +523,34 @@ if(!session_mayEdit($dbConnection))
         'WCogID' => 'CogID',
         'WCogIDFine' => 'CogIDFine'
       );
+      $th_map_title = array(
+        'LgIxFPP' => 'Language Ix and FilePartPath',
+        'Word' => 'Word',
+        'ShortName' => 'Language Short Name',
+        'IxElicitation' => 'Ix Elicitation',
+        'IxMorphologicalInstance' => 'Ix Morpholog. Instance',
+        'AlternativePhoneticRealisationIx' => "Alt‘ve Pronunciation Ix<br><small>[null, 2 or 3]</small>",
+        'AlternativeLexemIx' => "Alt‘ve Lexeme Ix<br><small>[null, 2 or 3]</small>",
+        'SpellingAltv1' => 'Spelling in Orth. 1',
+        'SpellingAltv2' => 'Spelling in Orth. 2',
+        'NotCognateWithMainWordInThisFamily' => 'Not Cognate with main word',
+        'CommonRootMorphemeStructDifferent' => 'Cognate Root But Different Affixes',
+        'DifferentMeaningToUsualForCognate' => 'Cognate, but Different Meaning',
+        'ActualMeaningInThisLanguage' => 'Actual Meaning in This Lg',
+        'OtherLexemeInLanguageForMeaning' => 'Other Lexeme in This Lg for Default Meaning',
+        'RootIsLoanWordFromKnownDonor' => 'Root Is A Loanword',
+        'RootSharedInAnotherFamily' => 'Root is Shared in Other Family',
+        'IsoCodeKnownDonor' => 'Source Language SndComp ID',
+        'DifferentMorphemeStructureNote' => "Note on Diff‘t Morphological Structure",
+        'OddPhonology' => 'Odd Phonology',
+        'OddPhonologyNote' => 'Note on Odd Phonology',
+        'UsageNote' => 'Note on Usage',
+        'SoundProblem' => 'Problem with Sound File',
+        'ReconstructedOrHistQuestionable' => 'Questionable Hist/Reconstr. Form',
+        'ReconstructedOrHistQuestionableNote' => 'Note on Questionable Hist/Reconstr. Form',
+        'WCogID' => 'Cognate Set ID [=root cognacy]',
+        'WCogIDFine' => 'Fine Cognate Set ID [=different affixes]'
+      );
       $checkboxes = [
         'NotCognateWithMainWordInThisFamily',
         'CommonRootMorphemeStructDifferent',
@@ -560,11 +588,11 @@ if(!session_mayEdit($dbConnection))
         <table class="display table table-bordered" style="width:100%;padding-top:50px !important;padding-bottom:50px !important;">
         <?php
         $head = '<tr><th>'
-          .'<a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;<span style="margin-right:100px">Phonetic</span></th>';
+          .'<a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;<span style="margin-right:100px">Phonetic Transcription</span></th>';
         foreach($trTable as $t){
           foreach($t as $k => $v){
             if(!in_array($k, $not_edit_foreach_fields)){
-              $head = $head."<th class='rotate90' title='$k'><div><span>$th_map[$k]</span></div></th>";
+              $head = $head."<th title='$th_map_title[$k]'><div><span><small>$th_map_title[$k]</small></span></div></th>";
             }
           }
           break;
