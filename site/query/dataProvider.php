@@ -469,7 +469,7 @@ class DataProvider {
     @param $studyName String
     @return array of dicts
   */
-  public static function transcriptionTable2($studyName){
+  public static function transcriptionTable2($studyName, $word = ''){
 
     $db  = Config::getConnection();
     $n   = $db->escape_string($studyName);
@@ -482,7 +482,11 @@ class DataProvider {
         $urls[$tid] = $t['url'];
       }
     }
-    $q   = "SELECT l.ShortName, w.FullRfcModernLg01 AS Word, t.StudyIx,t.FamilyIx,t.IxElicitation,t.IxMorphologicalInstance,t.AlternativePhoneticRealisationIx,t.AlternativeLexemIx,t.LanguageIx,t.Phonetic,t.SpellingAltv1,t.SpellingAltv2,t.NotCognateWithMainWordInThisFamily,t.WCogID,t.WCogIDFine,t.CommonRootMorphemeStructDifferent,t.DifferentMeaningToUsualForCognate,t.ActualMeaningInThisLanguage,t.OtherLexemeInLanguageForMeaning,t.RootIsLoanWordFromKnownDonor,t.RootSharedInAnotherFamily,t.IsoCodeKnownDonor,t.DifferentMorphemeStructureNote,t.OddPhonology,t.OddPhonologyNote,t.UsageNote,t.SoundProblem,t.ReconstructedOrHistQuestionable,t.ReconstructedOrHistQuestionableNote,t.RecordingMissing, l.FilePathPart FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation AND t.IxMorphologicalInstance = w.IxMorphologicalInstance ORDER BY t.IxElicitation, l.LanguageIx";
+    $wQuery = '';
+    if(strlen($word) > 0){
+      $wQuery = " AND w.FullRfcModernLg01 = '".$db->escape_string($word)."' ";
+    }
+    $q   = "SELECT l.ShortName, w.FullRfcModernLg01 AS Word, t.StudyIx,t.FamilyIx,t.IxElicitation,t.IxMorphologicalInstance,t.AlternativePhoneticRealisationIx,t.AlternativeLexemIx,t.LanguageIx,t.Phonetic,t.SpellingAltv1,t.SpellingAltv2,t.NotCognateWithMainWordInThisFamily,t.WCogID,t.WCogIDFine,t.CommonRootMorphemeStructDifferent,t.DifferentMeaningToUsualForCognate,t.ActualMeaningInThisLanguage,t.OtherLexemeInLanguageForMeaning,t.RootIsLoanWordFromKnownDonor,t.RootSharedInAnotherFamily,t.IsoCodeKnownDonor,t.DifferentMorphemeStructureNote,t.OddPhonology,t.OddPhonologyNote,t.UsageNote,t.SoundProblem,t.ReconstructedOrHistQuestionable,t.ReconstructedOrHistQuestionableNote,t.RecordingMissing, l.FilePathPart FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation AND t.IxMorphologicalInstance = w.IxMorphologicalInstance ".$wQuery." ORDER BY t.IxElicitation, l.LanguageIx";
     $set = static::fetchAll($q);
     if(count($set) > 0){
       foreach($set as $t){
