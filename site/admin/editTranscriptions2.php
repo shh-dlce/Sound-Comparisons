@@ -581,7 +581,8 @@ if(!session_mayEdit($dbConnection))
         'IxElicitation',
         'IxMorphologicalInstance'
       ];
-      $trTable = DataProvider::transcriptionTable2($_GET['study']);
+      $word = isset($_GET['word']) ? $_GET['word'] : '';
+      $trTable = DataProvider::transcriptionTable2($_GET['study'], $word);
       $not_edit_foreach_fields = ['url', 'SoundFileWordIdentifierText', 'StudyIx', 'FamilyIx', 'RecordingMissing', 'Phonetic', 'LanguageIx', 'transcrid', 'FilePathPart'];
       ?>
       <div style="margin:2px;">
