@@ -41,90 +41,136 @@ define(['underscore','backbone'], function(_, Backbone){
     return [0];
   }
     /**
-      Returns the SuperscriptInfo for a Transcription as an object.
+      Returns the SuperscriptInfo for a Transcription as an array with the length of field 'Phonetic'.
       A helper for getPhonetics.
     */
   , getSuperscriptInfo: function(){
-      //The fields to judge:
-      var fields = this.pick(
-        'NotCognateWithMainWordInThisFamily'
-      , 'CommonRootMorphemeStructDifferent'
-      , 'DifferentMeaningToUsualForCognate'
-      , 'ActualMeaningInThisLanguage'
-      , 'OtherLexemeInLanguageForMeaning'
-      , 'RootIsLoanWordFromKnownDonor'
-      , 'RootSharedInAnotherFamily'
-      , 'IsoCodeKnownDonor'
-      ), ret = [];
-      //Helper functions:
-      var addKey = function(key){
-        var x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(key) || {};
-        if('FullNameForHoverText' in x){
-          x = [x.Abbreviation, x.FullNameForHoverText];
-        }else if('HoverText' in x){
-          x = [x.Abbreviation, x.HoverText];
-        }else {x = [];}
-        var r = [];
-        r.push(x)
-        ret.push(r);
-      }, isOne = function(key){
-        var fk = fields[key], r = [];
-        if(_.isArray(fk)){
-          for(var i = 0; i < fk.length; i++){
-            if(parseInt(fk[i]) === 1){
-              var x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(key) || {};
-              if('FullNameForHoverText' in x){
-                x = [x.Abbreviation, x.FullNameForHoverText];
-              }else if('HoverText' in x){
-                x = [x.Abbreviation, x.HoverText];
-              }else {x = [];}
-              r.push(x);
-            }else{
-              r.push([]);
-            }
-          }
-          ret.push(r)
-          return false;
+      var ret = [], subret, x, abbr, hvt;
+      var p = this.get("Phonetic");
+      if(!_.isArray(p)){
+        subret = [];
+        if(parseInt(this.get('NotCognateWithMainWordInThisFamily')) == 1){
+          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('NotCognateWithMainWordInThisFamily');
+          abbr = x.Abbreviation;
+          hvt = x.HoverText;
+          subret.push([_.clone(abbr), _.clone(hvt)]);
         }
-        return parseInt(fields[key]) === 1;
-      }, runOne = function(key){
-        if(isOne(key)){addKey(key);}
-      }, notEmpty = function(key){
-        var fk = fields[key], r = [];
-        if(_.isArray(fk)){
-          for(var i = 0; i < fk.length; i++){
-            if(!(_.isEmpty(fk[i]))){
-              var x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(key) || {};
-              if('FullNameForHoverText' in x){
-                x = [x.Abbreviation, x.FullNameForHoverText];
-              }else if('HoverText' in x){
-                x = [x.Abbreviation, x.HoverText];
-              }else {x = [];}
-              r.push(x);
-            }else{
-              r.push([]);
-            }
-          }
-          ret.push(r)
-          return false;
+        if(parseInt(this.get('CommonRootMorphemeStructDifferent')) == 1){
+          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('CommonRootMorphemeStructDifferent');
+          abbr = x.Abbreviation;
+          hvt = x.HoverText;
+          subret.push([_.clone(abbr), _.clone(hvt)]);
         }
-        return !(_.isEmpty(fields[key]));
-      }, runEmpty = function(key){
-        if(notEmpty(key)){addKey(key);}
-      };
-      //Putting helpers to use:
-      _.each(['NotCognateWithMainWordInThisFamily'
-             ,'CommonRootMorphemeStructDifferent'
-             ,'DifferentMeaningToUsualForCognate']
-             , runOne, this);
-      _.each(['ActualMeaningInThisLanguage'
-             ,'OtherLexemeInLanguageForMeaning']
-             , runEmpty, this);
-      _.each(['RootIsLoanWordFromKnownDonor'
-             ,'RootSharedInAnotherFamily']
-             , runOne, this);
-      if(notEmpty('IsoCodeKnownDonor')){
-        ret.push(App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(fields.IsoCodeKnownDonor));
+        if(parseInt(this.get('DifferentMeaningToUsualForCognate')) == 1){
+          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('DifferentMeaningToUsualForCognate');
+          abbr = x.Abbreviation;
+          hvt = x.HoverText;
+          subret.push([_.clone(abbr), _.clone(hvt)]);
+        }
+        if(parseInt(this.get('RootIsLoanWordFromKnownDonor')) == 1){
+          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('RootIsLoanWordFromKnownDonor');
+          abbr = x.Abbreviation;
+          hvt = x.HoverText;
+          if(this.get('IsoCodeKnownDonor').length > 0){
+              x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(this.get('IsoCodeKnownDonor'));
+              abbr += x.Abbreviation;
+              hvt += ' ' + x.FullNameForHoverText;
+          }
+          subret.push([_.clone(abbr), _.clone(hvt)]);
+        }
+        if(parseInt(this.get('RootSharedInAnotherFamily')) == 1){
+          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('RootSharedInAnotherFamily');
+          abbr = x.Abbreviation;
+          hvt = x.HoverText;
+          if(this.get('IsoCodeKnownDonor').length > 0){
+              x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(this.get('IsoCodeKnownDonor'));
+              abbr += x.Abbreviation;
+              hvt += ' ' + x.FullNameForHoverText;
+          }
+          subret.push([_.clone(abbr), _.clone(hvt)]);
+        }
+        if(parseInt(this.get('ReconstructedOrHistQuestionable')) == 1){
+          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('ReconstructedOrHistQuestionable');
+          abbr = x.Abbreviation;
+          hvt = x.HoverText;
+          if(this.get('ReconstructedOrHistQuestionableNote').length > 0){
+              hvt += ' ' + this.get('ReconstructedOrHistQuestionableNote');
+          }
+          subret.push([_.clone(abbr), _.clone(hvt)]);
+        }
+        if(parseInt(this.get('OddPhonology')) == 1){
+          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('OddPhonology');
+          abbr = x.Abbreviation;
+          hvt = x.HoverText;
+          if(this.get('OddPhonologyNote').length > 0){
+              hvt += ' ' + this.get('OddPhonologyNote');
+          }
+          subret.push([_.clone(abbr), _.clone(hvt)]);
+        }
+        ret.push(subret);
+      }else{
+        for(var i = 0; i < p.length; i++){
+          subret = [];
+          if(parseInt(this.get('NotCognateWithMainWordInThisFamily')[i]) == 1){
+            x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('NotCognateWithMainWordInThisFamily');
+            abbr = x.Abbreviation;
+            hvt = x.HoverText;
+            subret.push([abbr, hvt]);
+          }
+          if(parseInt(this.get('CommonRootMorphemeStructDifferent')[i]) == 1){
+            x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('CommonRootMorphemeStructDifferent');
+            abbr = x.Abbreviation;
+            hvt = x.HoverText;
+            subret.push([abbr, hvt]);
+          }
+          if(parseInt(this.get('DifferentMeaningToUsualForCognate')[i]) == 1){
+            x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('DifferentMeaningToUsualForCognate');
+            abbr = x.Abbreviation;
+            hvt = x.HoverText;
+            subret.push([abbr, hvt]);
+          }
+          if(parseInt(this.get('RootIsLoanWordFromKnownDonor')[i]) == 1){
+            x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('RootIsLoanWordFromKnownDonor');
+            abbr = x.Abbreviation;
+            hvt = x.HoverText;
+            if(this.get('IsoCodeKnownDonor')[i].length > 0){
+                x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(this.get('IsoCodeKnownDonor')[i]);
+                abbr += x.Abbreviation;
+                hvt += ' ' + x.FullNameForHoverText;
+            }
+            subret.push([abbr, hvt]);
+          }
+          if(parseInt(this.get('RootSharedInAnotherFamily')[i]) == 1){
+            x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('RootSharedInAnotherFamily');
+            abbr = x.Abbreviation;
+            hvt = x.HoverText;
+            if(this.get('IsoCodeKnownDonor')[i].length > 0){
+                x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(this.get('IsoCodeKnownDonor')[i]);
+                abbr += x.Abbreviation;
+                hvt += ' ' + x.FullNameForHoverText;
+            }
+            subret.push([abbr, hvt]);
+          }
+          if(parseInt(this.get('ReconstructedOrHistQuestionable')[i]) == 1){
+            x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('ReconstructedOrHistQuestionable');
+            abbr = x.Abbreviation;
+            hvt = x.HoverText;
+            if(this.get('ReconstructedOrHistQuestionableNote')[i].length > 0){
+                hvt += ' ' + this.get('ReconstructedOrHistQuestionableNote')[i];
+            }
+            subret.push([_.clone(abbr), _.clone(hvt)]);
+          }
+          if(parseInt(this.get('OddPhonology')[i]) == 1){
+            x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('OddPhonology');
+            abbr = x.Abbreviation;
+            hvt = x.HoverText;
+            if(this.get('OddPhonologyNote')[i].length > 0){
+                hvt += ' ' + this.get('OddPhonologyNote')[i];
+            }
+            subret.push([_.clone(abbr), _.clone(hvt)]);
+          }
+          ret.push(subret);
+        }
       }
       //Done:
       return ret;
@@ -169,7 +215,7 @@ define(['underscore','backbone'], function(_, Backbone){
       //Note that both phonetics and sources will be sanitized for the first case.
       var phonetics = this.get('Phonetic') // [String]   || String
         , sources   = this.getSoundfiles() // [[String]]
-        , superScr  = this.getSuperscriptInfo()
+        , superScrs = _.clone(this.getSuperscriptInfo())
         , wcogids   = this.getWCogID()
         , ps        = [];
       //Sanitizing phonetics:
@@ -188,6 +234,7 @@ define(['underscore','backbone'], function(_, Backbone){
         var phonetic = phonetics[i]//String
           , source   = sources.shift() || ''
           , wcogid   = wcogids.shift()
+          , superScr = superScrs.shift()
           , language = this.get('language')
           , word     = this.get('word')
           , p = { // Data gathered for phonetic:
@@ -216,19 +263,22 @@ define(['underscore','backbone'], function(_, Backbone){
             continue;
           }
         }
-        //get first info of transcription due to getSuperscriptInfo()::fields
+        //build SuperscriptInfo()::fields
+        var sInfs = '', ttips = '';
         for(var j = 0; j < superScr.length; j++){
-          try{
-            if(superScr[j][i].length >= 2 && _.isString(superScr[j][i][0])){
-              p.notCognate = {
-                sInf: superScr[j][i][0]
-              , ttip: superScr[j][i][1]
-              };
-              break;
+          if(superScr[j].length >= 2){
+            if(j == 0){
+              sInfs = superScr[j][0];
+              ttips = superScr[j][1];
+            }else{
+              sInfs += ';' + superScr[j][0]
+              ttips += ' ◆ ' + superScr[j][1]
             }
-          }catch(err){
-            break;
           }
+        }
+        p.notCognate = {
+          sInf: sInfs
+        , ttip: ttips
         }
         //Subscript:
         if(wcogid != '0') {

@@ -24,10 +24,12 @@ define(['underscore','backbone','models/TranscriptionSuperscript'], function(_, 
       NotCognateWithMainWordInThisFamily: 1
     , CommonRootMorphemeStructDifferent:  2
     , DifferentMeaningToUsualForCognate:  3
+    , ReconstructedOrHistQuestionable:    5
     , ActualMeaningInThisLanguage:       11
     , OtherLexemeInLanguageForMeaning:   12
     , RootIsLoanWordFromKnownDonor:      21
     , RootSharedInAnotherFamily:         22
+    , OddPhonology:                      41
     }
   , getTranscriptionSuperscript: function(field){
       var e, abbr, hvt;
