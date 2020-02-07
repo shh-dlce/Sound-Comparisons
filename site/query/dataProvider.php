@@ -537,8 +537,10 @@ class DataProvider {
           static::$editTranscriptionMetaData['IxElicitation'] = $t['IxElicitation'];
         }
         $trsc = $t['LanguageIx']."T".$t['IxElicitation']."T".$t['IxMorphologicalInstance']."T".$t['AlternativePhoneticRealisationIx']."T".$t['AlternativeLexemIx'];
-        $t['transcrid'] = $trsc;
-        array_push(static::$editTranscriptionTable, $t);
+        if(!in_array($trsc, $seen_transcrid)){
+          $t['transcrid'] = $trsc;
+          array_push(static::$editTranscriptionTable, $t);
+        }
       }
     }
     return static::$editTranscriptionTable;
