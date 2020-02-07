@@ -17,7 +17,7 @@ function showTable($tdata, $showKeep = false){
       if(count($field) === 0) continue;
       //Value to echo as row:
       $value = array_shift($field);
-      $orig = $value['Original'];
+      $orig = htmlspecialchars($value['Original']);
       // show only entries whose 'Original' fields are set
       // if(strlen(trim($orig)) > 0){
         echo "<tr>";
