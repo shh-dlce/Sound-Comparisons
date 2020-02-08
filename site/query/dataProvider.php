@@ -134,6 +134,32 @@ class DataProvider {
   }
   /**
     @return Studies [String]
+    Returns an array with all Words_study->FullRfcModernLg01 .
+  */
+  public static function getWordsForStudy($study){
+    $words = array();
+    $n  = Config::getConnection()->escape_string($study);
+    $set = Config::getConnection()->query("SELECT FullRfcModernLg01 FROM Words_$n ORDER BY FullRfcModernLg01");
+    while($r = $set->fetch_assoc()){
+      array_push($words, $r['FullRfcModernLg01']);
+    }
+    return $words;
+  }
+  /**
+    @return Studies [String]
+    Returns an array with all Languages_studyShortName.
+  */
+  public static function getLgsForStudy($study){
+    $lgs = array();
+    $n  = Config::getConnection()->escape_string($study);
+    $set = Config::getConnection()->query("SELECT ShortName FROM Languages_$n ORDER BY ShortName");
+    while($r = $set->fetch_assoc()){
+      array_push($lgs, $r['ShortName']);
+    }
+    return $lgs;
+  }
+  /**
+    @return Studies [String]
     Returns an array with all studies currently known to the database in it
     sorted for displaying only whereby StudyIx=1 are listed first followed by a divider (marked as "--").
   */
@@ -469,7 +495,7 @@ class DataProvider {
     @param $studyName String
     @return array of dicts
   */
-  public static function transcriptionTable2($studyName, $word = ''){
+  public static function transcriptionTable2($studyName, $word = '', $lg = ''){
 
     $db  = Config::getConnection();
     $n   = $db->escape_string($studyName);
@@ -485,6 +511,9 @@ class DataProvider {
     $wQuery = '';
     if(strlen($word) > 0){
       $wQuery = " AND w.FullRfcModernLg01 = '".$db->escape_string($word)."' ";
+    }
+    else if(strlen($lg) > 0){
+      $wQuery = " AND l.ShortName = '".$db->escape_string($lg)."' ";
     }
     $q   = "SELECT l.ShortName, w.FullRfcModernLg01 AS Word, t.StudyIx,t.FamilyIx,t.IxElicitation,t.IxMorphologicalInstance,t.AlternativePhoneticRealisationIx,t.AlternativeLexemIx,t.LanguageIx,t.Phonetic,t.SpellingAltv1,t.SpellingAltv2,t.NotCognateWithMainWordInThisFamily,t.WCogID,t.WCogIDFine,t.CommonRootMorphemeStructDifferent,t.DifferentMeaningToUsualForCognate,t.ActualMeaningInThisLanguage,t.OtherLexemeInLanguageForMeaning,t.RootIsLoanWordFromKnownDonor,t.RootSharedInAnotherFamily,t.IsoCodeKnownDonor,t.DifferentMorphemeStructureNote,t.OddPhonology,t.OddPhonologyNote,t.UsageNote,t.SoundProblem,t.ReconstructedOrHistQuestionable,t.ReconstructedOrHistQuestionableNote,t.RecordingMissing, l.FilePathPart FROM Languages_$n AS l, Transcriptions_$n AS t, Words_$n AS w WHERE t.LanguageIx = l.LanguageIx AND t.IxElicitation = w.IxElicitation AND t.IxMorphologicalInstance = w.IxMorphologicalInstance ".$wQuery." ORDER BY t.IxElicitation, l.LanguageIx";
     $set = static::fetchAll($q);

@@ -14,7 +14,8 @@ if(!session_mayEdit($dbConnection))
   ?>
   <body>
     <?php require_once('topmenu.php'); ?>
-    <h3>&nbsp;&nbsp;For editing transcriptions choose a study:</h3>
+    <h3>&nbsp;&nbsp;For editing transcriptions choose a study {and word or language}:</h3>
+    <blockquote><small><i>Please remember: If your language was <b>not</b> found in your selected study then it could be that this language belongs to another "sub-"study – e.g. transcriptions of some languages in the study “Germanic” are actually part of the "sub-"study “Englishes” etc.</i></small></blockquote>
 <div id="ipaKeyboard" class="modal hide" data-backdrop="false" style="width:auto !important;height:auto !important">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">x</button>
@@ -481,14 +482,44 @@ if(!session_mayEdit($dbConnection))
     <button data-target="#ipaTone" class="btn">Tone</button>
   </div>
 </div>
-    <div class="btn-group">
+    <div class="navbar">
+    <div class="navbar-inner">
     <?php
       $current = isset($_GET['study']) ? $_GET['study'] : '';
+      $ret = '<ul class="nav" id="topMenu2">';
       foreach(DataProvider::getStudies() as $s){
-        $style = ($s === $current) ? ' btn-inverse' : '';
-        echo "<a class=\"btn$style\" href=\"?study=$s\">$s</a>";
+        $s1 = $s;
+        if($s === $current){
+          $s1 = '<b>'.$s.'</b>';
+        };
+        // $ret .= "<li><a class=\"btn$style\" href=\"?study=$s\">$s</a></li>";
+        $ret .= '<li class="nav">';
+        $ret .= "<a class=\"dropdown-toggle topLink\" data-toggle=\"dropdown\">";
+        $ret .= "$s1 <b class=\"caret\"></b></a>";
+        $ret .= '<ul class="dropdown-menu">';
+        $ret .= "<li><a href=\"?study=$s\">all entries</a></li>";
+        $ret .= "<li class=\"dropdown-submenu\">";
+        $ret .= "<a href=\"#\">Words</a>";
+        $ret .= "<ul class=\"dropdown-menu pre-scrollable\">";
+        foreach(DataProvider::getWordsForStudy($s) as $w){
+          $ret .= "<li><a href=\"?study=$s&word=$w\">$w</a></li>";
+        }
+        $ret .= "</ul>";
+        $ret .= "</li>";
+        $ret .= "<li class=\"dropdown-submenu\">";
+        $ret .= "<a href=\"#\">Languages</a>";
+        $ret .= "<ul class=\"dropdown-menu pre-scrollable\">";
+        foreach(DataProvider::getLgsForStudy($s) as $l){
+          $ret .= "<li><a href=\"?study=$s&lg=$l\">$l</a></li>";
+        }
+        $ret .= "</ul>";
+        $ret .= "</li>";
+        $ret .= '</ul></li>';
       }
+      $ret .= '</ul>';
+      echo $ret;
     ?>
+    </div>
     </div>
     <?php
     if(isset($_GET['study'])){
@@ -582,7 +613,8 @@ if(!session_mayEdit($dbConnection))
         'IxMorphologicalInstance'
       ];
       $word = isset($_GET['word']) ? $_GET['word'] : '';
-      $trTable = DataProvider::transcriptionTable2($_GET['study'], $word);
+      $lg = isset($_GET['lg']) ? $_GET['lg'] : '';
+      $trTable = DataProvider::transcriptionTable2($_GET['study'], $word, $lg);
       $not_edit_foreach_fields = ['url', 'SoundFileWordIdentifierText', 'StudyIx', 'FamilyIx', 'RecordingMissing', 'Phonetic', 'LanguageIx', 'transcrid', 'FilePathPart'];
       ?>
       <div style="margin:2px;">
