@@ -41,6 +41,19 @@ define(['underscore','backbone'], function(_, Backbone){
     return [0];
   }
     /**
+    */
+  , getWCogIDFine: function(){
+    //We need to clone the WCogIDFine so that filtering and stuff can't do any harm.
+    var ids = _.clone(this.get('WCogIDFine'));
+    if(ids){
+      if(!_.isArray(ids)){
+        return [ids];
+      }
+      return ids;
+    }
+    return [0];
+  }
+    /**
       Returns the SuperscriptInfo for a Transcription as an array with the length of field 'Phonetic'.
       A helper for getPhonetics.
     */
@@ -217,6 +230,7 @@ define(['underscore','backbone'], function(_, Backbone){
         , sources   = this.getSoundfiles() // [[String]]
         , superScrs = _.clone(this.getSuperscriptInfo())
         , wcogids   = this.getWCogID()
+        , wcogfids  = this.getWCogIDFine()
         , ps        = [];
       //Sanitizing phonetics:
       if(_.isEmpty(phonetics)){
@@ -234,6 +248,7 @@ define(['underscore','backbone'], function(_, Backbone){
         var phonetic = phonetics[i]//String
           , source   = sources.shift() || ''
           , wcogid   = wcogids.shift()
+          , wcogfid  = wcogfids.shift()
           , superScr = superScrs.shift()
           , language = this.get('language')
           , word     = this.get('word')
@@ -280,12 +295,20 @@ define(['underscore','backbone'], function(_, Backbone){
           sInf: sInfs
         , ttip: ttips
         }
-        //Subscript:
+        //build Subscript:
+        var subText = '';
+        var subTtip = '';
         if(wcogid != '0') {
+          subText = wcogid
+        }
+        if(wcogfid != '0') {
+          subText += String.fromCharCode(96 + parseInt(wcogfid))
+        }
+        if(subText.length > 0){
           p.subscript = {
-            ttip: App.translationStorage.translateStatic('tooltip_subscript_differentVariants')
-          , subscript: wcogid
-          };
+            ttip: subTtip
+          , subscript: subText
+          }
         }
         //Done:
         ps.push(p);
