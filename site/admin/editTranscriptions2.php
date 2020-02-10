@@ -558,8 +558,8 @@ if(!session_mayEdit($dbConnection))
         'LgIxFPP' => 'Language Ix and FilePartPath',
         'Word' => 'Word',
         'ShortName' => 'Language Short Name',
-        'IxElicitation' => 'Ix Elicitation',
-        'IxMorphologicalInstance' => 'Ix Morpholog. Instance',
+        'IxElicitation' => 'Ix Elicit‘n',
+        'IxMorphologicalInstance' => 'Ix Mor. Inst‘ce',
         'AlternativePhoneticRealisationIx' => "Alt‘ve Pronunciation Ix<br><small>[null, 2 or 3]</small>",
         'AlternativeLexemIx' => "Alt‘ve Lexeme Ix<br><small>[null, 2 or 3]</small>",
         'SpellingAltv1' => 'Spelling in Orth. 1',
@@ -617,15 +617,19 @@ if(!session_mayEdit($dbConnection))
       $trTable = DataProvider::transcriptionTable2($_GET['study'], $word, $lg);
       $not_edit_foreach_fields = ['url', 'SoundFileWordIdentifierText', 'StudyIx', 'FamilyIx', 'RecordingMissing', 'Phonetic', 'LanguageIx', 'transcrid', 'FilePathPart'];
       ?>
-      <div style="margin:2px;">
-        <table class="display table table-bordered" style="width:100%;padding-top:50px !important;padding-bottom:50px !important;">
+      <div style="margin:0px;">
+        <table class="display table table-bordered" style="padding-top:50px !important;padding-bottom:50px !important;margin-left:-20px !important;">
         <?php
-        $head = '<tr><th>'
-          .'<a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;<span style="margin-right:100px">Phonetic Transcription</span></th>';
+        $head = '<tr>';
         foreach($trTable as $t){
+          $colcnt = 0;
           foreach($t as $k => $v){
             if(!in_array($k, $not_edit_foreach_fields)){
-              $head = $head."<th title='$th_map_title[$k]'><div><span><small>$th_map_title[$k]</small></span></div></th>";
+              $head = $head."<th style='padding:2px 2px !important' title='$th_map_title[$k]'><small>$th_map_title[$k]</small></th>";
+              if($colcnt == 3){
+                $head = $head.'<th style="padding:2px 2px !important"><a href="#ipaKeyboard" data-toggle="modal" id="IPAOpenKeyboard" class="superscript" title="Open IPA Keyboard">ɚ</a>&nbsp;<span style="margin-right:100px"><small>Phonetic Transcription</small></span></th>';
+              }
+              $colcnt = $colcnt + 1;
             }
           }
           break;
@@ -634,39 +638,44 @@ if(!session_mayEdit($dbConnection))
         echo "<thead>$head</thead>";
         $cnt = 0;
         foreach($trTable as $t){
+          $colcnt = 0;
           echo "<tr data-transcrid='".$t['transcrid']."' data-study='".$_GET['study']."'>";
-          if(array_key_exists('url', $t)){
-            echo "<td style='min-width:216px !important'><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
-              ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:120px;font-family:Charis SIL;'>"
-              ." <audio id='player".$cnt."' preload='none' src='".$t['url']."'></audio><a class='btn btn-small' onclick=\"document.getElementById('player".$cnt."').play()\" style='margin-top:-11px;padding:0px'>&nbsp;▶︎&nbsp;</a></td>";
-          }else{
-            echo "<td style='min-width:216px !important'><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
-              ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:120px;font-family:Charis SIL;'>"
-              ." </td>";
-          }
           foreach($t as $k => $v){
             if(!in_array($k, $not_edit_foreach_fields)){
               if(in_array($k, $checkboxes)){
                 if($v > 0){
-                  echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='checkbox' checked></td>";
+                  echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='checkbox' checked></td>";
                 }else{
-                  echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='checkbox'></td>";
+                  echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='checkbox'></td>";
                 }
               }else{
                 if(in_array($k, $textFields)){
-                  echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:50px;'></td>";
+                  echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:50px;'></td>";
                 }else{
                   if(in_array($k, $not_edit_textFields)){
-                    echo "<td><span class='searchval hide'>".$v."</span><span style='padding: 0 10px;'>".$v."</span></td>";
+                    echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><span>".$v."</span></td>";
                   }else{
-                    echo "<td><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:10px;'></td>";
+                    echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:10px;'></td>";
                   }
                 }
               }
+              if($colcnt == 3){
+                if(array_key_exists('url', $t)){
+                  echo "<td style='padding:4px !important'><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
+                    ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:110px;font-family:Charis SIL;'>"
+                    ." <audio id='player".$cnt."' preload='none' src='".$t['url']."'></audio><a class='btn btn-small' onclick=\"document.getElementById('player".$cnt."').play()\" style='margin-top:-11px;padding:0px'>&nbsp;▶︎&nbsp;</a></td>";
+                }else{
+                  echo "<td style='padding:4px !important'><a class='btn btn-small save' style='margin-top:-11px;padding:0px;'><i title='Save' class='icon-hdd'></i></a>"
+                    ." <span class='hide'>".$t['Phonetic']."</span><input data-field='Phonetic' class='Phonetic' type='text' value='".$t['Phonetic']."' style='width:110px;font-family:Charis SIL;'>"
+                    ." </td>";
+                }
+              }
+              $colcnt = $colcnt + 1;
             }
           }
-          $cnt = $cnt + 1;
           echo "</tr>";
+          $cnt = $cnt + 1;
+
         }
       ?>
       </table>
