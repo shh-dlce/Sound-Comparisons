@@ -274,7 +274,8 @@ define(['underscore','backbone'], function(_, Backbone){
         }
         //Guarding for #351:
         if(hideNoTrans !== 'undefined' && hideNoTrans){
-          if(_.some(['--','..','...','…'], function(s){return p.phonetic === s;})){
+          if(_.some(['-..','**','.. ','--','..','...','…'],
+                    function(s){return p.phonetic === s;})){
             continue;
           }
         }
