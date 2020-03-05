@@ -295,6 +295,12 @@ Silva, Ariel P.C., Laura Wägerle, Paul Heggarty & Ana Suelly Arruda Câmara Cab
       , soundPlayModeHover: 'topmenu_settings_playmodehover'
       , createShortLink:    'topmenu_createShortLink'
       , viewContributors:   'topmenu_about_whoarewe'
+      , statisticsText:     'topmenu_about_statisticstext'
+      , numOfLangs:         'topmenu_about_numOfLangs'
+      , numOfWords:         'topmenu_about_numOfWords'
+      , numOfTrans:         'topmenu_about_numOfTrans'
+      , numOfSounds:        'topmenu_about_numOfSounds'
+      , numOfTransSounds:   'topmenu_about_numOfTransSounds'
       });
       this.setModel(staticT);
       this.model.ShowDataAs[0].display = this.model.showDataAsDots;
@@ -366,6 +372,47 @@ https://icphs2019.org/icphs2019-fullpapers/pdf/full-paper_490.pdf\
       }, this);
       this.setModel(data);
       this.updateCitations();
+
+      // how many languages in study
+      this.model.num_langs = App.languageCollection.length;
+      // how many words in study
+      this.model.num_words = App.wordCollection.length;
+      // how many transcriptions in study
+      var pcnt = 0;
+      var pscnt = 0;
+      var scnt = 0;
+      var hasTr = false;
+      _.forEach(window.App.dataStorage.get('study').transcriptions, function(t){
+          if(t !== null){
+            var p = _.clone(t["Phonetic"]);
+            var s = _.clone(t["soundPaths"]);
+            if(!_.isArray(p)) p = [p];
+            if(!_.isArray(s[0])){
+              s = [s];
+            }
+            for(var i = 0; i < p.length; i++){
+              hasTr = false
+              if(typeof p[i] !== 'undefined'){
+                if(p[i].trim() !== '' & !(_.some(['-..','**','.. ','--','..','...','…'],
+                                            function(s){return p[i].trim() === s;}))){
+                  pcnt += 1;
+                  hasTr = true;
+                }
+              }
+              if(typeof s[i] !== 'undefined'){
+                if(s[i][0].length > 0){
+                  scnt += 1;
+                  if (hasTr){
+                    pscnt += 1;
+                  }
+                }
+              }
+            }
+          }
+      })
+      this.model.num_trans = pcnt;
+      this.model.num_sounds = scnt;
+      this.model.num_trsounds = pscnt;
     }
     /**
       Generates the PageViews part of the TopMenu.

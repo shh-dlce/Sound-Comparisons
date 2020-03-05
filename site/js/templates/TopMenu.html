@@ -76,6 +76,30 @@
   {{/isOnline}}
 
   <div class="btn-group" style="margin-right:8px;float: right;">
+    <a class="btnbtn-dropdown" data-toggle="modal" data-target="#statsModal" style="cursor: pointer">
+      <img title="{{statisticsText}}" src="img/stats.png" style="height: 20px;margin-top:3px;">
+    </a>
+  </div>
+  <!-- copyrightModal -->
+  <div id="statsModal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{currentStudyName}}: {{statisticsText}}</h4>
+        </div>
+        <div class="modal-body">
+          <center>
+            <table border=0>
+              <tr><td align="right">{{numOfLangs}}:</td><td align="left"> {{num_langs}}</td></tr>
+              <tr><td align="right">{{numOfWords}}:</td><td align="left"> {{num_words}}</td></tr>
+              <tr><td align="right">{{numOfTrans}}:</td><td align="left"> {{num_trans}}</td></tr>
+              <tr><td align="right">{{numOfSounds}}:</td><td align="left"> {{num_sounds}}</td></tr>
+              <tr><td align="right">{{numOfTransSounds}}:</td><td align="left"> {{num_trsounds}}</td></tr>
+            </table>
+          </center>
+        </div>
+  </div>
+
+  <div class="btn-group" style="float: right;">
     <a class="btnbtn-dropdown" data-toggle="modal" data-target="#copyrightModal" style="cursor: pointer">
       <img title="{{licenceTooltip}}" src="img/copyright.png" style="height: 20px;margin-top:3px;">
     </a>
