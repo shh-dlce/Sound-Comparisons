@@ -299,7 +299,7 @@ define(['underscore','backbone'], function(_, Backbone){
         //build Subscript:
         var subText = '';
         var subTtip = '';
-        if(wcogid != '0') {
+        if(parseInt(wcogid) > 0) {
           subText = wcogid
         }
         if(wcogfid != '0') {
