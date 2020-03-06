@@ -76,8 +76,6 @@ define(['underscore','backbone'], function(_, Backbone){
       var category = this.getCategory('LongerRfcModernLg01')
         , fallback = this.get('LongerRfcModernLg01');
       if(!_.isString(fallback) || _.isEmpty(fallback))
-        fallback = this.get('LongerRfcModernLg02');
-      if(_.isEmpty(fallback))
         fallback = null;
       return App.translationStorage.translateDynamic(category, this.getField(), fallback);
     }
