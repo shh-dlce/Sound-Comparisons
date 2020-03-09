@@ -244,6 +244,7 @@ define(['underscore','backbone'], function(_, Backbone){
       if(!_.isArray(phonetics)) phonetics = [phonetics];
       //WordByWord logic:
       var wordByWord = App.pageState.get('wordByWord');
+      var ignoreTrans = (this.get('transStudy') === 'Mixe'); // temporary
       for(var i = 0; i < phonetics.length; i++){
         var phonetic = phonetics[i]//String
           , source   = sources.shift() || ''
@@ -257,7 +258,7 @@ define(['underscore','backbone'], function(_, Backbone){
             , isTransAssumed:   language.isHistorical() && !language.isProtoLg() && phonetic !== '--'
             , fileMissing: source.length == 0 || source[0].length == 0
             , smallCaps:   phonetic === 'play'
-            , phonetic:    (this.get('transStudy') === 'Mixe' && !language.isProtoLg()) ? '▶' : phonetic
+            , phonetic:    phonetic
             , pk: this.get('transStudy')+"|"+language.getId()+"|"+word.getId()
             , srcs:        JSON.stringify(source)
             , _srcs:       this.filterSoundfiles(source)
@@ -271,6 +272,11 @@ define(['underscore','backbone'], function(_, Backbone){
         if(p.phonetic === ''){
           p.phonetic = '--';
           continue;
+        }else if(ignoreTrans && !p.isProtoLg && p.phonetic !== '--'){
+          p.phonetic = '▶';
+          if(p.fileMissing){
+            p.phonetic = '--';
+          }
         }
         //Guarding for #351:
         if(hideNoTrans !== 'undefined' && hideNoTrans){

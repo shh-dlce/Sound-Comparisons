@@ -373,17 +373,27 @@ https://icphs2019.org/icphs2019-fullpapers/pdf/full-paper_490.pdf\
       this.setModel(data);
       this.updateCitations();
 
+      var valid_word_transids = [];
+      var valid_lang_ids = [];
       // how many languages in study
       this.model.num_langs = App.languageCollection.length;
+      App.languageCollection.each(function(l){
+        valid_lang_ids.push(l.getId());
+      });
       // how many words in study
       this.model.num_words = App.wordCollection.length;
+      App.wordCollection.each(function(w){
+        valid_lang_ids.forEach(function(l){
+          valid_word_transids.push(l + w.getId());
+      })});
       // how many transcriptions in study
       var pcnt = 0;
       var pscnt = 0;
       var scnt = 0;
       var hasTr = false;
-      _.forEach(window.App.dataStorage.get('study').transcriptions, function(t){
-          if(t !== null){
+      var not_ignore_trans = App.study.getName() !== 'Mixe'; // temporary
+      _.forEach(window.App.dataStorage.get('study').transcriptions, function(t, k){
+          if(valid_word_transids.includes(k) & t !== null){
             var p = _.clone(t["Phonetic"]);
             var s = _.clone(t["soundPaths"]);
             if(!_.isArray(p)) p = [p];
@@ -392,7 +402,7 @@ https://icphs2019.org/icphs2019-fullpapers/pdf/full-paper_490.pdf\
             }
             for(var i = 0; i < p.length; i++){
               hasTr = false
-              if(typeof p[i] !== 'undefined'){
+              if(not_ignore_trans && typeof p[i] !== 'undefined'){
                 if(p[i].trim() !== '' & !(_.some(['-..','**','.. ','--','..','...','…'],
                                             function(s){return p[i].trim() === s;}))){
                   pcnt += 1;
