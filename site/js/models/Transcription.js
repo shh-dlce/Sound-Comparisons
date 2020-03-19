@@ -91,6 +91,15 @@ define(['underscore','backbone'], function(_, Backbone){
           }
           subret.push([_.clone(abbr), _.clone(hvt)]);
         }
+        if(parseInt(this.get('ReconstructedOrHistQuestionable')) == 1){
+          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('ReconstructedOrHistQuestionable');
+          abbr = x.Abbreviation;
+          hvt = x.HoverText;
+          if(this.get('ReconstructedOrHistQuestionableNote').length > 0){
+              hvt += ' ' + this.get('ReconstructedOrHistQuestionableNote');
+          }
+          subret.push([_.clone(abbr), _.clone(hvt)]);
+        }
         if(parseInt(this.get('RootSharedInAnotherFamily')) == 1){
           x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('RootSharedInAnotherFamily');
           abbr = x.Abbreviation;
@@ -99,15 +108,6 @@ define(['underscore','backbone'], function(_, Backbone){
               x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript(this.get('IsoCodeKnownDonor'));
               abbr += x.Abbreviation;
               hvt += ' ' + x.FullNameForHoverText;
-          }
-          subret.push([_.clone(abbr), _.clone(hvt)]);
-        }
-        if(parseInt(this.get('ReconstructedOrHistQuestionable')) == 1){
-          x = App.transcriptionSuperscriptCollection.getTranscriptionSuperscript('ReconstructedOrHistQuestionable');
-          abbr = x.Abbreviation;
-          hvt = x.HoverText;
-          if(this.get('ReconstructedOrHistQuestionableNote').length > 0){
-              hvt += ' ' + this.get('ReconstructedOrHistQuestionableNote');
           }
           subret.push([_.clone(abbr), _.clone(hvt)]);
         }
@@ -293,7 +293,11 @@ define(['underscore','backbone'], function(_, Backbone){
               sInfs = superScr[j][0];
               ttips = superScr[j][1];
             }else{
-              sInfs += ';' + superScr[j][0]
+              if(superScr[j][0] === '?'){
+                sInfs += superScr[j][0];
+              }else{
+                sInfs += ';' + superScr[j][0];
+              }
               ttips += ' ◆ ' + superScr[j][1]
             }
           }
