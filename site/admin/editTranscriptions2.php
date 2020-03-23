@@ -653,7 +653,11 @@ if(!session_mayEdit($dbConnection))
                   echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:50px;'></td>";
                 }else{
                   if(in_array($k, $not_edit_textFields)){
-                    echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><span>".$v."</span></td>";
+                    if($k == 'Word'){
+                      echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><span><a target='_new' href='/".$_GET['study']."/word/$v'>".$v."</a></span></td>";
+                    }else{
+                      echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><span>".$v."</span></td>";
+                    }
                   }else{
                     echo "<td style='padding:4px !important'><span class='searchval hide'>".$v."</span><input data-field='".$k."' class='".$k."' type='text' value='".$v."' style='width:10px;'></td>";
                   }
