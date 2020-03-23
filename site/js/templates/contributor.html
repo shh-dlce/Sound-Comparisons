@@ -4,12 +4,10 @@
     {{#website}}&nbsp;<a href="{{website}}" target="_hp"><img src="img/exlink.png" class="icon"/></a>{{/website}}</h3>
   <div class="row-fluid">
     <div class="span1"><img src="{{{img}}}" class="img-rounded avatar"></div>
-    <div class="offset1 span11">
-      <dl class="dl-horizontal">
+    <div class="span11">
         {{# role}}
-        <dt>Contributions</dt><dd>{{{.}}}</dd>
+        <div style="padding:5px;">{{{.}}}</div>
         {{/ role}}
-      </dl>
     </div>
   </div>
 </div>
