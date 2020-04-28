@@ -1,4 +1,4 @@
-/* global navigator: false, App */
+/* global App */
 /* eslint-disable no-console */
 "use strict";
 define(['jquery','underscore','backbone','models/Loader'], function($, _, Backbone, Loader){

@@ -11,7 +11,7 @@
     "url": "git+https://github.com/shh-dlce/Sound-Comparisons.git"
   },
   "author": "Hans-Jörg Bibiko",
-  "license": "CC BY-NC-ND 4.0",
+  "license": "CC-BY-NC-ND-4.0",
   "bugs": {
     "url": "https://github.com/shh-dlce/Sound-Comparisons/issues"
   },
@@ -22,6 +22,7 @@
     "grunt-cli": "*",
     "grunt-contrib-requirejs": "*",
     "grunt-contrib-watch": "*",
-    "grunt-eslint": "*"
+    "grunt-eslint": "*",
+    "source-map-resolve": "0.6.0"
   }
 }

@@ -1,4 +1,4 @@
-/* global document: false, google: false */
+/* global google: false */
 "use strict";
 define(['jquery','underscore','backbone'], function($, _, Backbone){
   /**

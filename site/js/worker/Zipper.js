@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars, no-redeclare */
 /* global importScripts: false, onmessage: true, postMessage: false, JSZip: false, Date: true */
 "use strict";
 /**
