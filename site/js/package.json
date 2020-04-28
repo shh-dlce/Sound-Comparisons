@@ -1,6 +1,6 @@
 {
   "name": "soundcomparisons",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "JavaScript code of the soundcomparisons project",
   "main": "Gruntfile.js",
   "scripts": {
@@ -8,20 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lingdb/Sound-Comparisons.git"
+    "url": "git+https://github.com/shh-dlce/Sound-Comparisons.git"
   },
-  "author": "Jakob Runge <sicarius@g4t3.de>",
-  "license": "GPL-3.0",
+  "author": "Hans-Jörg Bibiko",
+  "license": "CC BY-NC-ND 4.0",
   "bugs": {
-    "url": "https://github.com/lingdb/Sound-Comparisons/issues"
+    "url": "https://github.com/shh-dlce/Sound-Comparisons/issues"
   },
-  "homepage": "https://github.com/lingdb/Sound-Comparisons#readme",
+  "homepage": "https://github.com/shh-dlce/Sound-Comparisons#readme",
   "dependencies": {
-    "bower": "1.8.4",
-    "grunt": "1.0.3",
-    "grunt-cli": "1.2.0",
-    "grunt-contrib-requirejs": "1.0.0",
-    "grunt-contrib-watch": "1.0.0",
-    "grunt-eslint": "19.0.0"
+    "bower": "*",
+    "grunt": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-requirejs": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-eslint": "*"
   }
 }
