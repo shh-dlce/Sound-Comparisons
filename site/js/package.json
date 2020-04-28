@@ -23,6 +23,5 @@
     "grunt-contrib-requirejs": "*",
     "grunt-contrib-watch": "*",
     "grunt-eslint": "*",
-    "source-map-resolve": "0.6.0"
   }
 }
