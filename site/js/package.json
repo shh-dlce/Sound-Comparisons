@@ -22,6 +22,6 @@
     "grunt-cli": "*",
     "grunt-contrib-requirejs": "*",
     "grunt-contrib-watch": "*",
-    "grunt-eslint": "*",
+    "grunt-eslint": "*"
   }
 }
