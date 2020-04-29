@@ -10,18 +10,18 @@
     "type": "git",
     "url": "git+https://github.com/shh-dlce/Sound-Comparisons.git"
   },
-  "author": "Hans-Jörg Bibiko",
+  "author": "Jakob Runge, Hans-Jörg Bibiko",
   "license": "CC-BY-NC-ND-4.0",
   "bugs": {
     "url": "https://github.com/shh-dlce/Sound-Comparisons/issues"
   },
   "homepage": "https://github.com/shh-dlce/Sound-Comparisons#readme",
   "dependencies": {
-    "bower": "*",
-    "grunt": "*",
-    "grunt-cli": "*",
-    "grunt-contrib-requirejs": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-eslint": "*"
+    "bower": "1.8.8",
+    "grunt": "1.1.0",
+    "grunt-cli": "1.2.0",
+    "grunt-contrib-requirejs": "1.0.0",
+    "grunt-contrib-watch": "1.1.0",
+    "grunt-eslint": "22.0.0"
   }
 }
