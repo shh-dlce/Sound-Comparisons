@@ -96,38 +96,38 @@ requirejs([
       }
       //Building the App singleton:
       window.App = {storage: window.sessionStorage};
-      _.extend(window.App, {pageState: new (require('models/PageState'))()});
+      _.extend(window.App, {pageState: new(require('models/PageState'))()});
       //PageState before rest bc Selection needs it
       _.extend(window.App, {
-        contributorCategories: new (require('models/ContributorCategories'))()
-      , contributorCollection: new (require('collections/ContributorCollection'))()
-      , colors: new (require('models/Colors'))()
-      , dataStorage: new (require('models/DataStorage'))()
-      , defaults: new (require('models/Defaults'))()
-      , familyCollection: new (require('collections/FamilyCollection'))()
-      , languageCollection: new (require('collections/LanguageCollection'))()
-      , languageStatusTypeCollection: new (require('collections/LanguageStatusTypeCollection'))()
-      , logger: new (require('models/Logger'))()
-      , meaningGroupCollection: new (require('collections/MeaningGroupCollection'))()
-      , regionCollection: new (require('collections/RegionCollection'))()
-      , regionLanguageCollection: new (require('collections/RegionLanguageCollection'))()
-      , router: new (require('Router'))()
-      , soundDownloader: new (require('models/SoundDownloader'))()
-      , setupBar: new (require('models/LoadingBar'))({
+        contributorCategories: new(require('models/ContributorCategories'))()
+      , contributorCollection: new(require('collections/ContributorCollection'))()
+      , colors: new(require('models/Colors'))()
+      , dataStorage: new(require('models/DataStorage'))()
+      , defaults: new(require('models/Defaults'))()
+      , familyCollection: new(require('collections/FamilyCollection'))()
+      , languageCollection: new(require('collections/LanguageCollection'))()
+      , languageStatusTypeCollection: new(require('collections/LanguageStatusTypeCollection'))()
+      , logger: new(require('models/Logger'))()
+      , meaningGroupCollection: new(require('collections/MeaningGroupCollection'))()
+      , regionCollection: new(require('collections/RegionCollection'))()
+      , regionLanguageCollection: new(require('collections/RegionLanguageCollection'))()
+      , router: new(require('Router'))()
+      , soundDownloader: new(require('models/SoundDownloader'))()
+      , setupBar: new(require('models/LoadingBar'))({
           segments: 5 // TranslationStorage: 1, DataStorage: 3, Study: 1
         })
-      , studyWatcher: new (require('models/StudyWatcher'))()
-      , study: new (require('models/Study'))()
-      , soundPlayOption: new (require('models/SoundPlayOption'))()
-      , templateStorage: new (require('models/TemplateStorage'))()
-      , transcriptionMap: new (require('models/TranscriptionMap'))()
-      , transcriptionSuperscriptCollection: new (require('collections/TranscriptionSuperscriptCollection'))()
-      , translationStorage: new (require('models/TranslationStorage'))()
+      , studyWatcher: new(require('models/StudyWatcher'))()
+      , study: new(require('models/Study'))()
+      , soundPlayOption: new(require('models/SoundPlayOption'))()
+      , templateStorage: new(require('models/TemplateStorage'))()
+      , transcriptionMap: new(require('models/TranscriptionMap'))()
+      , transcriptionSuperscriptCollection: new(require('collections/TranscriptionSuperscriptCollection'))()
+      , translationStorage: new(require('models/TranslationStorage'))()
       , views: {}
-      , wordCollection: new (require('collections/WordCollection'))()
+      , wordCollection: new(require('collections/WordCollection'))()
       });
       //Adding FilteredWordCollection:
-      App.filteredWordCollection = new (require('collections/FilteredWordCollection'))();
+      App.filteredWordCollection = new(require('collections/FilteredWordCollection'))();
       //Making sure TranslationStorage does it's thing:
       App.translationStorage.init();
       //Listening for changing global data:
@@ -146,20 +146,20 @@ requirejs([
         Backbone.history.start();
       });
       //Creating views:
-      App.views.hideLinks = new (require('views/HideLinks'))();
-      App.views.ipaKeyboardView = new (require('views/IPAKeyboardView'))({
+      App.views.hideLinks = new(require('views/HideLinks'))();
+      App.views.ipaKeyboardView = new(require('views/IPAKeyboardView'))({
         el: $('#ipaKeyboard')});
-      App.views.soundPlayOptionView = new (require('views/SoundPlayOptionView'))({
+      App.views.soundPlayOptionView = new(require('views/SoundPlayOptionView'))({
         el: $('#topmenuSoundOptions')
       , model: App.soundPlayOption
       });
-      App.views.audioLogic = new (require('views/AudioLogic'))({el: $('#audioLogic')});
-      App.views.setupBar = new (require('views/SetupBarView'))({
+      App.views.audioLogic = new(require('views/AudioLogic'))({el: $('#audioLogic')});
+      App.views.setupBar = new(require('views/SetupBarView'))({
         el: $('#appSetup'), model: App.setupBar
       });
-      App.views.playSequenceView = new (require('views/PlaySequenceView'))();
-      App.views.renderer = new (require('views/render/Renderer'))({el: $('body')});
-      App.views.loadModalView = new (require('views/LoadModalView'))({el: $('#loadModal')});
-      App.views.shortLinkModalView = new (require('views/ShortLinkModalView'))({el: $('#shortLinkModal')});
+      App.views.playSequenceView = new(require('views/PlaySequenceView'))();
+      App.views.renderer = new(require('views/render/Renderer'))({el: $('body')});
+      App.views.loadModalView = new(require('views/LoadModalView'))({el: $('#loadModal')});
+      App.views.shortLinkModalView = new(require('views/ShortLinkModalView'))({el: $('#shortLinkModal')});
     });
   });

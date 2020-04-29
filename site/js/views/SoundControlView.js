@@ -1,4 +1,3 @@
-/* global document: false */
 "use strict";
 define(['backbone',
         'jquery',

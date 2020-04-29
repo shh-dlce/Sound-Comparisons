@@ -1,4 +1,4 @@
-/* global document: false, Node: false, App, google: false */
+/* global App, google: false */
 "use strict";
 define(['jquery','underscore'], function($, _){
   /**
