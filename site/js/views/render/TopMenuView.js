@@ -391,7 +391,7 @@ https://icphs2019.org/icphs2019-fullpapers/pdf/full-paper_490.pdf\
       var pscnt = 0;
       var scnt = 0;
       var hasTr = false;
-      var not_ignore_trans = App.study.getName() !== 'Mixe'; // temporary
+      var not_ignore_trans = App.study.getName() !== 'MixeZoque'; // temporary
       _.forEach(window.App.dataStorage.get('study').transcriptions, function(t, k){
           if(valid_word_transids.includes(k) & t !== null){
             var p = _.clone(t["Phonetic"]);
