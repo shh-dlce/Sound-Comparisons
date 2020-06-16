@@ -244,7 +244,7 @@ define(['underscore','backbone'], function(_, Backbone){
       if(!_.isArray(phonetics)) phonetics = [phonetics];
       //WordByWord logic:
       var wordByWord = App.pageState.get('wordByWord');
-      var ignoreTrans = (this.get('transStudy') === 'Mixe'); // temporary
+      var ignoreTrans = (this.get('transStudy') === 'MixeZoque'); // temporary
       for(var i = 0; i < phonetics.length; i++){
         var phonetic = phonetics[i]//String
           , source   = sources.shift() || ''
