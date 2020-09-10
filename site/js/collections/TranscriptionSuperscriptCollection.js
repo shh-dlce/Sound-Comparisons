@@ -44,6 +44,8 @@ define(['underscore','backbone','models/TranscriptionSuperscript'], function(_, 
             abbr = App.translationStorage.translateDynamic('TranscrSuperscriptLenderLgsTranslationProvider-TranscrSuperscriptLenderLgs-Trans_Abbreviation',field,abbr);
             hvt = App.translationStorage.translateDynamic('TranscrSuperscriptLenderLgsTranslationProvider-TranscrSuperscriptLenderLgs-Trans_FullNameForHoverText',field,hvt);
             return {Abbreviation: abbr, FullNameForHoverText: hvt};
+          }else{
+            return {Abbreviation: field, FullNameForHoverText: field};
           }
         }
       }else if(_.isNumber(field)){
