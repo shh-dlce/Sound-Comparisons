@@ -5,8 +5,10 @@ define(['backbone'], function(Backbone){
   return Backbone.Model.extend({
     defaults: {study: null, lastStudy: null}
   , initialize: function(){
-      var l  = App.storage.lastStudy
-        , s  = (l) ? l : 'Europe'
+      var l  = App.storage.lastStudy;
+      // @legacy
+      if (App.pageState.isLegacy(l, false)) l = 'Europe';
+      var s  = (l) ? l : 'Europe'
         , ls = s;
       //The current study will become the last study:
       App.storage.lastStudy = s;

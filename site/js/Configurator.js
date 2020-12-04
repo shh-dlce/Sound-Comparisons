@@ -27,6 +27,14 @@ define(['Sanitizer',
       }
       //Promise to be returned by this method:
       var def = $.Deferred();
+      // @legacy
+      if('study' in config){
+        if (App.pageState.isLegacy(config.study)) {
+          delete config.study;
+          def.resolve();
+          return def.promise();
+        }
+      }
       //Stage 1 if study and/or siteLanguage are in config:
       if(_.any(['siteLanguage','study'], function(field){return (field in config);})){
         var proms = [];//Stack of promises for this case:

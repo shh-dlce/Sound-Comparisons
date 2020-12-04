@@ -232,6 +232,8 @@ define(['views/render/SubView'], function(SubView){
       var parse = App.router.parseString;
       siteLanguage = parse(siteLanguage);
       study = parse(study);
+      // @legacy
+      if (App.pageState.isLegacy(study)) return;
       language = parse(language);
       console.log('LanguageView.route('+siteLanguage+', '+study+', '+language+')');
       var t = this;

@@ -216,6 +216,8 @@ define(['views/render/SubView'], function(SubView){
   , route: function(siteLanguage, study, languages, words){
       var parse = App.router.parseString;
       study = parse(study);
+      // @legacy
+      if (App.pageState.isLegacy(study)) return;
       console.log('LanguageWordView.route('+study+', '+languages+', '+words+')');
       var t = this;
       //Setting siteLanguage and study:

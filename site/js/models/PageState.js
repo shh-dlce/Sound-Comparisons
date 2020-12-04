@@ -45,6 +45,23 @@ define(['underscore','backbone'], function(_, Backbone){
       //{Sp,Ph}Lang need updating on translation change:
       App.translationStorage.on('change:translationId', this.translationChanged, this);
     }
+    /**
+      Parses 'study' (can also be a route) for legacy studies. If legacy than
+      redirect to legacy_notes page if 'redirect' is set to true (default).
+    */
+  , isLegacy: function(study, redirect){
+      if (_.isString(study)) {
+        redirect = (typeof redirect !== 'undefined') ?  redirect : true;
+        var legacyMatch = study.match(/(Malakula|Vanuatu)/i);
+        if (legacyMatch) {
+          var s = legacyMatch[0].toLowerCase();
+          if (s === 'malakula') s = 'vanuatu';
+          if (redirect) window.location = 'img/legacy_notes/' + s + '.html';
+          return true;
+        }
+      }
+      return false;
+    }
   //Managing the wordOrder:
     /**
       Predicate to test if the wordOrder is logical
