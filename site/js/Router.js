@@ -77,6 +77,8 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
     */
   , defaultRoute: function(route){
       console.log('Router.defaultRoute('+route+')');
+      // @legacy
+      if(App.pageState.isLegacy(route)) route = null;
       if(_.isString(route)){//route may also be null…
         //Route parts when splitting route by '/' and than by ',':
         var parts = _.flatten(_.map(route.split('/'), function(p){
@@ -110,10 +112,6 @@ define(['underscore','Linker','backbone'], function(_, Linker, Backbone){
             }
             if(_.contains(App.study.getAllIds(), part)){
               toChange.study = part;
-              return;//Stop detection for current part
-            }
-            if(part === 'Malakula'){
-              toChange.study = 'Vanuatu';
               return;//Stop detection for current part
             }
           }

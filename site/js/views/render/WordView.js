@@ -349,6 +349,8 @@ define(['views/render/SubView'], function(SubView){
   , route: function(siteLanguage, study, word){
       var parse = App.router.parseString;
       study = parse(study);
+      // @legacy
+      if (App.pageState.isLegacy(study)) return;
       word = parse(word);
       // if word is missing and first parameter is a valid study
       // then user asked for /:Study/word/:Word
