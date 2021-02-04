@@ -52,7 +52,7 @@ define(['underscore','backbone'], function(_, Backbone){
   , isLegacy: function(study, redirect){
       if (_.isString(study)) {
         redirect = (typeof redirect !== 'undefined') ?  redirect : true;
-        var legacyMatch = study.match(/(Malakula|Vanuatu)/i);
+        var legacyMatch = study.match(/(Malakula|Vanuatu|MixeZoque|WestPapua)/i);
         if (legacyMatch) {
           var s = legacyMatch[0].toLowerCase();
           if (s === 'malakula') s = 'vanuatu';
