@@ -18,32 +18,6 @@ These databases serve as input to linguistic research to measure how phonetic di
 Our website offers powerful tools for linguist researchers (to search and filter the database, download all detailed phonetic transcriptions and sound files, create citable links, etc.), but is also multilingual and user-friendly for the general public who actually speak all of these languages, many of them endangered.
 
 
-Requirements:
-===
-
-`php-fpm` installed via `apt`, see https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-in-ubuntu-16-04#step-3-install-php-for-processing
-
-
-Setup instructions:
-===
-
-* Sound files must be uploaded by using the Python app [soundcomparisons](https://github.com/clld/soundcomparisons-data).
-* Configuration is done via environment variables.
-These can be set in `/etc/php/7.0/fpm/pool.d/www.conf`:
-```shell
-env[DEPLOYED] = 'true'
-env[MYSQL_SERVER] = 'localhost'
-env[MYSQL_USER] = 'soundcomparisons'
-env[MYSQL_PASSWORD] = '…'
-env[MYSQL_DATABASE] = 'v4'
-```
-* A soundcomparisons user was created to run the systemd scripts as:
-```shell
-useradd -M soundcomparisons  # -M: no homedirectory created
-usermod -L soundcomparisons  # -L: no login allowed for user
-chown -R soundcomparisons.soundcomparisons /srv/soundcomparisons
-```
-
 Offline version:
 ===
 
